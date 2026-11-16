@@ -5,6 +5,10 @@ import { Shell } from './app/Shell';
 import { api } from './data/client';
 import { Demo, Enter, NotFound } from './features/landing/Demo';
 import { Landing } from './features/landing/Landing';
+import { CalendarPage } from './features/calendar/CalendarPage';
+import { ProfileEdit } from './features/profile/ProfileEdit';
+import { ProfilePage } from './features/profile/ProfilePage';
+import { SearchPage, ShortlistPage } from './features/search/SearchPage';
 
 export function App() {
   const client = useQueryClient();
@@ -25,6 +29,11 @@ export function App() {
       <Route path="/demo" element={<Demo />} />
       <Route path="/enter/:accountId" element={<Enter />} />
       <Route element={<Shell />}>
+        <Route path="/search" element={<SearchPage />} />
+        <Route path="/shortlist" element={<ShortlistPage />} />
+        <Route path="/musicians/:slug" element={<ProfilePage />} />
+        <Route path="/profile/edit" element={<ProfileEdit />} />
+        <Route path="/calendar" element={<CalendarPage />} />
         <Route path="*" element={<NotFound inside />} />
       </Route>
     </Routes>

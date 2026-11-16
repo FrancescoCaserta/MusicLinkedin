@@ -48,7 +48,7 @@ export function MonthCalendar({
             </>
           );
           return onPick && !past ? (
-            <button key={k} type="button" className={cls} onClick={() => onPick(date)} aria-label={label} title={entry?.note} role="gridcell">
+            <button key={k} type="button" className={cls} data-date={date} onClick={() => onPick(date)} aria-label={label} title={entry?.note} role="gridcell">
               {inner}
             </button>
           ) : (

@@ -122,10 +122,11 @@ export function ErrorState({ error, onRetry, compact = false }: { error: unknown
 }
 
 /** Renders the loading, error or loaded state of a query. */
-export function Async<T>({ query, children, loading, compact }: { query: UseQueryResult<T>; children: (data: T) => ReactNode; loading?: ReactNode; compact?: boolean }) {
+export function Async<T>({ query, children, loading, compact, page }: { query: UseQueryResult<T>; children: (data: T) => ReactNode; loading?: ReactNode; compact?: boolean; /** wrap the loading and error states in page margins */ page?: boolean }) {
   if (query.data !== undefined) return <>{children(query.data)}</>;
-  if (query.isError) return <ErrorState error={query.error} onRetry={() => void query.refetch()} compact={compact} />;
-  return <>{loading ?? <SkeletonList />}</>;
+  const frame = (node: ReactNode) => (page ? <div className="wrap wrap--narrow page">{node}</div> : <>{node}</>);
+  if (query.isError) return frame(<ErrorState error={query.error} onRetry={() => void query.refetch()} compact={compact} />);
+  return loading ? <>{loading}</> : frame(<SkeletonList />);
 }
 
 // ── Domain display helpers ───────────────────────────────────────────────
