@@ -1,0 +1,347 @@
+import type { Family } from '../../../domain/taxonomy';
+
+/** Reference material for the seed generator. Institutions and venues are real; people are invented. */
+
+/** Conservatory in or nearest to a city. */
+export const CONSERVATORIES: Record<string, string> = {
+  Bologna: 'Conservatorio “G.B. Martini”, Bologna',
+  Modena: 'Conservatorio “Vecchi–Tonelli”, Modena',
+  'Reggio Emilia': 'Conservatorio “Peri–Merulo”, Reggio Emilia',
+  Parma: 'Conservatorio “A. Boito”, Parma',
+  Piacenza: 'Conservatorio “G. Nicolini”, Piacenza',
+  Ferrara: 'Conservatorio “G. Frescobaldi”, Ferrara',
+  Ravenna: 'Conservatorio “G. Verdi”, Ravenna',
+  Imola: 'Conservatorio “G.B. Martini”, Bologna',
+  Faenza: 'Conservatorio “B. Maderna”, Cesena',
+  Forlì: 'Conservatorio “B. Maderna”, Cesena',
+  Cesena: 'Conservatorio “B. Maderna”, Cesena',
+  Rimini: 'Conservatorio “G. Lettimi”, Rimini',
+  Milano: 'Conservatorio “G. Verdi”, Milano',
+  Bergamo: 'Conservatorio “G. Donizetti”, Bergamo',
+  Brescia: 'Conservatorio “L. Marenzio”, Brescia',
+  Cremona: 'Conservatorio “C. Monteverdi”, Cremona',
+  Torino: 'Conservatorio “G. Verdi”, Torino',
+  Novara: 'Conservatorio “G. Cantelli”, Novara',
+  Genova: 'Conservatorio “N. Paganini”, Genova',
+  Venezia: 'Conservatorio “B. Marcello”, Venezia',
+  Padova: 'Conservatorio “C. Pollini”, Padova',
+  Vicenza: 'Conservatorio “A. Pedrollo”, Vicenza',
+  Verona: 'Conservatorio “E.F. Dall’Abaco”, Verona',
+  Trento: 'Conservatorio “F.A. Bonporti”, Trento',
+  Bolzano: 'Conservatorio “C. Monteverdi”, Bolzano',
+  Udine: 'Conservatorio “J. Tomadini”, Udine',
+  Firenze: 'Conservatorio “L. Cherubini”, Firenze',
+  Lucca: 'Conservatorio “L. Boccherini”, Lucca',
+  Siena: 'Conservatorio “R. Franci”, Siena',
+  Pesaro: 'Conservatorio “G. Rossini”, Pesaro',
+  Castelfidardo: 'Conservatorio “G. Rossini”, Pesaro',
+  Ancona: 'Conservatorio “G. Rossini”, Pesaro',
+  Perugia: 'Conservatorio “F. Morlacchi”, Perugia',
+  Roma: 'Conservatorio “Santa Cecilia”, Roma',
+  Napoli: 'Conservatorio “San Pietro a Majella”, Napoli',
+  Salerno: 'Conservatorio “G. Martucci”, Salerno',
+  Bari: 'Conservatorio “N. Piccinni”, Bari',
+  Lecce: 'Conservatorio “T. Schipa”, Lecce',
+  Palermo: 'Conservatorio “A. Scarlatti”, Palermo',
+  Catania: 'Conservatorio “V. Bellini”, Catania',
+  Cagliari: 'Conservatorio “G.P. da Palestrina”, Cagliari',
+  Wien: 'Universität für Musik und darstellende Kunst Wien',
+  Salzburg: 'Universität Mozarteum Salzburg',
+  Graz: 'Kunstuniversität Graz',
+  Zürich: 'Zürcher Hochschule der Künste',
+  Basel: 'Schola Cantorum Basiliensis',
+  Lugano: 'Conservatorio della Svizzera italiana, Lugano',
+  Berlin: 'Hochschule für Musik “Hanns Eisler”, Berlin',
+  Leipzig: 'Hochschule für Musik und Theater “Felix Mendelssohn Bartholdy”, Leipzig',
+  Dresden: 'Hochschule für Musik “Carl Maria von Weber”, Dresden',
+  München: 'Hochschule für Musik und Theater München',
+  Frankfurt: 'Hochschule für Musik und Darstellende Kunst Frankfurt',
+  Hamburg: 'Hochschule für Musik und Theater Hamburg',
+  Trossingen: 'Staatliche Hochschule für Musik Trossingen',
+  Paris: 'Conservatoire National Supérieur de Musique et de Danse de Paris',
+  Lyon: 'Conservatoire National Supérieur Musique et Danse de Lyon',
+  Strasbourg: 'Haute école des arts du Rhin, Strasbourg',
+  Amsterdam: 'Conservatorium van Amsterdam',
+  Utrecht: 'HKU Utrechts Conservatorium',
+  Gent: 'Koninklijk Conservatorium Gent',
+  London: 'Royal Academy of Music, London',
+  Manchester: 'Royal Northern College of Music, Manchester',
+  Cardiff: 'Royal Welsh College of Music & Drama, Cardiff',
+  Edinburgh: 'Royal Conservatoire of Scotland, Glasgow',
+  Madrid: 'Real Conservatorio Superior de Música de Madrid',
+  Barcelona: 'Escola Superior de Música de Catalunya, Barcelona',
+  Lisboa: 'Escola Superior de Música de Lisboa',
+  København: 'Det Kongelige Danske Musikkonservatorium, København',
+  Stockholm: 'Kungliga Musikhögskolan, Stockholm',
+  Helsinki: 'Sibelius Academy, Helsinki',
+  Kraków: 'Akademia Muzyczna im. Krzysztofa Pendereckiego, Kraków',
+  Warszawa: 'Uniwersytet Muzyczny Fryderyka Chopina, Warszawa',
+  Praha: 'Hudební fakulta AMU, Praha',
+  Budapest: 'Liszt Ferenc Zeneművészeti Egyetem, Budapest',
+  Ljubljana: 'Akademija za glasbo, Ljubljana',
+};
+
+/** Where people go for postgraduate study, by specialism. */
+export const POSTGRAD: Record<string, string[]> = {
+  early: [
+    'Schola Cantorum Basiliensis',
+    'Koninklijk Conservatorium Den Haag',
+    'Conservatoire National Supérieur Musique et Danse de Lyon',
+    'Conservatorio “E.F. Dall’Abaco”, Verona — Dipartimento di Musica Antica',
+    'Hochschule für Künste Bremen',
+  ],
+  accordion: [
+    'Staatliche Hochschule für Musik Trossingen',
+    'Sibelius Academy, Helsinki',
+    'Hochschule für Musik Würzburg',
+    'Det Kongelige Danske Musikkonservatorium, København',
+  ],
+  voice: [
+    'Universität für Musik und darstellende Kunst Wien',
+    'Universität Mozarteum Salzburg',
+    'Guildhall School of Music & Drama, London',
+    'Accademia Nazionale di Santa Cecilia, Roma — Opera Studio',
+    'Hochschule für Musik und Theater München',
+  ],
+  strings: [
+    'Scuola di Musica di Fiesole',
+    'Accademia Walter Stauffer, Cremona',
+    'Universität Mozarteum Salzburg',
+    'Hochschule für Musik “Hanns Eisler”, Berlin',
+    'Royal College of Music, London',
+    'Hochschule für Musik Basel',
+  ],
+  wind: [
+    'Hochschule für Musik Freiburg',
+    'Conservatoire National Supérieur de Musique et de Danse de Paris',
+    'Haute École de Musique de Genève',
+    'Universität für Musik und darstellende Kunst Wien',
+    'Hochschule für Musik und Theater München',
+  ],
+  keyboard: [
+    'Accademia Pianistica Internazionale “Incontri col Maestro”, Imola',
+    'Universität Mozarteum Salzburg',
+    'Hochschule für Musik und Tanz Köln',
+    'Royal Academy of Music, London',
+    'Conservatoire National Supérieur de Musique et de Danse de Paris',
+  ],
+  contemp: [
+    'Internationale Ensemble Modern Akademie, Frankfurt',
+    'Hochschule für Musik Basel',
+    'Kunstuniversität Graz',
+    'Conservatorio della Svizzera italiana, Lugano',
+  ],
+  general: [
+    'Conservatorium van Amsterdam',
+    'Hochschule für Musik und Theater München',
+    'Conservatorio della Svizzera italiana, Lugano',
+    'Royal Academy of Music, London',
+    'Zürcher Hochschule der Künste',
+  ],
+};
+
+/** Invented teachers, by the country they teach in. */
+export const TEACHER_SURNAMES: Record<string, string[]> = {
+  IT: ['Calamai', 'Montefiori', 'Riccomini', 'Sangiorgi', 'Tagliavini', 'Belletti', 'Fornaciari', 'Giacomelli', 'Zecchini', 'Passerini', 'Bonaccorsi', 'Maccaferri', 'Valdinoci', 'Scaramuzza', 'Barbagallo', 'Pellizzari'],
+  DE: ['Achenbach', 'Rosenthal', 'Lindemann', 'Brinkmann', 'Hollweg', 'Sturm', 'Kessler', 'Wiedemann'],
+  AT: ['Pichler', 'Rainer', 'Schwaiger', 'Hofstätter', 'Moosbrugger'],
+  CH: ['Amstutz', 'Zbinden', 'Brunner', 'Gysin'],
+  FR: ['Delacroix-Vidal', 'Hamelin', 'Beaumont', 'Charpentier-Roy', 'Tessier', 'Lambert'],
+  NL: ['van der Meulen', 'Hoekstra', 'Brouwer', 'ter Haar'],
+  BE: ['Vermeulen', 'De Smet', 'Claes'],
+  GB: ['Aldridge', 'Fairbairn', 'Hollis', 'Tremaine', 'Blackwood', 'Carrington'],
+  ES: ['Echeverría', 'Montoya', 'Ferrer', 'Aguirre'],
+  PT: ['Azevedo', 'Tavares'],
+  DK: ['Thorsen', 'Kjær'],
+  SE: ['Bergström', 'Ekdahl'],
+  FI: ['Rautio', 'Mäkelä-Laine', 'Heikkinen'],
+  PL: ['Wiśniewska', 'Zieliński', 'Dąbrowski'],
+  CZ: ['Dvořáček', 'Kratochvíl'],
+  HU: ['Kelemen', 'Hegedűs'],
+  SI: ['Zupan', 'Hribar'],
+};
+
+export const TEACHER_FIRST: Record<string, string[]> = {
+  IT: ['Aldo', 'Bruna', 'Carlo', 'Daniela', 'Enzo', 'Fiorenza', 'Guido', 'Ivana', 'Mauro', 'Nadia', 'Ottavio', 'Piera', 'Renato', 'Silvana', 'Umberto', 'Wanda'],
+  DE: ['Bernd', 'Christiane', 'Dietmar', 'Gudrun', 'Rainer', 'Sabine', 'Ulrich', 'Wiebke'],
+  AT: ['Gerhard', 'Ingrid', 'Reinhard', 'Elfriede'],
+  CH: ['Urs', 'Regula', 'Beat', 'Verena'],
+  FR: ['Alain', 'Brigitte', 'Didier', 'Françoise', 'Gérard', 'Odile'],
+  NL: ['Wim', 'Marijke', 'Gerrit', 'Annelies'],
+  BE: ['Koen', 'Greet', 'Luc'],
+  GB: ['Geoffrey', 'Rosalind', 'Nigel', 'Philippa', 'Malcolm', 'Hilary'],
+  ES: ['Joaquín', 'Montserrat', 'Ramón', 'Pilar'],
+  PT: ['Rui', 'Teresa'],
+  DK: ['Niels', 'Birgitte'],
+  SE: ['Göran', 'Ingegerd'],
+  FI: ['Matti', 'Helena', 'Timo'],
+  PL: ['Bogdan', 'Halina', 'Wiesław'],
+  CZ: ['Jiří', 'Hana'],
+  HU: ['László', 'Katalin'],
+  SI: ['Bojan', 'Marjeta'],
+};
+
+/** Invented competitions and prizes, by instrument family. */
+export const COMPETITIONS: Record<Family | 'any', string[]> = {
+  accordion: [
+    'Premio Internazionale di Fisarmonica “Mantice d’Oro”',
+    'Concorso Internazionale per Fisarmonica “Città di Recanati”',
+    'Internationaler Akkordeonwettbewerb “Hohe Schule”, Klingenthal-Aue',
+    'Trofeo Europeo della Fisarmonica Classica',
+  ],
+  strings: [
+    'Concorso Internazionale per Archi “Premio Valtidone”',
+    'Concorso Violinistico “Arcangelo Bonfanti”',
+    'Internationaler Streicherwettbewerb “Donau-Preis”',
+    'Rassegna Nazionale d’Archi “Giovani Liutai”, Cremona',
+  ],
+  woodwind: [
+    'Concorso Internazionale per Fiati “Soffio d’Argento”',
+    'Concours International de Bois “Prix Mirecourt”',
+    'Concorso Nazionale per Legni “Città di Chieri”',
+  ],
+  brass: [
+    'Concorso Internazionale per Ottoni “Squilli sul Garda”',
+    'Internationaler Blechbläserwettbewerb “Goldenes Horn”',
+  ],
+  percussion: ['Concorso Internazionale di Percussioni “Battere e Levare”', 'Percussion Prize “Ostinato”, Rotterdam'],
+  keyboard: [
+    'Concorso Pianistico Internazionale “Premio Montefeltro”',
+    'Concorso Organistico “Antichi Organi dell’Appennino”',
+    'Concours International de Clavecin “Prix Royaumont-Jeunes”',
+    'Premio Pianistico “Città di Senigallia Nuova”',
+  ],
+  plucked: [
+    'Concorso Chitarristico Internazionale “Corde d’Autunno”',
+    'Concorso Internazionale d’Arpa “Arpe del Lario”',
+    'Concorso Mandolinistico “Plettro d’Oro”',
+  ],
+  early: [
+    'Concorso di Musica Antica “Premio Selva Armonica”',
+    'International Early Music Competition “Fabulae”, Bruges-Zeebrugge',
+    'Concorso “Affetti Barocchi”, Vignola',
+  ],
+  voice: [
+    'Concorso Lirico Internazionale “Voci del Po”',
+    'Concorso di Canto Barocco “Premio Fioritura”',
+    'Internationaler Liedwettbewerb “Das Wort im Lied”',
+    'Concorso Lirico “Premio Rocca delle Caminate”',
+  ],
+  any: ['Premio Nazionale delle Arti (finalist round)', 'Borsa di studio “Fondazione Carisbo Giovani Talenti”', 'Chamber Music Award “Ad Libitum”'],
+};
+
+export const RESULTS = ['First prize', 'First prize and audience prize', 'Second prize', 'Third prize', 'Finalist', 'Special prize for the best performance of a contemporary work', 'Special prize for the best Bach performance'];
+
+/** Concert venues by city; the generic list is used elsewhere. */
+export const VENUES: Record<string, string[]> = {
+  Bologna: ['Oratorio di San Filippo Neri', 'Basilica di Santa Maria dei Servi', 'Auditorium Manzoni', 'Chiesa di Santa Cristina della Fondazza', 'Sala Bossi', 'Basilica di San Martino'],
+  Modena: ['Chiesa di San Carlo', 'Teatro Comunale', 'Chiesa di Sant’Agostino', 'Auditorium Marco Biagi'],
+  Ferrara: ['Teatro Comunale', 'Ridotto del Teatro Comunale', 'Chiesa di San Cristoforo alla Certosa'],
+  Parma: ['Casa della Musica', 'Auditorium del Carmine', 'Chiesa di San Giovanni Evangelista'],
+  'Reggio Emilia': ['Teatro Cavallerizza', 'Chiostri di San Pietro'],
+  Ravenna: ['Basilica di San Francesco', 'Teatro Rasi'],
+  Imola: ['Teatro Ebe Stignani', 'Chiesa di San Domenico'],
+  Rimini: ['Teatro Galli', 'Tempio Malatestiano'],
+  'Porretta Terme': ['Chiesa dell’Immacolata', 'Parco delle Terme (open-air stage)'],
+  Milano: ['Sala Verdi del Conservatorio', 'Basilica di San Marco', 'Teatro Dal Verme', 'Chiesa di San Maurizio al Monastero Maggiore'],
+  Torino: ['Conservatorio — Sala dei Concerti', 'Chiesa di San Filippo Neri', 'Teatro Vittoria'],
+  Genova: ['Palazzo Ducale — Sala del Maggior Consiglio', 'Oratorio di San Filippo'],
+  Venezia: ['Scuola Grande di San Rocco', 'Chiesa di Santa Maria della Pietà', 'Scuola Grande di San Giovanni Evangelista'],
+  Padova: ['Auditorium Pollini', 'Sala dei Giganti'],
+  Verona: ['Teatro Ristori', 'Chiesa di San Fermo Maggiore'],
+  Firenze: ['Saloncino del Teatro della Pergola', 'Chiesa di Santo Stefano al Ponte', 'Sala del Buonumore'],
+  Roma: ['Oratorio del Gonfalone', 'Sala Casella', 'Basilica di Sant’Eustachio', 'Teatro Argentina'],
+  Napoli: ['Chiesa di Santa Caterina da Siena', 'Sala Scarlatti', 'Teatrino di Corte'],
+  Wien: ['Konzerthaus — Mozart-Saal', 'Minoritenkirche', 'Ehrbar Saal'],
+  Leipzig: ['Nikolaikirche', 'Alte Handelsbörse', 'Peterskirche'],
+  München: ['Allerheiligen-Hofkirche', 'Schwere Reiter', 'Künstlerhaus am Lenbachplatz'],
+  Paris: ['Salle Cortot', 'Église Saint-Roch', 'Temple du Foyer de l’Âme'],
+  London: ['St John’s Smith Square', 'St Martin-in-the-Fields', 'Conway Hall'],
+  Amsterdam: ['Waalse Kerk', 'Muziekgebouw — Kleine Zaal', 'Orgelpark'],
+  Zürich: ['Kirche St. Peter', 'Kleine Tonhalle'],
+  Barcelona: ['Basílica de Santa Maria del Pi', 'Ateneu Barcelonès'],
+  Praha: ['Kostel sv. Šimona a Judy', 'Anežský klášter'],
+  København: ['Garnisons Kirke', 'Den Sorte Diamant — Dronningesalen'],
+};
+
+export const GENERIC_VENUES = ['Teatro Comunale', 'Chiesa di San Francesco', 'Auditorium', 'Sala dei Concerti', 'Duomo', 'Palazzo Comunale — Salone d’Onore'];
+export const GENERIC_VENUES_INTL = ['Konzertsaal', 'Stadtkirche', 'Kammermusiksaal', 'Town Hall', 'Parish Church', 'Cultural Centre'];
+
+export const ACCORDION_NOTES = [
+  'Pigini Sirius bayan, free-bass (C-system)',
+  'Bugari Bayan Prime, converter free-bass',
+  'Pigini Nova, converter (quint and chromatic free-bass)',
+  'Scandalli Conservatorio BJP 442, free-bass',
+  'Jupiter bayan, B-system',
+];
+
+export const INSTRUMENT_NOTES: Record<string, string[]> = {
+  harpsichord: ['Own Italian single-manual after Grimaldi; transportable (A=415/440/466)', 'Own Flemish double after Ruckers; transports within 300 km'],
+  organ: ['Own continuo organ (8′ 4′ 2′), transposing 415/440/465'],
+  theorbo: ['Theorbo in A after Tieffenbrucker; archlute after Sellas'],
+  harp: ['Lyon & Healy Style 23; own transport'],
+  'double-bass': ['Five-string and four-string instruments; own transport'],
+  timpani: ['Baroque timpani (calf heads) available on request'],
+  percussion: ['Own five-octave marimba and vibraphone; van transport'],
+  violone: ['Violone in G and 16′ violone in D'],
+  'viola-da-gamba': ['Seven-string bass viol after Bertrand; treble viol'],
+  'baroque-violin': ['Violin by an anonymous Bolognese maker, c. 1740, in period set-up'],
+  'natural-trumpet': ['Natural trumpet without vent holes on request'],
+  cornetto: ['Cornetti at 440 and 466; mute cornett'],
+};
+
+export interface EndorsementTemplate {
+  /** who is writing: a fellow player, or the organiser who booked them */
+  from: 'peer' | 'organiser';
+  /** which kind of participation it fits */
+  fit: 'any' | 'soloist' | 'singer' | 'continuo' | 'section';
+  text: string;
+}
+
+/** {first} = endorsed person, {work}, {venue}, {ensemble}, {part} */
+export const ENDORSEMENTS: EndorsementTemplate[] = [
+  { from: 'peer', fit: 'section', text: 'Shared a desk with {first} for {work}. Impeccably prepared, bowings and breaths marked before the first rehearsal, and easy company on a long day.' },
+  { from: 'peer', fit: 'section', text: '{first} led the section through {work} with real clarity — clean cues, no fuss, and a sound everyone could sit inside.' },
+  { from: 'peer', fit: 'section', text: 'Sat next to {first} in {work} at {venue}. Counts like a metronome, listens like a chamber musician.' },
+  { from: 'peer', fit: 'continuo', text: 'Played continuo alongside {first} in {work}. Never the same realisation twice, always with the singers, and rock solid when the tempo moved.' },
+  { from: 'peer', fit: 'continuo', text: 'The recitatives in {work} simply worked because {first} was there. Reads the room, the bass line and the conductor all at once.' },
+  { from: 'peer', fit: 'any', text: '{first} stepped in at two days’ notice for {work} and played as if the part had been on the stand for a month.' },
+  { from: 'peer', fit: 'any', text: 'One of the most reliable colleagues I know: on time, in tune, and generous in rehearsal. {work} at {venue} was a pleasure.' },
+  { from: 'peer', fit: 'any', text: 'A real chamber musician. In {work} {first} was always listening, always flexible, and brought ideas to every rehearsal.' },
+  { from: 'peer', fit: 'any', text: 'After a late programme change {first} sight-read half the concert at the dress rehearsal. Nobody in the hall would have known.' },
+  { from: 'peer', fit: 'any', text: 'We have shared a stage for years. {first} is the colleague I ring first when I need someone I can trust.' },
+  { from: 'peer', fit: 'any', text: 'Rehearsing {work} with {first} was three hours of real work and no ego. Knows the score, not just the part.' },
+  { from: 'peer', fit: 'soloist', text: '{first}’s {work} at {venue} was the high point of the season from where I was sitting: fearless, clean and deeply musical.' },
+  { from: 'peer', fit: 'soloist', text: 'Accompanied {first} in {work}. Clear intentions, steady nerves, and completely open to what the orchestra was offering.' },
+  { from: 'peer', fit: 'singer', text: '{first} sang {part} in {work} with us: text first, a beautiful line, and completely secure with the ensemble.' },
+  { from: 'peer', fit: 'singer', text: 'Stood next to {first} for {work}. Arrived off-book, blended with everyone, and saved an entry or two that were not strictly {first}’s to save.' },
+  { from: 'peer', fit: 'singer', text: '{first} learned {part} in a fortnight and it sounded lived-in. A lovely colleague on stage and off.' },
+  { from: 'peer', fit: 'any', text: 'Three rehearsals and a concert of {work} with {first}: prepared, punctual, funny in the breaks and serious on the platform. Would work together again tomorrow.' },
+  { from: 'peer', fit: 'any', text: '{first} is the kind of musician who makes the people around play better. In {work} I heard it from the first bar.' },
+  { from: 'peer', fit: 'section', text: 'A guest principal came in for {work} and asked afterwards who {first} was. That says it all.' },
+  { from: 'peer', fit: 'soloist', text: 'Turned pages, then played in the second half with {first} at {venue}. What you hear in the concert is exactly what was prepared — nothing left to chance, nothing stiff.' },
+  { from: 'peer', fit: 'continuo', text: '{first} and I shared the bass line in {work}. Phrasing agreed in one run-through, and from then on it felt like one instrument.' },
+  { from: 'peer', fit: 'singer', text: 'I conducted {first} in {work}. Comes with the notes learned and opinions about the words — the best combination a singer can bring.' },
+  { from: 'organiser', fit: 'any', text: 'Easy to book, easy to work with, and the audience forms came back with {first}’s name on them. {work} at {venue} was one of our best evenings.' },
+  { from: 'organiser', fit: 'any', text: '{first} agreed the fee in one message, confirmed the dates the same day and turned up knowing {work} better than we did. Recommended without hesitation.' },
+  { from: 'organiser', fit: 'any', text: 'We booked {first} for {work} at {venue}. Arrived early, performed beautifully, sent the paperwork the next morning — exactly who you want to call again.' },
+  { from: 'organiser', fit: 'any', text: '{first} has played several projects with {ensemble}. The audience asks when {first} is coming back; so do the other musicians.' },
+  { from: 'organiser', fit: 'any', text: 'Professional from the first email to the last bow. {work} was sold out and {first} was a large part of why.' },
+  { from: 'organiser', fit: 'any', text: 'Our regular player fell ill the morning of {work}. {first} answered within ten minutes, drove straight to {venue} and saved the concert.' },
+  { from: 'organiser', fit: 'soloist', text: 'A soloist who makes an organiser’s life easy: programme notes on time, clear technical needs, and a performance of {work} people are still talking about.' },
+  { from: 'organiser', fit: 'singer', text: '{first} sang {part} in our {work}. Prepared, flexible about staging rehearsals, and wonderful with the chorus. We have already offered the next project.' },
+  { from: 'organiser', fit: 'section', text: 'Hired {first} as an extra for {work}. Fitted into the section from the first downbeat; the principal asked us to book {first} again.' },
+];
+
+export const MASTERCLASS_PLACES = [
+  'Accademia Chigiana, Siena',
+  'Sommerakademie Mozarteum, Salzburg',
+  'Fondazione Cini, Venezia',
+  'Dartington Summer School',
+  'Corsi di Urbino — Musica Antica',
+  'Académie de Villecroze',
+  'Internationale Sommerakademie, Semmering',
+  'Corsi Estivi di Sermoneta',
+  'Gstaad Academy',
+  'Incontri Asolani, Asolo',
+];
