@@ -522,7 +522,7 @@ function buildEndorsements(w: World, db: Database): void {
   push(PERSONA_IDS.lorenzo, N, crinale, 'We booked Nicolò for the open-air Piazzolla evening with the Quartetto Malvasia. Arrived a day early to rehearse, re-voiced two of the Estaciones overnight when the wind got up, and held four hundred people silent in a spa-town park. First name on my list for next summer.', 5);
   const sette = find((c) => c.title === 'Sette parole');
   push(musicianId('Andrea Brambilla'), N, sette, 'Sieben Worte lives or dies on the breathing between cello and bayan. With Nicolò I never had to look up: the bellows changes were exactly where my bow changes were. A rare chamber partner on any instrument.', 3);
-  const aconcagua = find((c) => c.orgId === 'org-reno' && c.programme.some((p) => p.work.includes('Aconcagua')));
+  const aconcagua = find((c) => c.orgId === 'org-reno' && c.programme.some((p) => p.work.includes('Aconcagua')) && c.participants.some((p) => p.musicianId === N));
   push('acc-marcello-rinaldi', N, aconcagua, 'Soloist in Piazzolla’s Aconcagua for our subscription series. Parts and technical rider arrived three weeks ahead, the orchestra applauded at the first rehearsal, and the invoice was on my desk the morning after. We have since called him twice for orchestral accordion parts.', 9);
   push(musicianId('Pietro Zanarini'), N, crinale, 'I have played with Nicolò in duo and with the quartet. Learns the whole score, not just the accordion line, and has the best rehearsal manners I know — every suggestion comes with a reason.', 12);
   push(musicianId('Caterina Rovatti'), N, crinale, 'Four string players and an accordion can go wrong in many ways. With Nicolò the balance was solved in the first ten minutes and the rest of the rehearsal was about music.', 20);
@@ -588,11 +588,11 @@ const APPLICATION_NOTES = [
   'Interested and available. The fee works for me if travel from my base is covered as stated.',
 ];
 
-function buildOpportunities(w: World, db: Database, t: DateTools): void {
+function buildOpportunities(w: World, db: Database, t: DateTools, now: Date): void {
   const rng = w.rng.fork('opps');
   const adminOf = (orgId: string) => w.organisations.find((o) => o.id === orgId)!.admins[0];
   for (const s of opportunitySeeds(t)) {
-    const createdAt = s.postedHours != null ? new Date(Date.now() - s.postedHours * 3600_000).toISOString() : `${addDays(w.anchor, -s.posted)}T${String(8 + (s.posted % 9)).padStart(2, '0')}:15:00.000Z`;
+    const createdAt = s.postedHours != null ? new Date(now.getTime() - s.postedHours * 3600_000).toISOString() : `${addDays(w.anchor, -s.posted)}T${String(8 + (s.posted % 9)).padStart(2, '0')}:15:00.000Z`;
     const o: Opportunity = {
       id: s.id,
       type: s.type,
@@ -621,7 +621,7 @@ function buildOpportunities(w: World, db: Database, t: DateTools): void {
 
   let seq = 0;
   const apply = (oppId: ID, who: ID, status: ApplicationStatus, origin: Application['origin'], message: string | undefined, hoursAgo: number, inviteMessage?: string) => {
-    const at = new Date(Date.now() - hoursAgo * 3600_000).toISOString();
+    const at = new Date(now.getTime() - hoursAgo * 3600_000).toISOString();
     db.applications.push({ id: `ap-${++seq}`, opportunityId: oppId, musicianId: who, origin, status, message, inviteMessage, createdAt: at, updatedAt: at });
   };
 
@@ -676,7 +676,7 @@ function buildOpportunities(w: World, db: Database, t: DateTools): void {
   }
 }
 
-function buildMessages(db: Database): void {
+function buildMessages(db: Database, now: Date): void {
   const id = musicianId;
   let tSeq = 0;
   let mSeq = 0;
@@ -688,7 +688,7 @@ function buildMessages(db: Database): void {
       threadId: tid,
       fromId: who === 0 ? a : b,
       body,
-      sentAt: new Date(Date.now() - hoursAgo * 3600_000).toISOString(),
+      sentAt: new Date(now.getTime() - hoursAgo * 3600_000).toISOString(),
       readBy: [a, b],
     }));
     if (unreadFor) {
@@ -774,8 +774,8 @@ function buildMessages(db: Database): void {
   ], 'opp-crinale-residency');
 }
 
-function buildNotifications(db: Database): void {
-  const now = Date.now();
+function buildNotifications(db: Database, at: Date): void {
+  const now = at.getTime();
   let seq = 0;
   const note = (accountId: ID, kind: Notification['kind'], hoursAgo: number, extra: Partial<Notification> = {}, read = false) => {
     db.notifications.push({ id: `n-${++seq}`, accountId, kind, createdAt: new Date(now - hoursAgo * 3600_000).toISOString(), read, ...extra });
@@ -799,7 +799,7 @@ function buildNotifications(db: Database): void {
 
 // ── Entry point ──────────────────────────────────────────────────────────
 
-export function buildSeed(anchor: ISODate): Database {
+export function buildSeed(anchor: ISODate, now: Date = new Date()): Database {
   const demoDate = nextOccurrence(3, 14, anchor);
   const w = createWorld(anchor);
   const builder = buildConcerts(w, HERO_CONCERTS);
@@ -813,7 +813,7 @@ export function buildSeed(anchor: ISODate): Database {
   const db: Database = {
     meta: {
       version: DB_VERSION,
-      seededAt: new Date().toISOString(),
+      seededAt: now.toISOString(),
       anchor,
       demoDate,
       personas: [PERSONA_IDS.nicolo, PERSONA_IDS.giulia, PERSONA_IDS.hannah, PERSONA_IDS.beatrice, PERSONA_IDS.lorenzo],
@@ -844,9 +844,9 @@ export function buildSeed(anchor: ISODate): Database {
   };
   buildNetwork(w, db);
   buildEndorsements(w, db);
-  buildOpportunities(w, db, tools);
-  buildMessages(db);
-  buildNotifications(db);
+  buildOpportunities(w, db, tools, now);
+  buildMessages(db, now);
+  buildNotifications(db, now);
 
   // Accounts carry the final headline.
   for (const a of db.accounts) {
