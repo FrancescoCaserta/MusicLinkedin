@@ -349,6 +349,11 @@ function finishPersonas(w: World): void {
     { id: 'hl-rec3', title: 'Brahms: Vier ernste Gesänge', kind: 'audio', year: 2026, durationSec: 1085, note: 'Live at Ehrbar Saal, Wien' },
   ];
 
+  forceRepertoire(w.byName('Anna Bedeschi'), [['Bach', 'Johannes-Passion BWV 245', 'ready', 'viola da gamba solo, continuo']]);
+  forceRepertoire(w.byName('Hugo Blanchard'), [['Bach', 'Johannes-Passion BWV 245', 'ready', 'viola da gamba solo']]);
+  forceRepertoire(w.byName('Pietro Zanarini'), [['Bach', 'Johannes-Passion BWV 245', 'performed', 'continuo']]);
+  forceRepertoire(w.byName('Viola Casadei'), [['Dvořák', 'String Quartet No. 12 “American” Op. 96', 'ready']]);
+
   // A composer should have works of their own.
   const jacopo = w.byName('Jacopo Verdirame');
   jacopo.repertoire.unshift(
@@ -433,6 +438,11 @@ function buildAvailability(w: World, demoDate: ISODate): void {
   clear('Viola Casadei', sat);
   clear('Enrico Malavasi', sat);
   clear('Hannah Lindner', day(3), day(4), day(5));
+  // Applicants who wrote "free for all the dates" really are.
+  const passion = [8, 9, 10, 11, 12].map((n) => addDays(demoDate, n));
+  clear('Anna Bedeschi', ...passion);
+  clear('Hugo Blanchard', ...passion);
+  clear('Viola Parodi', ...[232, 246].map(day));
 }
 
 // ── Network ──────────────────────────────────────────────────────────────

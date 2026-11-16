@@ -1113,8 +1113,10 @@ export class MockApi implements DataApi {
         .map((x) => ({ concert: this.concertView(x.c), people: x.people.slice(0, 5).map((p) => this.summary(p.musicianId)), mine: x.mine }));
 
       const open = this.db.opportunities.filter((o) => o.status === 'open' && !this.canManage(accountId, o));
+      const answered = new Set(myApps.map((v) => v.opportunity.id));
       const forMe = me
         ? open
+            .filter((o) => !answered.has(o.id))
             .filter((o) => {
               const fit = opportunityFit(o, me);
               return fit.instrumentMatch && o.instruments.length > 0 && (fit.withinTravelRadius || o.travel !== 'none');
@@ -1152,7 +1154,7 @@ export class MockApi implements DataApi {
         },
         upcomingConcerts: upcoming,
         opportunities: forMe.map((o) => this.opportunityView(o, accountId)),
-        activity: activity.slice(0, 12),
+        activity: activity.slice(0, 6),
       };
     });
   }
