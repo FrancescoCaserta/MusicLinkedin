@@ -83,7 +83,12 @@ export function Combobox<T>({
           setOpen(true);
           setActive(-1);
         }}
-        onFocus={() => setOpen(true)}
+        onFocus={(e) => {
+          setOpen(true);
+          // On a phone the list opens below the field, where the keyboard and the
+          // bottom bars are: bring the field up so the options are reachable.
+          if (window.innerWidth < 700) e.currentTarget.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        }}
         onKeyDown={(e) => {
           if (e.key === 'ArrowDown') {
             e.preventDefault();

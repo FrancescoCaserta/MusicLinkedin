@@ -1510,3 +1510,14 @@ button.chip:hover {
 .map__tiles {
   filter: grayscale(1) sepia(0.22) contrast(0.88) brightness(1.06);
 }
+
+/* Keep options clear of the fixed bars when the browser scrolls them into view. */
+.combo__opt {
+  scroll-margin-block: 150px;
+}
+
+@media (max-width: 640px) {
+  .combo__list {
+    max-height: 220px;
+  }
+}
