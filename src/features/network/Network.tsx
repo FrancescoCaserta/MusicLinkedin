@@ -205,7 +205,7 @@ export function NetworkPage() {
           )}
         </div>
       ) : (
-        <div className="cols" style={{ gridTemplateColumns: 'minmax(0,1fr) minmax(0,1fr)' }}>
+        <div className="cols cols--even">
           <section>
             <h2 className="h-section" style={{ marginBottom: 14 }}>{t('Received')} <span className="muted num">{net.data.received.length}</span></h2>
             {net.data.received.length ? <EndorsementList items={net.data.received} side="from" /> : <EmptyState compact icon={<Quote size={20} aria-hidden />} title={t('None yet')} text={viewer.isMusician ? t('Endorsements arrive from people who shared a concert with you.') : t('Endorsements are written for musicians.')} />}
