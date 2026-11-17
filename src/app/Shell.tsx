@@ -6,7 +6,7 @@ import { api, isSimulatingFailure, setSimulatingFailure } from '../data/client';
 import { useApiMutation, useApiQuery } from '../data/hooks';
 import { keyDate } from '../domain/search/opportunities';
 import { fmt, t } from '../i18n';
-import { Avatar, FeeBlock } from '../ui/basics';
+import { Avatar, ErrorState, FeeBlock, SkeletonList } from '../ui/basics';
 import { Logo } from '../ui/Logo';
 import { PERSONA_GUIDE } from './personas';
 import { useSession } from './session';
@@ -275,7 +275,7 @@ function UrgentBanner({ call, accountId }: { call: MyApplicationView; accountId:
 }
 
 export function Shell() {
-  const { accountId, session } = useSession();
+  const { accountId, session, error, retry, signOut } = useSession();
   const location = useLocation();
   const badges = useApiQuery(['badges', accountId], () => api.getBadges(accountId!), { enabled: !!accountId, refetchInterval: 20_000 });
 
@@ -328,7 +328,19 @@ export function Shell() {
       </header>
       {call && !location.pathname.startsWith(`/opportunities/${call.opportunity.id}`) && <UrgentBanner call={call} accountId={accountId} />}
       <main key={session?.account.id ?? 'loading'}>
-        <Outlet />
+        {session ? (
+          <Outlet />
+        ) : error ? (
+          <div className="wrap wrap--narrow page">
+            <ErrorState error={error} onRetry={retry} />
+            <p className="small muted" style={{ textAlign: 'center', marginTop: 16 }}>
+              {t('If this persona no longer exists (for example after a reset in another tab),')}{' '}
+              <button type="button" className="link" onClick={signOut}>{t('choose another')}</button>.
+            </p>
+          </div>
+        ) : (
+          <div className="wrap wrap--narrow page"><SkeletonList rows={3} height={96} /></div>
+        )}
       </main>
       <nav className="tabbar no-print" aria-label={t('Main')}>
         {links

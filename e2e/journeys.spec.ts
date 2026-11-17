@@ -60,7 +60,7 @@ test('hirer: search in a sentence, refine, invite; the musician accepts; the hir
   await expect(page.getByText('4 musicians match')).toBeVisible();
   await page.getByRole('button', { name: 'Remove filter: Within 100 km of Bologna' }).click();
   await expect(page.getByText(/musicians match/)).not.toContainText('4 musicians');
-  await page.goBack();
+  // the browser's back button undoes the suggestion
   await page.goBack();
   await expect(page.getByText('2 musicians match')).toBeVisible();
 
@@ -165,19 +165,19 @@ test('musician: edit the profile and the calendar; changes survive a reload and 
   await enter(page, 'm-nicolo-baldini', '/profile/edit');
   await page.getByLabel('Headline').fill('Accordionist — Bach to Berio, and everything orchestras need');
   await page.getByRole('button', { name: 'Save changes' }).click();
-  await expect(page.getByText('Profile updated.')).toBeVisible();
+  await expect(page.getByText('All changes saved.')).toBeVisible();
 
   await page.getByRole('tab', { name: 'Fee and practicalities' }).click();
   await page.getByLabel('From', { exact: true }).fill('260');
   await page.getByRole('button', { name: 'Save changes' }).click();
-  await expect(page.getByText('Profile updated.').last()).toBeVisible();
+  await expect(page.getByText('All changes saved.')).toBeVisible();
 
   await page.getByRole('tab', { name: 'Repertoire' }).click();
   await page.getByRole('button', { name: 'Add a work' }).click();
   await page.getByLabel('Composer').first().fill('Pärt');
   await page.getByLabel('Work', { exact: true }).first().fill('Pari intervallo');
   await page.getByRole('button', { name: 'Save changes' }).click();
-  await expect(page.getByText('Profile updated.').last()).toBeVisible();
+  await expect(page.getByText('All changes saved.')).toBeVisible();
 
   await page.reload();
   await page.goto('/musicians/nicolo-baldini');

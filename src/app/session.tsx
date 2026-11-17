@@ -15,11 +15,14 @@ interface SessionState {
   accountId: ID | null;
   session?: Session;
   loading: boolean;
+  /** Set when the session could not be loaded. */
+  error?: unknown;
+  retry: () => void;
   signIn: (id: ID) => void;
   signOut: () => void;
 }
 
-const Ctx = createContext<SessionState>({ accountId: null, loading: false, signIn: () => {}, signOut: () => {} });
+const Ctx = createContext<SessionState>({ accountId: null, loading: false, retry: () => {}, signIn: () => {}, signOut: () => {} });
 
 function stored(): ID | null {
   try {
@@ -61,8 +64,8 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const value = useMemo<SessionState>(
-    () => ({ accountId, session: q.data, loading: !!accountId && q.isLoading, signIn, signOut }),
-    [accountId, q.data, q.isLoading, signIn, signOut],
+    () => ({ accountId, session: q.data, loading: !!accountId && q.isLoading, error: q.isError ? q.error : undefined, retry: () => void q.refetch(), signIn, signOut }),
+    [accountId, q.data, q.isLoading, q.isError, q.error, q.refetch, signIn, signOut],
   );
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

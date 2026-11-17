@@ -68,7 +68,14 @@ export function Modal({ title, kicker, onClose, children, footer, wide = false }
 
 export function Field({ label, hint, error, children, className = '' }: { label: string; hint?: string; error?: string; children: ReactNode; className?: string }) {
   return (
-    <label className={`field ${className}`}>
+    <label
+      className={`field ${className}`}
+      // A label forwards clicks to its first control. For composite widgets (pickers with
+      // chips and option lists) that would press an unrelated button, so stop it there.
+      onClick={(e) => {
+        if ((e.target as HTMLElement).closest('button, [role="listbox"]')) e.preventDefault();
+      }}
+    >
       <span className="field__label">{label}</span>
       {children}
       {error ? <span className="field__error" role="alert">{error}</span> : hint ? <span className="field__hint">{hint}</span> : null}
