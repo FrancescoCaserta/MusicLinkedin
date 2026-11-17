@@ -142,7 +142,7 @@ demo is first opened so dates always look current.
 - **30 organisations** (orchestras, period ensembles, choirs, opera
   companies, a festival, a church, a concert society, a music school, a
   wedding agency), about **490 concerts**, **44 hand-written opportunities**,
-  about 1,000 connections and 180 endorsements.
+  about 1,000 connections and 150 endorsements.
 - Careers are generated so they hang together: repertoire comes from the
   concerts on the profile plus what that kind of player carries; an
   accordionist is not credited with a string quartet; opera tenors are not
