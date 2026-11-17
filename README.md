@@ -11,6 +11,8 @@ musicians. *Leggio* is Italian for "music stand".
   doublings, voice type, searchable repertoire, concert history, calendar,
   fee range) and a board of opportunities that always state the fee.
 
+**Live demo:** <https://francescocaserta.github.io/MusicLinkedin/> (deployed from `main` by `.github/workflows/deploy.yml`).
+
 Everything runs in the browser. There is no backend, no account and no API
 key; all people and ensembles are fictional.
 
