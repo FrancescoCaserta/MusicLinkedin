@@ -136,7 +136,7 @@ export function OpportunitiesPage() {
         </section>
       </div>
       {sheet && (
-        <Modal title={t('Filters')} onClose={() => setSheet(false)} footer={<button type="button" className="btn btn--primary" onClick={() => setSheet(false)}>{t('Show results')}</button>}>
+        <Modal full title={t('Filters')} onClose={() => setSheet(false)} footer={<button type="button" className="btn btn--primary" onClick={() => setSheet(false)}>{t('Show results')}</button>}>
           <BoardFilters q={query} set={set} mine={mine} baseName={viewer.account?.base.name} />
         </Modal>
       )}

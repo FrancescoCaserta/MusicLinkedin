@@ -66,8 +66,8 @@ export function CalendarLegend() {
   return (
     <div className="cal-legend">
       <span><i className="cal-key cal-key--free" />{t('Free')}</span>
-      <span><i className="cal-key cal-key--tentative" />{t('Pencilled')}</span>
-      <span><i className="cal-key cal-key--busy" />{t('Busy')}</span>
+      <span><i className="cal-key cal-key--tentative" />{t('On hold')}</span>
+      <span><i className="cal-key cal-key--busy" />{t('Booked')}</span>
     </div>
   );
 }

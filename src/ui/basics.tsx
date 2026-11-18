@@ -26,7 +26,7 @@ export function Avatar({ name, tint = 30, size, org = false }: { name: string; t
 
 // ── Modal ────────────────────────────────────────────────────────────────
 
-export function Modal({ title, kicker, onClose, children, footer, wide = false }: { title: string; kicker?: string; onClose: () => void; children: ReactNode; footer?: ReactNode; wide?: boolean }) {
+export function Modal({ title, kicker, onClose, children, footer, wide = false, full = false }: { title: string; kicker?: string; onClose: () => void; children: ReactNode; footer?: ReactNode; wide?: boolean; /** full screen on phones (filters) */ full?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   const id = useId();
   useEffect(() => {
@@ -36,7 +36,8 @@ export function Modal({ title, kicker, onClose, children, footer, wide = false }
     const overflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     // Focus the first field, or the dialog itself.
-    const first = ref.current?.querySelector<HTMLElement>('[data-autofocus], input:not([type=hidden]), textarea, select');
+    // A full-screen sheet of filters opens on its title, not inside the first field.
+    const first = full ? null : ref.current?.querySelector<HTMLElement>('[data-autofocus], input:not([type=hidden]), textarea, select');
     (first ?? ref.current)?.focus();
     return () => {
       document.removeEventListener('keydown', onKey);
@@ -47,7 +48,7 @@ export function Modal({ title, kicker, onClose, children, footer, wide = false }
   }, []);
   return (
     <div className="overlay" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
-      <div className={`modal${wide ? ' modal--wide' : ''}`} role="dialog" aria-modal="true" aria-labelledby={id} ref={ref} tabIndex={-1}>
+      <div className={`modal${wide ? ' modal--wide' : ''}${full ? ' modal--full' : ''}`} role="dialog" aria-modal="true" aria-labelledby={id} ref={ref} tabIndex={-1}>
         <div className="modal__head">
           <div>
             {kicker && <div className="label" style={{ marginBottom: 6 }}>{kicker}</div>}
@@ -180,8 +181,8 @@ export function FeeBlock({ fee, size = 'md' }: { fee: Fee; size?: 'md' | 'lg' })
 export function AvailabilityTag({ value, date }: { value: Availability; date?: string }) {
   const on = date ? ` ${fmt.day(date)}` : '';
   if (value === 'free') return <span className="tag tag--ok"><span className="dot dot--ok" />{t('Free')}{on}</span>;
-  if (value === 'tentative') return <span className="tag tag--warn"><span className="dot dot--warn" />{t('Pencilled')}{on}</span>;
-  return <span className="tag"><span className="dot dot--busy" />{t('Busy')}{on}</span>;
+  if (value === 'tentative') return <span className="tag tag--warn"><span className="dot dot--warn" />{t('On hold')}{on}</span>;
+  return <span className="tag"><span className="dot dot--busy" />{t('Booked')}{on}</span>;
 }
 
 export function PersonLink({ slug, name, className }: { slug?: string; name: string; className?: string }) {

@@ -43,12 +43,14 @@ export function LineupAnswer({ eventId, small = true }: { eventId: ID; small?: b
 }
 
 /** Pending lineup invitations, for Alerts and Home. */
-export function LineupInvites() {
+export function LineupInvites({ title = false }: { title?: boolean }) {
   const viewer = useViewer();
   const who = viewer.musician?.id;
   const q = useApiQuery(['lineup-invites', who], () => api.listLineupInvites(who!), { enabled: !!who });
   if (!q.data?.length) return null;
   return (
+    <>
+    {title && <p className="label" style={{ marginBottom: 4 }}>{t('Needs your answer')}</p>}
     <ul className="lineup-invites">
       {q.data.map((x) => (
         <li key={x.event.id} className="alert is-unread">
@@ -64,6 +66,7 @@ export function LineupInvites() {
         </li>
       ))}
     </ul>
+    </>
   );
 }
 

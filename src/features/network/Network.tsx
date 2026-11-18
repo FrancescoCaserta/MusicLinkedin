@@ -5,7 +5,7 @@ import { useViewer } from '../../app/session';
 import type { EndorsementView, SuggestionView } from '../../data/api';
 import { api } from '../../data/client';
 import { useApiMutation, useApiQuery } from '../../data/hooks';
-import { normalise } from '../../domain/taxonomy';
+import { instrumentName, normalise } from '../../domain/taxonomy';
 import type { ID } from '../../domain/types';
 import { fmt, plural, t } from '../../i18n';
 import { Avatar, EmptyState, ErrorState, Field, Modal, SkeletonList } from '../../ui/basics';
@@ -100,7 +100,7 @@ export function NetworkPage() {
       <div className="page__head">
         <div>
           <div className="label">{t('Network')}</div>
-          <h1 className="h-page">{t('The people you have played with')}</h1>
+          <h1 className="h-page">{t('The people you have played with')}{net.data && <span className="h-count"> /{net.data.connections.length}</span>}</h1>
           <p className="page__sub">{t('Connections come from concerts, and endorsements cite the concert they are about.')}</p>
         </div>
       </div>
@@ -150,6 +150,29 @@ export function NetworkPage() {
               </div>
             )}
           </section>
+
+          {net.data.playTogether.length > 0 && (
+            <section>
+              <div className="section__head">
+                <h2 className="h-section">{t('Play together')}</h2>
+                <span className="small muted">{t('Near you, with instruments and repertoire that fit yours')}</span>
+              </div>
+              <ul className="playtog">
+                {net.data.playTogether.map((s) => (
+                  <li key={s.account.id} className="playtog__item">
+                    <MusicianMini m={s.account} sub={<>{t(instrumentName(s.instrumentId))} · {s.city} · {fmt.km(s.distanceKm)}</>} />
+                    <p className="playtog__why">
+                      {t('Also plays')} {s.works.map((w, k) => <span key={k}>{k > 0 && ', '}{w.composer}, <em className="work-title">{w.work}</em></span>)}.
+                    </p>
+                    <div className="row" style={{ gap: 8 }}>
+                      <button type="button" className="btn btn--ghost btn--sm" disabled={connect.isPending} onClick={() => connect.mutate(s.account.id)}><UserPlus size={14} aria-hidden />{t('Connect')}</button>
+                      <MessageButton to={{ id: s.account.id, name: s.account.name }} quiet />
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
 
           <section>
             <div className="section__head">

@@ -290,6 +290,8 @@ export interface NetworkView {
   endorsable: SuggestionView[];
   received: EndorsementView[];
   given: EndorsementView[];
+  /** Musicians near you, on another instrument, who share repertoire with you. Not yet connected. */
+  playTogether: { account: AccountSummary; instrumentId: string; city: string; distanceKm: number; works: { composer: string; work: string }[] }[];
 }
 
 export interface OrganisationCard {

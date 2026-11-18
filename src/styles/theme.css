@@ -1455,3 +1455,306 @@ fieldset.plain {
   color: var(--ink);
   max-width: 60ch;
 }
+
+/* ── Messaging dock (desktop) ──────────────────────────────────────────── */
+
+.dock {
+  position: fixed;
+  right: 24px;
+  bottom: 0;
+  z-index: 900;
+  width: 320px;
+  background: var(--paper);
+  border: 1px solid var(--ink);
+  border-bottom: 0;
+  box-shadow: var(--shadow-pop);
+}
+
+.dock__bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  height: 48px;
+  padding: 0 14px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.dock__chev {
+  font-size: 12px;
+}
+
+.dock__panel {
+  display: flex;
+  flex-direction: column;
+  height: min(480px, 70vh);
+  border-top: 1px solid var(--rule);
+}
+
+.dock__list {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.dock__list .inbox__item {
+  width: 100%;
+  border-bottom: 1px solid var(--rule);
+}
+
+.dock .thread {
+  flex: 1;
+  min-height: 0;
+  height: auto;
+  border: 0;
+}
+
+.dock .thread__title {
+  display: none;
+}
+
+.dock__all {
+  padding: 10px 14px;
+  border-top: 1px solid var(--rule);
+  text-align: right;
+}
+
+@media (max-width: 820px) {
+  .dock {
+    display: none;
+  }
+}
+
+/* ── Network ───────────────────────────────────────────────────────────── */
+
+.h-count {
+  color: var(--ink-4);
+  font-weight: 400;
+}
+
+.playtog {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  border-top: 1px solid var(--ink);
+}
+
+.playtog__item {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px 20px 18px 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.playtog__why {
+  font-family: var(--serif);
+  font-size: 16px;
+  line-height: 1.4;
+  flex: 1;
+}
+
+/* Full-screen sheet on phones (filters). */
+@media (max-width: 820px) {
+  .overlay:has(.modal--full) {
+    place-items: stretch;
+  }
+
+  .modal--full {
+    max-height: none;
+    height: 100%;
+    border: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .modal--full .modal__body {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .modal--full .modal__head .h-section,
+  .modal--full .modal__head h2 {
+    font-size: 32px;
+    letter-spacing: -0.04em;
+  }
+
+  .modal--full .modal__foot .btn--primary::after {
+    content: '';
+    margin-left: auto;
+    border-left: 6px solid currentColor;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+  }
+}
+
+.modal--full .field__label::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 8px;
+  background: var(--ink);
+  vertical-align: 0;
+}
+
+/* ── Work: date-led rows ───────────────────────────────────────────────── */
+
+.opp {
+  gap: 24px;
+  padding: 20px 0;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--rule);
+  align-items: flex-start;
+}
+
+.stack > .opp:first-child,
+.opp:first-child {
+  border-top: 1px solid var(--ink);
+}
+
+.opp:hover {
+  border-color: var(--rule);
+  box-shadow: none;
+  background: var(--card);
+}
+
+.opp:hover .opp__title {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.opp--urgent {
+  border-left: 0;
+}
+
+.opp__date {
+  flex: none;
+  width: 88px;
+  font-size: 44px;
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  line-height: 0.9;
+}
+
+.opp__date span {
+  display: block;
+  margin-top: 6px;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--ink-3);
+}
+
+.opp__main .label--urgent {
+  margin-bottom: 6px;
+}
+
+.opp__title {
+  margin: 2px 0 2px;
+  font-size: 18px;
+}
+
+.opp__rep {
+  font-family: var(--serif);
+  font-size: 15px;
+}
+
+.opp__fee .fee__amount {
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+}
+
+.opp__apply {
+  margin-top: 8px;
+}
+
+@media (max-width: 820px) {
+  .opp {
+    flex-wrap: wrap;
+    gap: 8px 16px;
+  }
+
+  .opp__date {
+    width: 56px;
+    font-size: 30px;
+  }
+
+  .opp__main {
+    flex: 1 1 calc(100% - 72px);
+  }
+
+  .opp__fee {
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    max-width: none;
+    padding-left: 72px;
+    justify-content: space-between;
+  }
+
+  .opp__apply {
+    margin-top: 0;
+  }
+}
+
+/* ── Calendar: Booked = ink fill, On hold = dashed, Free = surface ─────── */
+
+.cal__cell {
+  background: var(--card);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  font-weight: 500;
+}
+
+.cal__cell--busy,
+.cal-key--busy {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+.cal__cell--tentative,
+.cal-key--tentative {
+  background: var(--paper);
+  border: 1.5px dashed var(--ink);
+  color: var(--ink);
+}
+
+.cal-key--free {
+  background: var(--card);
+  border: 1px solid var(--rule);
+}
+
+.cal__cell--past,
+.cal__cell--blank {
+  background: none;
+  border-color: transparent;
+}
+
+.cal__cell.is-today {
+  box-shadow: inset 0 0 0 2px var(--action);
+}
+
+.cal--lg .cal__cell {
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 6px 8px;
+}
+
+.cal--lg .cal__num {
+  font-size: 15px;
+}
+
+.calpage__privacy {
+  border-top: 1px solid var(--ink);
+  padding-top: 14px;
+}
+
+@media (max-width: 820px) {
+  .modal--full {
+    height: 100dvh;
+  }
+}

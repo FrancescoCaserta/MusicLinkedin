@@ -9,6 +9,7 @@ import { fmt, t } from '../i18n';
 import { Avatar, ErrorState, FeeBlock, SkeletonList } from '../ui/basics';
 import { Logo } from '../ui/Logo';
 import { LineupInvites } from '../features/events/Events';
+import { MessagesDock } from '../features/messages/Messages';
 import { PERSONA_GUIDE } from './personas';
 import { useSession } from './session';
 import { useToast } from './toast';
@@ -376,6 +377,7 @@ export function Shell() {
           <div className="wrap wrap--narrow page"><SkeletonList rows={3} height={96} /></div>
         )}
       </main>
+      {session && !location.pathname.startsWith('/messages') && <MessagesDock />}
       <nav className="tabbar no-print" aria-label={t('Main')}>
         {links.map((l) => (
           <NavLink key={l.to} to={l.to} className="tabbar__link">

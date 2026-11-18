@@ -1120,8 +1120,28 @@ export class MockApi implements DataApi {
           .slice(0, 8),
         received: this.db.endorsements.filter((e) => e.toId === accountId).sort((a, b) => b.createdAt.localeCompare(a.createdAt)).map((e) => this.endorsementView(e)),
         given: this.db.endorsements.filter((e) => e.fromId === accountId).sort((a, b) => b.createdAt.localeCompare(a.createdAt)).map((e) => this.endorsementView(e)),
+        playTogether: this.playTogether(accountId, mine, new Set([...pendingIds, ...sharedWith.keys()])),
       };
     });
+  }
+
+  private playTogether(accountId: ID, mine: Set<ID>, pending: Set<ID>) {
+    const me = this.db.musicians.find((m) => m.id === this.account(accountId).musicianId);
+    if (!me) return [];
+    const myWorks = new Map(me.repertoire.map((r) => [normalise(`${r.composer} ${r.work}`), r]));
+    const myInstrument = me.instruments[0]?.instrumentId;
+    const reach = Math.max(80, me.travelRadiusKm);
+    return this.db.musicians
+      .filter((m) => m.id !== me.id && !mine.has(m.id) && !pending.has(m.id) && m.instruments[0]?.instrumentId !== myInstrument)
+      .map((m) => {
+        const km = distanceKm(me.base, m.base);
+        const works = m.repertoire.filter((r) => myWorks.has(normalise(`${r.composer} ${r.work}`))).map((r) => ({ composer: r.composer, work: r.work }));
+        return { m, km, works };
+      })
+      .filter((x) => x.works.length > 0 && x.km <= reach)
+      .sort((a, b) => b.works.length - a.works.length || a.km - b.km)
+      .slice(0, 6)
+      .map((x) => ({ account: this.summary(x.m.id), instrumentId: x.m.instruments[0].instrumentId, city: x.m.base.name, distanceKm: x.km, works: x.works.slice(0, 3) }));
   }
 
   requestConnection(fromId: ID, toId: ID) {

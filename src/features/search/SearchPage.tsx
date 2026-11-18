@@ -386,7 +386,7 @@ export function SearchPage() {
       )}
 
       {sheet && (
-        <Modal title={t('Filters')} onClose={() => setSheet(false)} footer={<><button type="button" className="btn btn--ghost" onClick={() => setParams(new URLSearchParams())}>{t('Clear all')}</button><button type="button" className="btn btn--primary" onClick={() => setSheet(false)}>{search.data ? plural(hits.length, 'Show {n} musician', 'Show {n} musicians') : t('Show results')}</button></>}>
+        <Modal full title={t('Filters')} onClose={() => setSheet(false)} footer={<><button type="button" className="btn btn--ghost" onClick={() => setParams(new URLSearchParams())}>{t('Clear all')}</button><button type="button" className="btn btn--primary" onClick={() => setSheet(false)}>{search.data ? plural(hits.length, 'Show {n} musician', 'Show {n} musicians') : t('Show results')}</button></>}>
           <Filters q={q} set={set} />
         </Modal>
       )}

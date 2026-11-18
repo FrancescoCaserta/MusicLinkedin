@@ -54,7 +54,7 @@ function NewMessage({ onClose }: { onClose: () => void }) {
   );
 }
 
-function Thread({ threadId }: { threadId: string }) {
+export function Thread({ threadId, onBack }: { threadId: string; onBack?: () => void }) {
   const viewer = useViewer();
   const thread = useApiQuery(['thread', threadId, viewer.id], () => api.getThread(threadId, viewer.id), { refetchInterval: 8000 });
   const [body, setBody] = useState('');
@@ -79,7 +79,11 @@ function Thread({ threadId }: { threadId: string }) {
   return (
     <div className="thread">
       <header className="thread__head">
-        <Link to="/messages" className="btn btn--quiet btn--icon btn--sm thread__back" aria-label={t('All conversations')}><ArrowLeft size={18} aria-hidden /></Link>
+        {onBack ? (
+          <button type="button" className="btn btn--quiet btn--icon btn--sm" onClick={onBack} aria-label={t('All conversations')}><ArrowLeft size={18} aria-hidden /></button>
+        ) : (
+          <Link to="/messages" className="btn btn--quiet btn--icon btn--sm thread__back" aria-label={t('All conversations')}><ArrowLeft size={18} aria-hidden /></Link>
+        )}
         <Avatar name={other.name} tint={other.tint} />
         <div className="grow">
           <div style={{ fontWeight: 650 }}>{other.slug ? <Link to={`/musicians/${other.slug}`}>{other.name}</Link> : other.name}</div>
@@ -178,6 +182,52 @@ export function MessagesPage() {
         {threadId ? <Thread threadId={threadId} key={threadId} /> : <div className="thread thread--empty"><EmptyState icon={<MessageSquare size={22} aria-hidden />} title={t('Choose a conversation')} text={t('Or start a new one. Messages are stored in the demo, so you can switch persona and answer yourself.')} /></div>}
       </section>
       {composing && <NewMessage onClose={() => setComposing(false)} />}
+    </div>
+  );
+}
+
+/** LinkedIn-style messaging dock, bottom right on desktop. */
+export function MessagesDock() {
+  const viewer = useViewer();
+  const [open, setOpen] = useState(false);
+  const [threadId, setThreadId] = useState<string | null>(null);
+  const threads = useApiQuery(['threads', viewer.id], () => api.listThreads(viewer.id), { refetchInterval: 15_000 });
+  const unread = threads.data?.reduce((n, x) => n + x.unread, 0) ?? 0;
+  return (
+    <div className={`dock no-print${open ? ' is-open' : ''}`}>
+      <button type="button" className="dock__bar" aria-expanded={open} onClick={() => setOpen(!open)}>
+        {viewer.account && <Avatar name={viewer.account.name} tint={viewer.account.tint} size="sm" />}
+        <span className="grow">{t('Messaging')}</span>
+        {unread > 0 && <span className="count">{unread}</span>}
+        <span className="dock__chev" aria-hidden>{open ? '▾' : '▴'}</span>
+      </button>
+      {open && (
+        <div className="dock__panel">
+          {threadId ? (
+            <Thread threadId={threadId} key={threadId} onBack={() => setThreadId(null)} />
+          ) : !threads.data ? (
+            <div style={{ padding: 16 }}><SkeletonList rows={3} height={48} /></div>
+          ) : threads.data.length === 0 ? (
+            <p className="small muted" style={{ padding: 16 }}>{t('No conversations yet')}</p>
+          ) : (
+            <ul className="dock__list">
+              {threads.data.map((x) => (
+                <li key={x.thread.id}>
+                  <button type="button" className={`inbox__item${x.unread ? ' is-unread' : ''}`} onClick={() => setThreadId(x.thread.id)}>
+                    <Avatar name={x.other.name} tint={x.other.tint} size="sm" />
+                    <span className="grow" style={{ minWidth: 0, textAlign: 'left' }}>
+                      <span className="mini__name">{x.other.name}</span>
+                      <span className="inbox__snippet">{x.last.fromId === viewer.id ? `${t('You')}: ` : ''}{x.last.body}</span>
+                    </span>
+                    {x.unread > 0 && <span className="count">{x.unread}</span>}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+          <Link to={threadId ? `/messages/${threadId}` : '/messages'} className="dock__all small" onClick={() => setOpen(false)}>{t('Open full page')} ▸</Link>
+        </div>
+      )}
     </div>
   );
 }

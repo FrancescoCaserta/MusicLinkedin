@@ -274,11 +274,25 @@ export function OpportunityCard({ view, compact = false, to }: { view: Opportuni
   const o = view.opportunity;
   const fit = view.fit;
   const status = view.myApplication?.status;
+  const key = keyDate(o);
+  const daysLeft = o.deadline ? diffDays(o.deadline, today()) : undefined;
   return (
     <Link to={to ?? `/opportunities/${o.id}`} className={`opp${o.urgent ? ' opp--urgent' : ''}`}>
+      {key && (
+        <p className="opp__date" aria-label={fmt.long(key)}>
+          {key.slice(8, 10)}
+          <span>.{key.slice(5, 7)} {fmt.weekdayNarrow((new Date(key + 'T12:00:00').getDay() + 6) % 7)}</span>
+        </p>
+      )}
       <div className="opp__main">
+        {o.urgent && (
+          <p className="label label--urgent">
+            {t('Urgent')}
+            {daysLeft !== undefined && daysLeft >= 0 ? ` · ${daysLeft === 0 ? t('closes today') : daysLeft === 1 ? t('closes tomorrow') : t('closes in {n} days', { n: daysLeft })}` : ''}
+          </p>
+        )}
         <div className="row row--wrap" style={{ gap: 8 }}>
-          <TypeTag o={o} />
+          {!o.urgent && <TypeTag o={o} />}
           {o.urgent && <span className="tiny muted">{t('posted {when}', { when: fmt.ago(o.createdAt) })}</span>}
           {status && <ApplicationStatusTag status={status} />}
         </div>
@@ -317,6 +331,7 @@ export function OpportunityCard({ view, compact = false, to }: { view: Opportuni
       <div className="opp__fee">
         <FeeBlock fee={o.fee} />
         {o.fee.note && !compact && <span className="tiny muted opp__fee-note">{o.fee.note}</span>}
+        {fit && !status && o.status === 'open' && <span className="btn btn--accent btn--sm opp__apply" aria-hidden>{t('Apply')}</span>}
       </div>
     </Link>
   );

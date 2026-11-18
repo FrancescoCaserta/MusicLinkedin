@@ -63,17 +63,16 @@ export function CalendarPage() {
       <div className="page__head">
         <div>
           <div className="label">{t('My calendar')}</div>
-          <h1 className="h-page">{t('When are you free?')}</h1>
-          <p className="page__sub">{t('Hirers search by date. Select days, then mark them busy, pencilled or free. Engagements you confirm on Leggio are added for you.')}</p>
+          <h1 className="h-page">{fmt.month(Number(cursor.slice(0, 4)), Number(cursor.slice(5, 7))).replace(/(\d{4})/, '')}<span className="h-count">{cursor.slice(0, 4)}</span></h1>
+          <p className="page__sub">{t('Hirers search by date. Select days, then mark them booked, on hold or free. Engagements you confirm on Leggio are added for you.')}</p>
         </div>
         <div className="row">
           <button type="button" className="btn btn--ghost btn--icon" disabled={cursor <= now.slice(0, 7) + '-01'} onClick={() => setCursor(addMonths(cursor, -1))} aria-label={t('Previous month')}><ChevronLeft size={18} aria-hidden /></button>
           <button type="button" className="btn btn--ghost btn--sm" onClick={() => setCursor(now.slice(0, 7) + '-01')}>{t('Today')}</button>
           <button type="button" className="btn btn--ghost btn--icon" onClick={() => setCursor(addMonths(cursor, 1))} aria-label={t('Next month')}><ChevronRight size={18} aria-hidden /></button>
+          <Link to="/events/new" className="btn btn--primary btn--sm">+ {t('New event')}</Link>
         </div>
       </div>
-
-      <LineupInvites />
 
       <div className="cols">
         <div>
@@ -85,9 +84,9 @@ export function CalendarPage() {
               toggle(cell.dataset.date, true);
             }
           }}>
-            {months.map((c) => {
+            {months.map((c, i) => {
               const [y, mo] = c.split('-').map(Number);
-              return <MonthCalendar key={c} year={y} month={mo} availability={m.availability} today={now} selected={selected} onPick={(d) => toggle(d)} size="lg" />;
+              return <MonthCalendar key={c} year={y} month={mo} availability={m.availability} today={now} selected={selected} onPick={(d) => toggle(d)} size="lg" showTitle={i > 0} />;
             })}
           </div>
           <div className="row row--between row--wrap" style={{ marginTop: 16 }}>
@@ -97,6 +96,9 @@ export function CalendarPage() {
         </div>
 
         <aside className="stack stack--lg">
+          <section className="calpage__answer">
+            <LineupInvites title />
+          </section>
           <section className={`card card--pad calpage__panel${selected.length ? ' is-active' : ''}`}>
             <div className="label">{selected.length ? plural(selected.length, '{n} day selected', '{n} days selected') : t('Nothing selected')}</div>
             {selected.length ? (
@@ -106,8 +108,8 @@ export function CalendarPage() {
                   <input className="input input--sm" value={note} onChange={(e) => setNote(e.target.value)} placeholder={t('e.g. Opera run, teaching, holiday')} />
                 </Field>
                 <div className="stack stack--sm" style={{ marginTop: 14 }}>
-                  <button type="button" className="btn btn--primary btn--block" disabled={save.isPending} onClick={() => save.mutate('busy')}>{t('Mark busy')}</button>
-                  <button type="button" className="btn btn--ghost btn--block" disabled={save.isPending} onClick={() => save.mutate('tentative')}>{t('Pencil in (not confirmed)')}</button>
+                  <button type="button" className="btn btn--primary btn--block" disabled={save.isPending} onClick={() => save.mutate('busy')}>{t('Mark booked')}</button>
+                  <button type="button" className="btn btn--ghost btn--block" disabled={save.isPending} onClick={() => save.mutate('tentative')}>{t('Put on hold')}</button>
                   <button type="button" className="btn btn--ghost btn--block" disabled={save.isPending} onClick={() => save.mutate('free')}>{t('Mark free')}</button>
                   <button type="button" className="btn btn--quiet btn--sm" onClick={() => setSelected([])}>{t('Clear selection')}</button>
                 </div>
@@ -127,13 +129,17 @@ export function CalendarPage() {
                     <span className={`dot ${b.status === 'busy' ? 'dot--busy' : 'dot--warn'}`} style={{ marginTop: 6 }} />
                     <span>
                       <b className="num">{b.from === b.to ? fmt.day(b.from) : `${fmt.day(b.from)} – ${fmt.day(b.to)}`}</b>
-                      <span className="soft"> · {b.note ?? (b.status === 'busy' ? t('Busy') : t('Pencilled'))}</span>
+                      <span className="soft"> · {b.note ?? (b.status === 'busy' ? t('Booked') : t('On hold'))}</span>
                       {b.engagement && <span className="tag tag--ok" style={{ marginLeft: 6 }}>{t('confirmed on Leggio')}</span>}
                     </span>
                   </li>
                 ))}
               </ul>
             )}
+          </section>
+          <section className="calpage__privacy">
+            <p className="h-card">{t('What hirers see')}</p>
+            <p className="small muted">{t('Only free or busy. Event names, notes and pencilled holds stay private.')}</p>
           </section>
         </aside>
       </div>
