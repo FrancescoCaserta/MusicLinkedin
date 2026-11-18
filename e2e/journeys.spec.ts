@@ -183,7 +183,7 @@ test('musician: edit the profile and the calendar; changes survive a reload and 
   await page.reload();
   await page.goto('/musicians/nicolo-baldini');
   await expect(page.getByText('Accordionist — Bach to Berio, and everything orchestras need')).toBeVisible();
-  await expect(page.locator('.side-card__fee')).toContainText('€260');
+  await expect(page.locator('.profile__facts')).toContainText('€260');
   await page.getByPlaceholder('Search this repertoire…').fill('intervallo');
   await expect(page.locator('.rep__row')).toContainText('Pari intervallo');
 

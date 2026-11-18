@@ -528,7 +528,15 @@ export class MockApi implements DataApi {
     return this.call(() => {
       const m = this.db.musicians.find((x) => x.slug === slugOrId || x.id === slugOrId);
       if (!m) throw new ApiError('not-found', 'This musician could not be found.');
-      const concerts = this.db.concerts.filter((c) => c.participants.some((p) => p.musicianId === m.id)).map((c) => this.concertView(c));
+      const mineConcerts = this.db.concerts.filter((c) => c.participants.some((p) => p.musicianId === m.id) && this.canSeeEvent(viewerId, c));
+      const concerts = mineConcerts.map((c) => this.concertView(c));
+      // "Played with": everyone confirmed with them in a past lineup, most shared concerts first.
+      const together = new Map<ID, number>();
+      for (const c of mineConcerts) {
+        if (c.date > this.today()) continue;
+        for (const p of c.participants) if (p.musicianId !== m.id) together.set(p.musicianId, (together.get(p.musicianId) ?? 0) + 1);
+      }
+      const playedIds = [...together.entries()].sort((a, b) => b[1] - a[1]).map(([id]) => id);
       const endorsements = this.db.endorsements
         .filter((e) => e.toId === m.id)
         .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
@@ -547,6 +555,11 @@ export class MockApi implements DataApi {
           return mem ? [{ id: o.id, slug: o.slug, name: o.name, kind: o.kind, role: mem.role }] : [];
         }),
         connections: theirs.size,
+        playedWith: {
+          count: playedIds.length,
+          people: playedIds.slice(0, 8).map((id) => ({ ...this.summary(id), concerts: together.get(id)! })),
+          known: viewerId && !self ? playedIds.filter((id) => mine.has(id) || id === viewerId).slice(0, 12).map((id) => this.summary(id)) : [],
+        },
         relation: {
           state: self ? ('self' as const) : !conn ? ('none' as const) : conn.status === 'accepted' ? ('connected' as const) : conn.from === viewerId ? ('pending-out' as const) : ('pending-in' as const),
           connectionId: conn?.id,

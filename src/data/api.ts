@@ -174,6 +174,14 @@ export interface ProfileView {
   endorsements: EndorsementView[];
   organisations: { id: ID; slug: string; name: string; kind: OrganisationKind; role: string }[];
   connections: number;
+  /** From shared confirmed lineups. */
+  playedWith: {
+    count: number;
+    /** Most frequent first. */
+    people: (AccountSummary & { concerts: number })[];
+    /** Among them, people the viewer knows (connections, or the viewer). */
+    known: AccountSummary[];
+  };
   relation: {
     state: ConnectionState;
     connectionId?: ID;
