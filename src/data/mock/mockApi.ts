@@ -739,7 +739,16 @@ export class MockApi implements DataApi {
   private postView(p: Post, viewerId: ID, mine: Set<ID>): PostView {
     const c = p.concertId ? this.db.concerts.find((x) => x.id === p.concertId) : undefined;
     const visible = c && this.canSeeEvent(viewerId, c) ? c : undefined;
-    const by = p.bravos.find((id) => id !== viewerId && id !== p.authorId && mine.has(id));
+    // Connections' activity, never the author's own or the viewer's.
+    const counts = (id: ID) => id !== viewerId && id !== p.authorId && mine.has(id);
+    const commenters = [...new Set(p.comments.filter((x) => counts(x.authorId)).map((x) => x.authorId))];
+    const fans = p.bravos.filter(counts);
+    const lastComment = [...p.comments].reverse().find((x) => counts(x.authorId));
+    const activity = lastComment
+      ? { kind: 'comment' as const, by: this.summary(lastComment.authorId), others: commenters.length - 1 }
+      : fans.length
+        ? { kind: 'bravo' as const, by: this.summary(fans[fans.length - 1]), others: fans.length - 1 }
+        : undefined;
     return {
       id: p.id,
       body: p.body,
@@ -749,8 +758,7 @@ export class MockApi implements DataApi {
       playing: visible?.participants.find((x) => x.musicianId === p.authorId)?.role,
       bravos: p.bravos.length,
       bravoed: p.bravos.includes(viewerId),
-      // Only explains posts from outside your connections: the Bravo is why it is in your feed.
-      bravoBy: by && !mine.has(p.authorId) && p.authorId !== viewerId ? this.summary(by) : undefined,
+      activity,
       comments: p.comments.map((x) => ({ id: x.id, author: this.summary(x.authorId), body: x.body, createdAt: x.createdAt })),
     };
   }
@@ -759,8 +767,8 @@ export class MockApi implements DataApi {
     return this.call(() => {
       const mine = this.adjacency().get(accountId) ?? new Set<ID>();
       return this.db.posts
-        // Your own posts, your connections' posts, and posts a connection gave a Bravo to.
-        .filter((p) => p.authorId === accountId || mine.has(p.authorId) || p.bravos.some((b) => mine.has(b)))
+        // Your own posts, your connections' posts, and posts a connection gave a Bravo to or commented on.
+        .filter((p) => p.authorId === accountId || mine.has(p.authorId) || p.bravos.some((b) => mine.has(b)) || p.comments.some((c) => mine.has(c.authorId)))
         .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
         .slice(0, 40)
         .map((p) => this.postView(p, accountId, mine));

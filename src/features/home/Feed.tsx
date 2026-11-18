@@ -85,10 +85,14 @@ export function PostCard({ post }: { post: PostView }) {
   const others = post.bravos - (post.bravoed ? 1 : 0);
   return (
     <article className="post">
-      {post.bravoBy && (
+      {post.activity && (
         <p className="post__activity">
-          <Avatar name={post.bravoBy.name} tint={post.bravoBy.tint} size="sm" />
-          <span><Person a={post.bravoBy} /> {t('gave a Bravo to this')}</span>
+          <Avatar name={post.activity.by.name} tint={post.activity.by.tint} size="sm" />
+          <span>
+            <Person a={post.activity.by} />
+            {post.activity.others > 0 && ` ${post.activity.others === 1 ? t('and 1 other') : t('and {n} others', { n: post.activity.others })}`}{' '}
+            {post.activity.kind === 'comment' ? t('commented on this') : t('gave a Bravo to this')}
+          </span>
         </p>
       )}
       <header className="post__head">

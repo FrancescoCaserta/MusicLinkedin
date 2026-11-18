@@ -250,8 +250,11 @@ export interface PostView {
   playing?: string;
   bravos: number;
   bravoed: boolean;
-  /** A connection of the viewer who gave a Bravo: the activity line above the post. */
-  bravoBy?: AccountSummary;
+  /**
+   * What the viewer's connections did on this post, for the line above it:
+   * "Anna commented on this", "Marco and 2 others gave a Bravo to this".
+   */
+  activity?: { kind: 'comment' | 'bravo'; by: AccountSummary; others: number };
   comments: { id: ID; author: AccountSummary; body: string; createdAt: ISODateTime }[];
 }
 

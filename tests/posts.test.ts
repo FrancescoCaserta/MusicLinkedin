@@ -15,7 +15,7 @@ describe('posts', () => {
       expect(feed.length).toBeGreaterThan(0);
     }
     const feed = await api.listFeed(P.nicolo);
-    expect(feed.some((p) => p.bravoBy)).toBe(true);
+    expect(feed.some((p) => p.activity)).toBe(true);
   });
 
   it('a Bravo toggles, counts and tells the author', async () => {
@@ -37,6 +37,21 @@ describe('posts', () => {
     const post = await api.createPost({ authorId: P.giulia, body: 'Come along.', concertId: c.id });
     expect(post.playing).toBe('Violin');
     expect(post.concert?.openSeats?.[0].role).toBe('Double bass');
+  });
+
+  it('the activity line names a connection who commented or gave a Bravo', async () => {
+    const post = await api.createPost({ authorId: P.hannah, body: 'Johannes-Passion next week.' });
+    // Find a connection of Nicolò who is not Hannah.
+    const net = await api.getNetwork(P.nicolo);
+    const friend = net.connections.map((c) => c.account.id).find((id) => id !== P.hannah)!;
+    await api.toggleBravo(post.id, friend);
+    let v = (await api.listFeed(P.nicolo)).find((p) => p.id === post.id)!;
+    expect(v.activity).toMatchObject({ kind: 'bravo', by: { id: friend }, others: 0 });
+    await api.addComment(post.id, friend, 'Bravissima');
+    v = (await api.listFeed(P.nicolo)).find((p) => p.id === post.id)!;
+    expect(v.activity).toMatchObject({ kind: 'comment', by: { id: friend } });
+    // The author never sees their own post explained.
+    expect((await api.listFeed(P.hannah)).find((p) => p.id === post.id)!.activity?.by.id).not.toBe(P.hannah);
   });
 
   it('rejects empty posts and comments', async () => {
