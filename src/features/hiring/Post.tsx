@@ -13,6 +13,7 @@ import { instrument, instrumentName, PITCHES } from '../../domain/taxonomy';
 import type { FeeUnit, OpportunityDate, OpportunityDateKind, OpportunityType, ProgrammeItem, TravelCover } from '../../domain/types';
 import { fmt, plural, t } from '../../i18n';
 import { Avatar, Field } from '../../ui/basics';
+import { dotDate, eventTitle } from '../events/Events';
 import { CityPicker, Combobox, InstrumentPicker } from '../../ui/pickers';
 
 const TYPES: [OpportunityType, string, string][] = [
@@ -94,13 +95,22 @@ export function PostPage() {
   const [deadline, setDeadline] = useState('');
   const [description, setDescription] = useState('');
   const [tried, setTried] = useState(false);
+  const myEvents = useApiQuery(['my-events', viewer.id], () => api.listMyEvents(viewer.id));
+  const [modeChoice, setMode] = useState<'event' | 'self' | null>(params.get('event') ? 'event' : null);
+  const [eventChoice, setEventId] = useState(params.get('event') ?? '');
+  const [seatId, setSeatId] = useState(params.get('seat') ?? '');
+  const events = myEvents.data ?? [];
+  const mode = modeChoice ?? (events.length ? 'event' : 'self');
+  const linked = mode === 'event' ? events.find((e) => e.id === (eventChoice || events[0]?.id)) : undefined;
+  const freeSeats = linked?.openSeats?.filter((x) => !x.opportunityId) ?? [];
 
   const org = orgId || (viewer.organisations.length === 1 && orgId !== 'self' ? viewer.organisations[0].id : '');
   const errors = {
     title: !title.trim() ? t('Give it a title musicians will recognise.') : '',
     fee: !(Number(amount) > 0) ? t('State the fee. No posting goes live on Leggio without one.') : max && Number(max) < Number(amount) ? t('The upper figure must be higher than the lower one.') : '',
-    city: !city ? t('Choose the city where it takes place.') : '',
-    dates: !dates.some((d) => d.date) ? t('Add at least one date.') : dates.some((d) => d.date && d.date < today()) ? t('Dates cannot be in the past.') : '',
+    event: mode === 'event' && !linked ? t('Choose the event, or switch to “Write it yourself”.') : '',
+    city: !linked && !city ? t('Choose the city where it takes place.') : '',
+    dates: linked ? '' : !dates.some((d) => d.date) ? t('Add at least one date.') : dates.some((d) => d.date && d.date < today()) ? t('Dates cannot be in the past.') : '',
     description: description.trim().length < 20 ? t('Describe the engagement in a sentence or two.') : '',
   };
   const invalid = Object.values(errors).some(Boolean);
@@ -114,8 +124,11 @@ export function PostPage() {
         orgId: org && org !== 'self' ? org : undefined,
         instruments,
         roleLabel: roleLabel.trim() || undefined,
-        place: placeOf(city!, venue.trim() || undefined),
-        dates: dates.filter((d) => d.date).map((d) => ({ ...d, time: d.time || undefined, note: d.note?.trim() || undefined })),
+        // When linked, schedule, place and programme are taken from the event by the server.
+        place: linked ? { name: linked.city, country: linked.country, lat: 0, lng: 0, venue: linked.venue } : placeOf(city!, venue.trim() || undefined),
+        dates: linked
+          ? (linked.sessions ?? [{ date: linked.date, time: linked.time, kind: 'performance' as const }]).map((d) => ({ date: d.date, time: d.time, kind: d.kind }))
+          : dates.filter((d) => d.date).map((d) => ({ ...d, time: d.time || undefined, note: d.note?.trim() || undefined })),
         fee: { amount: Number(amount), max: max ? Number(max) : undefined, unit, note: feeNote.trim() || undefined },
         travel,
         travelNote: travelNote.trim() || undefined,
@@ -125,7 +138,10 @@ export function PostPage() {
         description: description.trim(),
         deadline: deadline || undefined,
         urgent: false,
+        eventId: linked?.id,
+        seatId: linked && seatId ? seatId : undefined,
       };
+      if (linked) input.repertoire = linked.programme;
       return api.createOpportunity(input, viewer.id);
     },
     { success: t('Published. Now invite the musicians who fit.'), onDone: (o) => navigate(`/hiring/${o.id}`) },
@@ -163,6 +179,48 @@ export function PostPage() {
         }}
       >
         <section className="postform__section">
+          <div className="segmented" role="tablist" aria-label={t('Details from')}>
+            <button type="button" role="tab" aria-selected={mode === 'event'} onClick={() => setMode('event')}>{t('Link to an event')}</button>
+            <button type="button" role="tab" aria-selected={mode === 'self'} onClick={() => setMode('self')}>{t('Write it yourself')}</button>
+          </div>
+          {mode === 'event' && (
+            events.length === 0 ? (
+              <p className="small muted">
+                {myEvents.isLoading ? t('Loading your events…') : t('You have no upcoming events.')}{' '}
+                <Link className="link" to="/events/new">{t('Create an event')}</Link>
+              </p>
+            ) : (
+              <>
+                <Field label={t('Event')} error={show('event')}>
+                  <select className="select" value={linked?.id ?? ''} onChange={(e) => { setEventId(e.target.value); setSeatId(''); }}>
+                    {events.map((e) => <option key={e.id} value={e.id}>{dotDate(e.date)} · {eventTitle(e)} · {e.venue}, {e.city}</option>)}
+                  </select>
+                </Field>
+                {linked && (
+                  <div className="event__panel">
+                    <p className="label">{t('Filled in from the event')}</p>
+                    <dl className="event__facts">
+                      <div><dt>{t('Schedule')}</dt><dd>{(linked.sessions ?? [{ date: linked.date, time: linked.time, kind: 'performance' as const }]).map((d) => `${dotDate(d.date)} ${d.kind === 'rehearsal' ? t('rehearsal') : t('concert')}${d.time ? ` ${d.time}` : ''}`).join(' · ')}</dd></div>
+                      <div><dt>{t('Place')}</dt><dd>{linked.venue}, {linked.city}</dd></div>
+                      <div><dt>{t('Programme')}</dt><dd>{linked.programme.map((p) => `${p.composer}, ${p.work}`).join(' · ') || '—'}</dd></div>
+                    </dl>
+                    <p className="tiny muted" style={{ marginTop: 10 }}>{t('Whoever you hire is added to the event’s lineup once they confirm.')}</p>
+                  </div>
+                )}
+                {freeSeats.length > 0 && (
+                  <Field label={t('Open seat')}>
+                    <select className="select" value={seatId} onChange={(e) => { setSeatId(e.target.value); const r = freeSeats.find((x) => x.id === e.target.value)?.role; if (r) setRoleLabel(r); }}>
+                      <option value="">{t('A new seat')}</option>
+                      {freeSeats.map((x) => <option key={x.id} value={x.id}>{x.role}</option>)}
+                    </select>
+                  </Field>
+                )}
+              </>
+            )
+          )}
+        </section>
+
+        <section className="postform__section">
           <h2 className="h-section"><span className="postform__no">I</span>{t('What')}</h2>
           <div className="typegrid" role="radiogroup" aria-label={t('Type')}>
             {TYPES.map(([id, label, hint]) => (
@@ -196,7 +254,7 @@ export function PostPage() {
         <section className="postform__section">
           <h2 className="h-section"><span className="postform__no">II</span>{t('The fee')}</h2>
           <div className="feegrid">
-            <Field label={t('Amount')} error={show('fee')}>
+            <Field label={t('Amount')} error={show('fee')} hint={linked ? t('Shown to applicants only, never on the public event') : undefined}>
               <div className="affix"><span>€</span><input className="input num" type="number" min={0} inputMode="numeric" value={amount} aria-invalid={!!show('fee')} onChange={(e) => setAmount(e.target.value)} /></div>
             </Field>
             <Field label={t('Up to (optional)')}>
@@ -225,6 +283,7 @@ export function PostPage() {
 
         <section className="postform__section">
           <h2 className="h-section"><span className="postform__no">III</span>{t('Where and when')}</h2>
+          {!linked && (<>
           <div className="form-grid">
             <Field label={t('City')} error={show('city')}><CityPicker value={city?.name ?? ''} onPick={setCity} /></Field>
             <Field label={t('Venue (optional)')}><input className="input" value={venue} onChange={(e) => setVenue(e.target.value)} /></Field>
@@ -248,16 +307,20 @@ export function PostPage() {
             </div>
             {show('dates') && <span className="field__error" role="alert">{show('dates')}</span>}
           </div>
+          </>)}
+          {linked && <p className="small muted">{t('Dates and place come from the event.')}</p>}
           <Field label={t('Apply by (optional)')}><input type="date" className="input" style={{ maxWidth: 220 }} min={today()} value={deadline} onChange={(e) => setDeadline(e.target.value)} /></Field>
         </section>
 
         <section className="postform__section">
           <h2 className="h-section"><span className="postform__no">IV</span>{t('The music')}</h2>
+          {!linked && (
           <div className="field">
             <span className="field__label">{t('Repertoire')}</span>
             <span className="field__hint">{t('Musicians see at a glance which of these they have already played.')}</span>
             <div style={{ marginTop: 6 }}><ProgrammeEditor value={repertoire} onChange={setRepertoire} /></div>
           </div>
+          )}
           <div className="form-grid">
             <Field label={t('Dress code (optional)')}><input className="input" value={dressCode} placeholder={t('e.g. all black, tails / long black')} onChange={(e) => setDressCode(e.target.value)} /></Field>
             <Field label={t('Pitch (optional)')}>
@@ -274,7 +337,7 @@ export function PostPage() {
 
         <div className="savebar">
           <span className="small muted">{tried && invalid ? <span style={{ color: 'var(--urgent)', fontWeight: 600 }}>{t('Some things are missing — see above.')}</span> : t('You can close or fill the posting at any time.')}</span>
-          <button type="submit" className="btn btn--primary btn--lg" disabled={create.isPending}>{create.isPending ? t('Publishing…') : t('Publish opportunity')}</button>
+          <button type="submit" className="btn btn--accent btn--lg" disabled={create.isPending}>{create.isPending ? t('Publishing…') : t('Publish opportunity')}</button>
         </div>
       </form>
     </div>

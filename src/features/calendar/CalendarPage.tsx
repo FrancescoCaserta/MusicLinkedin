@@ -1,3 +1,4 @@
+import { LineupInvites } from '../events/Events';
 import { useState } from 'react';
 import { Link } from 'react-router';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -71,6 +72,8 @@ export function CalendarPage() {
           <button type="button" className="btn btn--ghost btn--icon" onClick={() => setCursor(addMonths(cursor, 1))} aria-label={t('Next month')}><ChevronRight size={18} aria-hidden /></button>
         </div>
       </div>
+
+      <LineupInvites />
 
       <div className="cols">
         <div>

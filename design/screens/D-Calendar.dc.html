@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Desktop · Calendar</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EFEEEA}
+a{color:#1F1F1E;text-decoration:none}a:hover{color:#000000}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+</helmet>
+<div style="position: relative; min-height: 1180px; background: #EFEEEA; color: #1F1F1E; font-family: 'Inter Tight', system-ui, sans-serif; font-size: 14px; line-height: 1.5">
+
+<header style="border-bottom: 1px solid #D6D3CC">
+<div style="max-width: 1200px; margin: 0 auto; padding: 0 32px; min-height: 72px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 32px">
+<a href="D-Home.dc.html" style="display: flex; align-items: center; gap: 10px; font-size: 22px; font-weight: 600; letter-spacing: -0.03em"><span style="width: 12px; height: 12px; background: #1F1F1E"></span>Leggio</a>
+<form role="search" style="flex: 1 1 260px; max-width: 380px; position: relative">
+<label for="caq" class="sr">Search</label>
+<span style="position: absolute; left: 12px; top: 12px; color: #6E6C67; display: flex"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg></span>
+<input id="caq" type="search" placeholder="Search people, ensembles, works" style="width: 100%; box-sizing: border-box; height: 40px; border: 0; background: #E3E1DC; padding: 0 12px 0 38px; font: inherit; font-size: 14px; color: #1F1F1E">
+</form>
+<nav aria-label="Main" style="margin-left: auto; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; font-size: 11px">
+<a href="D-Home.dc.html" style="width: 76px; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 10px 0 8px; color: #6E6C67"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"></path></svg>Home</a>
+<a href="D-Network.dc.html" style="width: 76px; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 10px 0 8px; color: #6E6C67"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"></path><circle cx="17" cy="9" r="2.5"></circle><path d="M16 14.6c2.8.2 4.8 2 5.5 5.4"></path></svg>Network</a>
+<a href="D-Ensembles.dc.html" style="width: 76px; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 10px 0 8px; color: #6E6C67"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 9l9-5 9 5M5 10v8M10 10v8M14 10v8M19 10v8M3 20h18"></path></svg>Ensembles</a>
+<a href="D-Work.dc.html" style="width: 76px; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 10px 0 8px; color: #6E6C67"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="7" width="18" height="13"></rect><path d="M8 7V4h8v3M3 13h18"></path></svg>Work</a>
+<a href="D-Alerts.dc.html" style="width: 76px; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 10px 0 8px; color: #6E6C67"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"></path><path d="M10 20a2 2 0 0 0 4 0"></path></svg>Alerts</a>
+<a href="D-Compose.dc.html" style="margin-left: 12px; height: 40px; padding: 0 14px; background: #1F1F1E; color: #EFEEEA; font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Post</a>
+<a href="D-Profile.dc.html" aria-label="My profile" style="margin-left: 8px; display: flex"><svg width="36" height="36" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" fill="#A39B8E"></rect><circle cx="20" cy="16" r="7" fill="#6F685E"></circle><path d="M5 40c2-9 8-13 15-13s13 4 15 13z" fill="#6F685E"></path></svg></a>
+</nav>
+</div>
+</header>
+
+<main style="max-width: 1200px; margin: 0 auto; padding: 48px 32px 120px; display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-start">
+<section style="flex: 999 1 640px; min-width: 0">
+<div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px; margin-bottom: 20px">
+<h1 style="margin: 0; font-size: 72px; font-weight: 500; letter-spacing: -0.05em; line-height: 0.9">March <span style="color: #8F8C85; font-weight: 400">2026</span></h1>
+<div style="display: flex; gap: 8px">
+<button type="button" aria-label="Previous month" style="width: 44px; height: 44px; border: 1px solid #1F1F1E; background: none; font: inherit">‹</button>
+<button type="button" aria-label="Next month" style="width: 44px; height: 44px; border: 1px solid #1F1F1E; background: none; font: inherit">›</button>
+<a href="D-CreateEvent.dc.html" style="height: 44px; padding: 0 16px; background: #1F1F1E; color: #EFEEEA; font-weight: 500; display: flex; align-items: center; gap: 8px">+ New event</a>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #6E6C67; margin-bottom: 6px"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+<div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px">
+<sc-for list="{{days}}" as="d" hint-placeholder-count="37">
+<div style="{{d.style}}"><span style="font-size: 15px; font-weight: 500">{{d.n}}</span><span style="{{d.labelStyle}}">{{d.label}}</span></div>
+</sc-for>
+</div>
+<div style="display: flex; gap: 20px; margin-top: 14px; font-size: 12px; color: #6E6C67; flex-wrap: wrap">
+<span style="display: flex; align-items: center; gap: 6px"><span style="width: 12px; height: 12px; background: #1F1F1E"></span>Booked</span>
+<span style="display: flex; align-items: center; gap: 6px"><span style="width: 12px; height: 12px; border: 1px dashed #1F1F1E; box-sizing: border-box"></span>On hold</span>
+<span style="display: flex; align-items: center; gap: 6px"><span style="width: 8px; height: 8px; background: #E2641B"></span>Needs your answer</span>
+<span style="display: flex; align-items: center; gap: 6px"><span style="width: 12px; height: 12px; background: #D6D3CC"></span>Unavailable</span>
+</div>
+</section>
+
+<aside style="flex: 1 1 280px; max-width: 340px; display: flex; flex-direction: column; gap: 32px">
+<section>
+<p style="margin: 0; padding-bottom: 10px; border-bottom: 1px solid #1F1F1E; font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #B84A0E; display: flex; align-items: center; gap: 8px"><span style="width: 8px; height: 8px; background: #E2641B"></span>Needs your answer</p>
+<div style="padding: 14px 0; border-bottom: 1px solid #D6D3CC; display: flex; flex-direction: column; gap: 10px">
+<p style="margin: 0; line-height: 1.35"><span style="font-weight: 600">Tango nights</span> · lineup invitation<span style="display: block; font-size: 13px; color: #6E6C67">Accordion · 14.06 · from Giulia Santoro</span></p>
+<div style="display: flex; gap: 8px"><a href="#" style="height: 38px; padding: 0 14px; background: #E2641B; font-weight: 600; display: flex; align-items: center">Confirm</a><a href="D-Event.dc.html" style="height: 38px; padding: 0 14px; border: 1px solid #1F1F1E; display: flex; align-items: center">Open event</a></div>
+</div>
+<div style="padding: 14px 0; border-bottom: 1px solid #D6D3CC; display: flex; flex-direction: column; gap: 10px">
+<p style="margin: 0; line-height: 1.35"><span style="font-weight: 600">St John Passion</span> · hold expires 20.03<span style="display: block; font-size: 13px; color: #6E6C67">Continuo cello · 28–30.03 · €480</span></p>
+<div style="display: flex; gap: 8px"><a href="#" style="height: 38px; padding: 0 14px; background: #E2641B; font-weight: 600; display: flex; align-items: center">Accept</a><a href="#" style="height: 38px; padding: 0 10px; color: #6E6C67; display: flex; align-items: center">Release hold</a></div>
+</div>
+</section>
+<section>
+<p style="margin: 0; padding-bottom: 10px; border-bottom: 1px solid #1F1F1E; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; display: flex; align-items: center; gap: 8px"><span style="width: 8px; height: 8px; background: #1F1F1E"></span>Coming up</p>
+<ol style="margin: 0; padding: 0; list-style: none">
+<li style="display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 12px; padding: 12px 0; border-bottom: 1px solid #D6D3CC"><span style="font-size: 24px; font-weight: 500; letter-spacing: -0.03em; line-height: 1">13</span><a href="D-Event.dc.html" style="line-height: 1.35"><span style="display: block; font-weight: 600">Late quartets &amp; a tango</span><span style="font-size: 13px; color: #6E6C67">Rehearsal 15:00 · concert 14.03, 20:30</span></a></li>
+<li style="display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 12px; padding: 12px 0; border-bottom: 1px solid #D6D3CC"><span style="font-size: 24px; font-weight: 500; letter-spacing: -0.03em; line-height: 1">21</span><span style="line-height: 1.35"><span style="display: block; font-weight: 600">Recording, film score</span><span style="font-size: 13px; color: #6E6C67">2 days · Studio Arcoveggio</span></span></li>
+</ol>
+</section>
+<section style="background: #F7F6F3; padding: 16px">
+<p style="margin: 0; font-weight: 600">What hirers see</p>
+<p style="margin: 4px 0 12px; font-size: 13px; color: #6E6C67">Only free or busy. Event names, fees and holds stay private.</p>
+<a href="#" style="height: 38px; padding: 0 14px; border: 1px solid #1F1F1E; display: inline-flex; align-items: center">Block days</a>
+</section>
+</aside>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1180}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const labels = { 6: 'Recital, Modena', 7: 'Recital, Modena', 13: 'Rehearsal', 14: 'Late quartets', 20: 'Answer: Tango nights', 21: 'Recording', 22: 'Recording', 28: 'Hold: St John', 29: 'Hold: St John' };
+    const booked = [6, 7, 13, 14, 21, 22];
+    const hold = [28, 29];
+    const unavailable = [1, 2, 3];
+    const base = 'height: 96px; padding: 8px 10px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden;';
+    const lab = 'font-size: 11px; line-height: 1.2;';
+    const days = [];
+    for (let i = 0; i < 6; i++) days.push({ n: '', label: '', style: base, labelStyle: lab });
+    for (let d = 1; d <= 31; d++) {
+      let s = base + ' background: #F7F6F3; color: #1F1F1E;';
+      let l = lab + ' color: #6E6C67;';
+      if (booked.includes(d)) { s = base + ' background: #1F1F1E; color: #EFEEEA;'; l = lab + ' color: #EFEEEA;'; }
+      else if (hold.includes(d)) s = base + ' background: #F7F6F3; color: #1F1F1E; border: 1px dashed #1F1F1E;';
+      else if (unavailable.includes(d)) s = base + ' background: #D6D3CC; color: #6E6C67;';
+      if (d === 20) { s = base + ' background: #F7F6F3; color: #1F1F1E; border-top: 3px solid #E2641B;'; l = lab + ' color: #B84A0E; font-weight: 600;'; }
+      days.push({ n: String(d), label: labels[d] || (unavailable.includes(d) ? 'Unavailable' : ''), style: s, labelStyle: l });
+    }
+    return { days };
+  }
+}
+</script>
+</body>
+</html>

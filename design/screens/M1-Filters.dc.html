@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Search filters</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1F1F1E;text-decoration:none}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #EFEEEA; color: #1F1F1E; font-family: 'Inter Tight', system-ui, sans-serif; font-size: 14px; line-height: 1.5">
+
+<header style="padding: 52px 20px 12px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #1F1F1E">
+<a href="M1-Search.dc.html" aria-label="Close filters" style="width: 44px; height: 44px; display: flex; align-items: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></a>
+<h1 style="margin: 0; font-size: 17px; font-weight: 600">Filters</h1>
+<a href="#" style="height: 44px; display: flex; align-items: center; font-size: 13px; color: #6E6C67">Clear all</a>
+</header>
+
+<form style="padding: 16px 20px 0; display: flex; flex-direction: column; gap: 18px">
+<fieldset style="margin: 0; padding: 0; border: 0">
+<legend style="padding: 0; margin-bottom: 8px; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase">■ Instrument or voice</legend>
+<div style="display: flex; flex-wrap: wrap; gap: 6px">
+<span style="height: 32px; padding: 0 12px; background: #1F1F1E; color: #EFEEEA; font-size: 13px; display: flex; align-items: center">Accordion</span>
+<span style="height: 32px; padding: 0 12px; border: 1px solid #D6D3CC; font-size: 13px; display: flex; align-items: center">Bandoneon</span>
+<span style="height: 32px; padding: 0 12px; border: 1px solid #D6D3CC; font-size: 13px; display: flex; align-items: center">+ Add</span>
+</div>
+<label style="margin-top: 10px; display: flex; gap: 8px; align-items: center; font-size: 13px; color: #6E6C67"><input type="checkbox" checked style="margin: 0; accent-color: #1F1F1E">Include musicians who double on it</label>
+</fieldset>
+
+<div>
+<div style="display: flex; justify-content: space-between; align-items: baseline"><label for="dist" style="font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase">■ Distance from Bologna</label><span style="font-size: 18px; font-weight: 500; letter-spacing: -0.02em">50 km</span></div>
+<input id="dist" type="range" min="5" max="300" value="50" style="width: 100%; margin: 10px 0 0; accent-color: #1F1F1E">
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="day" style="font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase">■ Free on</label><input id="day" value="14.03.2026" style="height: 40px; border: 0; border-bottom: 1px solid #1F1F1E; background: transparent; padding: 0; font: inherit; font-size: 16px; color: #1F1F1E"></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><label for="fee" style="font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase">■ Fee up to</label><input id="fee" value="€250" style="height: 40px; border: 0; border-bottom: 1px solid #1F1F1E; background: transparent; padding: 0; font: inherit; font-size: 16px; color: #1F1F1E"></div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 4px">
+<label for="rep" style="font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase">■ Has played this piece</label>
+<input id="rep" value="Piazzolla, Histoire du" style="height: 40px; border: 0; border-bottom: 1px solid #1F1F1E; background: transparent; padding: 0; font-family: Newsreader, serif; font-size: 17px; color: #1F1F1E">
+<div style="background: #F7F6F3; display: flex; flex-direction: column">
+<a href="#" style="padding: 10px 12px; display: flex; justify-content: space-between; font-size: 13px; border-bottom: 1px solid #D6D3CC"><span><span style="font-weight: 600">Piazzolla</span> · <span style="font-family: Newsreader, serif; font-style: italic; font-size: 15px">Histoire du Tango</span></span><span style="color: #6E6C67">9 players</span></a>
+<a href="#" style="padding: 10px 12px; display: flex; justify-content: space-between; font-size: 13px"><span><span style="font-weight: 600">Piazzolla</span> · <span style="font-family: Newsreader, serif; font-style: italic; font-size: 15px">Histoire du Tango, Café 1930</span></span><span style="color: #6E6C67">4</span></a>
+</div>
+</div>
+
+<fieldset style="margin: 0; padding: 0; border: 0; border-top: 1px solid #D6D3CC">
+<legend style="position: absolute; width: 1px; height: 1px; overflow: hidden">More options</legend>
+<label style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #D6D3CC">Only my network<input type="checkbox" style="width: 20px; height: 20px; margin: 0; accent-color: #1F1F1E"></label>
+<label style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #D6D3CC">Can issue an invoice<input type="checkbox" checked style="width: 20px; height: 20px; margin: 0; accent-color: #1F1F1E"></label>
+<label style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #D6D3CC">Plays period instruments<input type="checkbox" style="width: 20px; height: 20px; margin: 0; accent-color: #1F1F1E"></label>
+</fieldset>
+</form>
+
+<div style="position: absolute; left: 0; right: 0; bottom: 0; padding: 14px 20px 34px; background: #EFEEEA; border-top: 1px solid #D6D3CC">
+<a href="M1-Search.dc.html" style="height: 52px; padding: 0 16px; background: #E2641B; color: #1F1F1E; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: space-between">Show 3 full matches, 3 partial<svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor" aria-hidden="true"><path d="M2 0l4 4-4 4z"></path></svg></a>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

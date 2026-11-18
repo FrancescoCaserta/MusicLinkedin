@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
-import { Shell } from './app/Shell';
+import { AlertsPage, Shell } from './app/Shell';
+import { CreateEventPage, EventPage } from './features/events/Events';
 import { api } from './data/client';
 import { HiringPage, ManagePage } from './features/hiring/Hiring';
 import { HomePage } from './features/home/Home';
@@ -40,6 +41,9 @@ export function App() {
         <Route path="/network" element={<NetworkPage />} />
         <Route path="/ensembles" element={<OrganisationsPage />} />
         <Route path="/ensembles/:slug" element={<OrganisationPage />} />
+        <Route path="/events/new" element={<CreateEventPage />} />
+        <Route path="/events/:id" element={<EventPage />} />
+        <Route path="/alerts" element={<AlertsPage />} />
         <Route path="/messages" element={<MessagesPage />} />
         <Route path="/messages/:threadId" element={<MessagesPage />} />
         <Route path="/search" element={<SearchPage />} />

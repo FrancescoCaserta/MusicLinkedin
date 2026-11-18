@@ -188,6 +188,41 @@ export interface ConcertParticipant {
   role: string;
 }
 
+/** What sort of event this is (design/EVENTS.md). Concerts seeded before events existed have none: read as 'concert'. */
+export type EventFormat = 'concert' | 'opera' | 'recording' | 'masterclass' | 'audition';
+
+/**
+ * Someone added to a lineup who has not confirmed yet, or turned it down.
+ * Only confirmed people live in `participants`, so concert history, endorsements
+ * and "played with" never count an unconfirmed name.
+ */
+export interface LineupInvite {
+  musicianId: ID;
+  role: string;
+  status: 'invited' | 'declined';
+  invitedBy: ID;
+  at: ISODateTime;
+}
+
+/** A seat in the lineup with no one in it yet, optionally advertised by an opportunity. */
+export interface OpenSeat {
+  id: ID;
+  role: string;
+  instrumentId?: string;
+  opportunityId?: ID;
+}
+
+export interface EventSession {
+  date: ISODate;
+  time?: string;
+  kind: 'performance' | 'rehearsal';
+  note?: string;
+}
+
+/**
+ * A concert is the hub of the Event model: opportunities can point to one, and
+ * its confirmed lineup is what concert history, endorsements and the calendar read.
+ */
 export interface Concert {
   id: ID;
   date: ISODate;
@@ -203,6 +238,15 @@ export interface Concert {
   programme: ProgrammeItem[];
   participants: ConcertParticipant[];
   createdBy: ID;
+  format?: EventFormat;
+  /** Private events are seen only by their lineup, invitees and organisers. Seeded concerts are public. */
+  visibility?: 'public' | 'private';
+  description?: string;
+  ticketUrl?: string;
+  /** Every performance and rehearsal; `date` is the first performance. */
+  sessions?: EventSession[];
+  invites?: LineupInvite[];
+  openSeats?: OpenSeat[];
 }
 
 // ── Accounts and organisations ───────────────────────────────────────────
@@ -304,6 +348,10 @@ export interface Opportunity {
   urgent: boolean;
   status: 'open' | 'filled' | 'closed';
   createdAt: ISODateTime;
+  /** Linked event: schedule, place and programme come from it. The fee stays here, never on the event. */
+  eventId?: ID;
+  /** The open seat on that event this opportunity fills. */
+  seatId?: ID;
 }
 
 export type ApplicationStatus =
@@ -378,7 +426,9 @@ export type NotificationKind =
   | 'invitation-response'
   | 'connection-request'
   | 'connection-accepted'
-  | 'endorsement';
+  | 'endorsement'
+  | 'lineup-invite'
+  | 'lineup-response';
 
 export interface Notification {
   id: ID;
@@ -386,6 +436,9 @@ export interface Notification {
   kind: NotificationKind;
   actorId?: ID;
   opportunityId?: ID;
+  concertId?: ID;
+  /** For lineup responses: did they confirm? */
+  accepted?: boolean;
   /** Application status at the time, for status notifications. */
   status?: ApplicationStatus;
   createdAt: ISODateTime;

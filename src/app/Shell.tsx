@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Link, NavLink, Navigate, Outlet, useLocation, useNavigate } from 'react-router';
-import { Bell, Bookmark, Briefcase, Building2, CalendarDays, Check, ChevronDown, FileText, Home, LogOut, MessageSquare, Pencil, Plus, RefreshCw, Search, User, Users, WifiOff, Zap } from 'lucide-react';
+import { Bell, Bookmark, Briefcase, Building2, CalendarDays, Check, FileText, Home, Landmark, LogOut, MessageSquare, Pencil, Plus, RefreshCw, Search, User, Users, WifiOff, Zap } from 'lucide-react';
 import type { MyApplicationView, NotificationView } from '../data/api';
 import { api, isSimulatingFailure, setSimulatingFailure } from '../data/client';
 import { useApiMutation, useApiQuery } from '../data/hooks';
@@ -8,6 +8,7 @@ import { keyDate } from '../domain/search/opportunities';
 import { fmt, t } from '../i18n';
 import { Avatar, ErrorState, FeeBlock, SkeletonList } from '../ui/basics';
 import { Logo } from '../ui/Logo';
+import { LineupInvites } from '../features/events/Events';
 import { PERSONA_GUIDE } from './personas';
 import { useSession } from './session';
 import { useToast } from './toast';
@@ -63,52 +64,58 @@ export function notificationText(n: NotificationView): { text: string; to: strin
       return { text: t('{who} accepted your connection request', { who }), to: n.actor?.slug ? `/musicians/${n.actor.slug}` : '/network' };
     case 'endorsement':
       return { text: t('{who} endorsed you', { who }), to: '/network?tab=endorsements' };
+    case 'lineup-invite':
+      return { text: t('{who} added you to a lineup: “{title}”', { who, title: n.concert?.title ?? t('an event') }), to: n.concert ? `/events/${n.concert.id}` : '/calendar' };
+    case 'lineup-response':
+      return {
+        text: n.notification.accepted
+          ? t('{who} confirmed the lineup for “{title}”', { who, title: n.concert?.title ?? t('your event') })
+          : t('{who} says they are not in “{title}”', { who, title: n.concert?.title ?? t('your event') }),
+        to: n.concert ? `/events/${n.concert.id}` : '/home',
+      };
   }
 }
 
-function Notifications({ accountId, unread }: { accountId: string; unread: number }) {
-  const { open, setOpen, ref } = usePopover();
-  const list = useApiQuery(['notifications', accountId], () => api.listNotifications(accountId), { enabled: open });
-  const markRead = useApiMutation(() => api.markNotificationsRead(accountId));
+/** Alerts: every notification on one page (the bell popover became a tab). */
+export function AlertsPage() {
+  const { accountId } = useSession();
+  const list = useApiQuery(['notifications', accountId], () => api.listNotifications(accountId!), { enabled: !!accountId });
+  const markRead = useApiMutation(() => api.markNotificationsRead(accountId!));
+  const unread = list.data?.some((n) => !n.notification.read);
+  useEffect(() => {
+    if (!unread) return;
+    const id = window.setTimeout(() => markRead.mutate(undefined), 1500);
+    return () => window.clearTimeout(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [unread]);
   return (
-    <div style={{ position: 'relative' }} ref={ref}>
-      <button
-        type="button"
-        className="btn btn--quiet btn--icon top__icon"
-        aria-label={unread ? t('Notifications, {n} unread', { n: unread }) : t('Notifications')}
-        aria-expanded={open}
-        onClick={() => {
-          setOpen(!open);
-          if (!open && unread) window.setTimeout(() => markRead.mutate(undefined), 1500);
-        }}
-      >
-        <Bell size={19} aria-hidden />
-        {unread > 0 && <span className="count top__count">{unread}</span>}
-      </button>
-      {open && (
-        <div className="menu menu--wide" role="menu">
-          <div className="menu__section" style={{ padding: '12px 16px 8px' }}>
-            <div className="label">{t('Notifications')}</div>
-          </div>
-          <div className="menu__section">
-            {list.isLoading && <div className="muted small" style={{ padding: 12 }}>{t('Loading…')}</div>}
-            {list.isError && <div className="small" style={{ padding: 12, color: 'var(--urgent)' }}>{t('Notifications could not be loaded.')}</div>}
-            {list.data?.length === 0 && <div className="muted small" style={{ padding: 12 }}>{t('Nothing yet. Invitations, applications and endorsements will appear here.')}</div>}
-            {list.data?.map((n) => {
-              const { text, to } = notificationText(n);
-              return (
-                <Link key={n.notification.id} to={to} className={`menu__item notif${n.notification.read ? '' : ' is-unread'}`} role="menuitem">
-                  {n.actor ? <Avatar name={n.actor.name} tint={n.actor.tint} size="sm" /> : <span className="avatar avatar--sm" />}
+    <div className="wrap wrap--narrow page">
+      <header className="page__head">
+        <h1 className="h-page">{t('Alerts')}</h1>
+      </header>
+      <LineupInvites />
+      {list.isLoading && <SkeletonList rows={4} height={56} />}
+      {list.isError && <ErrorState error={list.error} onRetry={() => list.refetch()} />}
+      {list.data?.length === 0 && <p className="muted" style={{ paddingTop: 24 }}>{t('Nothing yet. Invitations, applications and endorsements will appear here.')}</p>}
+      {!!list.data?.length && (
+        <ul className="alerts" style={{ borderTop: 0 }}>
+          {list.data.map((n) => {
+            const { text, to } = notificationText(n);
+            return (
+              <li key={n.notification.id}>
+                <Link to={to} className={`alert${n.notification.read ? '' : ' is-unread'}`}>
+                  {n.actor ? <Avatar name={n.actor.name} tint={n.actor.tint} /> : <span className="avatar" />}
                   <span className="grow">
-                    <span className="notif__text">{text}</span>
+                    {n.notification.kind === 'urgent-call' && <span className="label label--urgent" style={{ marginBottom: 4 }}>{t('Urgent')}</span>}
+                    <span className="alert__text">{text}</span>
                     <span className="tiny muted">{fmt.ago(n.notification.createdAt)}</span>
                   </span>
-                  {n.notification.kind === 'urgent-call' && <span className="tag tag--urgent">{t('Urgent')}</span>}
+                  {!n.notification.read && <span className="alert__dot" aria-label={t('Unread')} />}
                 </Link>
-              );
-            })}
-          </div>
-        </div>
+              </li>
+            );
+          })}
+        </ul>
       )}
     </div>
   );
@@ -134,8 +141,6 @@ function AccountMenu() {
     <div style={{ position: 'relative' }} ref={ref}>
       <button type="button" className="top__me" onClick={() => setOpen(!open)} aria-expanded={open} aria-label={t('Account menu')}>
         <Avatar name={a?.name ?? '· ·'} tint={a?.tint} size="sm" />
-        <span className="top__me-name">{a?.name.split(' ')[0] ?? ''}</span>
-        <ChevronDown size={14} aria-hidden />
       </button>
       {open && (
         <div className="menu" role="menu">
@@ -152,7 +157,9 @@ function AccountMenu() {
             {musician && item(`/musicians/${musician.slug}`, <User size={16} aria-hidden />, t('My profile'))}
             {musician && item('/profile/edit', <Pencil size={16} aria-hidden />, t('Edit profile'))}
             {musician && item('/calendar', <CalendarDays size={16} aria-hidden />, t('My calendar'))}
+            {item('/events/new', <Plus size={16} aria-hidden />, t('Create an event'))}
             {musician && item('/applications', <FileText size={16} aria-hidden />, t('Applications and invitations'))}
+            {item('/opportunities/urgent', <Zap size={16} aria-hidden />, t('Find a substitute'))}
             {item('/hiring', <Briefcase size={16} aria-hidden />, t('My postings'))}
             {item('/shortlist', <Bookmark size={16} aria-hidden />, t('Saved musicians'))}
             {session?.organisations.map((o) => (
@@ -274,6 +281,29 @@ function UrgentBanner({ call, accountId }: { call: MyApplicationView; accountId:
   );
 }
 
+function TopSearch() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [q, setQ] = useState('');
+  useEffect(() => {
+    if (location.pathname === '/search') setQ(new URLSearchParams(location.search).get('q') ?? '');
+  }, [location.pathname, location.search]);
+  return (
+    <form
+      role="search"
+      className="top__search"
+      onSubmit={(e) => {
+        e.preventDefault();
+        navigate(q.trim() ? `/search?q=${encodeURIComponent(q.trim())}` : '/search');
+      }}
+    >
+      <label htmlFor="top-q" className="sr-only">{t('Search musicians, ensembles, repertoire')}</label>
+      <Search size={16} strokeWidth={1.6} aria-hidden />
+      <input id="top-q" type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder={t('Search musicians, ensembles, repertoire')} />
+    </form>
+  );
+}
+
 export function Shell() {
   const { accountId, session, error, retry, signOut } = useSession();
   const location = useLocation();
@@ -286,15 +316,14 @@ export function Shell() {
   if (!accountId) return <Navigate to={`/demo?next=${encodeURIComponent(location.pathname + location.search)}`} replace />;
 
   const unread = badges.data?.unreadMessages ?? 0;
-  const links: { to: string; label: string; icon: ReactNode; badge?: number; mobile: boolean }[] = [
-    { to: '/home', label: t('Home'), icon: <Home size={20} aria-hidden />, mobile: true },
-    { to: '/search', label: t('Find musicians'), icon: <Search size={20} aria-hidden />, mobile: true },
-    { to: '/opportunities', label: t('Opportunities'), icon: <Briefcase size={20} aria-hidden />, mobile: true },
-    { to: '/network', label: t('Network'), icon: <Users size={20} aria-hidden />, mobile: true },
-    { to: '/ensembles', label: t('Ensembles'), icon: <Building2 size={20} aria-hidden />, mobile: false },
-    { to: '/messages', label: t('Messages'), icon: <MessageSquare size={20} aria-hidden />, badge: unread, mobile: true },
+  const alerts = badges.data?.unreadNotifications ?? 0;
+  const links: { to: string; label: string; icon: ReactNode; badge?: number }[] = [
+    { to: '/home', label: t('Home'), icon: <Home size={22} strokeWidth={1.5} aria-hidden /> },
+    { to: '/network', label: t('Network'), icon: <Users size={22} strokeWidth={1.5} aria-hidden /> },
+    { to: '/ensembles', label: t('Ensembles'), icon: <Landmark size={22} strokeWidth={1.5} aria-hidden /> },
+    { to: '/opportunities', label: t('Work'), icon: <Briefcase size={22} strokeWidth={1.5} aria-hidden /> },
+    { to: '/alerts', label: t('Alerts'), icon: <Bell size={22} strokeWidth={1.5} aria-hidden />, badge: alerts },
   ];
-  const short: Record<string, string> = { '/search': t('Search'), '/opportunities': t('Work') };
   const call = badges.data?.urgentCalls[0];
 
   return (
@@ -304,24 +333,25 @@ export function Shell() {
           <Link to="/home" aria-label={t('Leggio home')}>
             <Logo size={26} />
           </Link>
+          <TopSearch />
           <nav className="top__nav" aria-label={t('Main')}>
             {links.map((l) => (
               <NavLink key={l.to} to={l.to} className="top__link">
+                {l.icon}
                 {l.label}
-                {!!l.badge && <span className="count">{l.badge}</span>}
+                {!!l.badge && <span className="count" aria-label={t('{n} unread', { n: l.badge })}>{l.badge}</span>}
               </NavLink>
             ))}
           </nav>
           <div className="top__actions">
-            <Link to="/opportunities/urgent" className="btn btn--sm btn--urgent top__sub">
-              <Zap size={15} aria-hidden />
-              <span>{t('Find a substitute')}</span>
+            <Link to="/messages" className="btn btn--quiet btn--icon top__icon" aria-label={unread ? t('Messages, {n} unread', { n: unread }) : t('Messages')}>
+              <MessageSquare size={20} strokeWidth={1.5} aria-hidden />
+              {unread > 0 && <span className="count top__count">{unread}</span>}
             </Link>
-            <Link to="/opportunities/new" className="btn btn--sm btn--ghost top__post">
-              <Plus size={15} aria-hidden />
-              {t('Post')}
+            <Link to="/opportunities/new" className="btn btn--primary top__post">
+              <Plus size={16} aria-hidden />
+              <span>{t('Post')}</span>
             </Link>
-            <Notifications accountId={accountId} unread={badges.data?.unreadNotifications ?? 0} />
             <AccountMenu />
           </div>
         </div>
@@ -343,17 +373,15 @@ export function Shell() {
         )}
       </main>
       <nav className="tabbar no-print" aria-label={t('Main')}>
-        {links
-          .filter((l) => l.mobile)
-          .map((l) => (
-            <NavLink key={l.to} to={l.to} className="tabbar__link">
-              <span className="tabbar__icon">
-                {l.icon}
-                {!!l.badge && <span className="count">{l.badge}</span>}
-              </span>
-              {short[l.to] ?? l.label}
-            </NavLink>
-          ))}
+        {links.map((l) => (
+          <NavLink key={l.to} to={l.to} className="tabbar__link">
+            <span className="tabbar__icon">
+              {l.icon}
+              {!!l.badge && <span className="count">{l.badge}</span>}
+            </span>
+            {l.label}
+          </NavLink>
+        ))}
       </nav>
     </div>
   );

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Messages</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1F1F1E;text-decoration:none}a:hover{color:#000000}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #EFEEEA; color: #1F1F1E; font-family: 'Inter Tight', system-ui, sans-serif; font-size: 14px; line-height: 1.5">
+
+<header style="padding: 56px 20px 0; display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; align-items: center; justify-content: space-between">
+<a href="Main.dc.html" aria-label="Back" style="width: 44px; height: 44px; display: flex; align-items: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg></a>
+<a href="#" aria-label="New message" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: flex-end"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"></path></svg></a>
+</div>
+<div style="display: flex; justify-content: space-between; align-items: flex-end">
+<h1 style="margin: 0; font-size: 44px; font-weight: 500; letter-spacing: -0.045em; line-height: 0.95">Messages</h1>
+<p style="margin: 0; font-size: 13px; color: #6E6C67">2 unread</p>
+</div>
+<div style="display: flex; gap: 20px; font-size: 13px; border-bottom: 1px solid #D6D3CC">
+<a href="#" style="padding-bottom: 10px; border-bottom: 2px solid {{accent}}; font-weight: 600">All</a>
+<a href="#" style="padding-bottom: 10px; color: #6E6C67">Unread</a>
+<a href="#" style="padding-bottom: 10px; color: #6E6C67">Invitations 1</a>
+<a href="#" style="padding-bottom: 10px; color: #6E6C67">Ensembles</a>
+</div>
+</header>
+
+<ul style="margin: 0; padding: 0 20px; list-style: none">
+<li style="display: flex; gap: 14px; padding: 18px 0; border-bottom: 1px solid #D6D3CC">
+<svg width="48" height="48" viewBox="0 0 40 40" aria-hidden="true" style="flex: none"><rect width="40" height="40" fill="#C2B8A8"></rect><circle cx="20" cy="16" r="7" fill="#8B8172"></circle><path d="M5 40c2-9 8-13 15-13s13 4 15 13z" fill="#8B8172"></path></svg>
+<div style="flex: 1; min-width: 0">
+<div style="display: flex; justify-content: space-between; align-items: baseline"><a href="#" style="font-size: 15px; font-weight: 600">Giulia Santoro</a><span style="font-size: 12px; color: {{accentText}}; font-weight: 600">10:42</span></div>
+<p style="margin: 2px 0 0; font-size: 14px; font-weight: 500">Are you still free on the 14th? The tango set needs you.</p>
+</div>
+<span style="width: 8px; height: 8px; margin-top: 8px; flex: none; background: {{accent}}"></span>
+</li>
+<li style="display: flex; gap: 14px; padding: 18px 0; border-bottom: 1px solid #D6D3CC">
+<svg width="48" height="48" viewBox="0 0 40 40" aria-hidden="true" style="flex: none"><rect width="40" height="40" fill="#9FA59B"></rect><circle cx="20" cy="16" r="7" fill="#6C7268"></circle><path d="M5 40c2-9 8-13 15-13s13 4 15 13z" fill="#6C7268"></path></svg>
+<div style="flex: 1; min-width: 0">
+<div style="display: flex; justify-content: space-between; align-items: baseline"><a href="#" style="font-size: 15px; font-weight: 600">Beatrice Fontana</a><span style="font-size: 12px; color: {{accentText}}; font-weight: 600">09:15</span></div>
+<div style="margin-top: 6px; background: #F7F6F3; padding: 10px 12px; display: flex; justify-content: space-between; gap: 10px; align-items: center">
+<span style="font-size: 13px; line-height: 1.3"><span style="display: block; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #6E6C67">Invitation</span>Continuo cello · 28–30.03</span><span style="font-weight: 600">€480</span>
+</div>
+</div>
+<span style="width: 8px; height: 8px; margin-top: 8px; flex: none; background: {{accent}}"></span>
+</li>
+<li style="display: flex; gap: 14px; padding: 18px 0; border-bottom: 1px solid #D6D3CC">
+<span style="width: 48px; height: 48px; flex: none; background: #1F1F1E; color: #EFEEEA; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; display: flex; align-items: center; justify-content: center">QF</span>
+<div style="flex: 1; min-width: 0">
+<div style="display: flex; justify-content: space-between; align-items: baseline"><a href="#" style="font-size: 15px; font-weight: 600">Quartetto Felsina</a><span style="font-size: 12px; color: #6E6C67">Yesterday</span></div>
+<p style="margin: 2px 0 0; font-size: 14px; color: #6E6C67; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Marco: parts for the Haydn are in the folder</p>
+</div>
+</li>
+<li style="display: flex; gap: 14px; padding: 18px 0; border-bottom: 1px solid #D6D3CC">
+<svg width="48" height="48" viewBox="0 0 40 40" aria-hidden="true" style="flex: none"><rect width="40" height="40" fill="#BFAFA6"></rect><circle cx="20" cy="16" r="7" fill="#8C7B72"></circle><path d="M5 40c2-9 8-13 15-13s13 4 15 13z" fill="#8C7B72"></path></svg>
+<div style="flex: 1; min-width: 0">
+<div style="display: flex; justify-content: space-between; align-items: baseline"><a href="#" style="font-size: 15px; font-weight: 600">Lorenzo Amadei</a><span style="font-size: 12px; color: #6E6C67">Mon</span></div>
+<p style="margin: 2px 0 0; font-size: 14px; color: #6E6C67; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">You: Thank you, the contract is signed</p>
+</div>
+</li>
+<li style="display: flex; gap: 14px; padding: 18px 0">
+<svg width="48" height="48" viewBox="0 0 40 40" aria-hidden="true" style="flex: none"><rect width="40" height="40" fill="#B0ACA4"></rect><circle cx="20" cy="16" r="7" fill="#7C7870"></circle><path d="M5 40c2-9 8-13 15-13s13 4 15 13z" fill="#7C7870"></path></svg>
+<div style="flex: 1; min-width: 0">
+<div style="display: flex; justify-content: space-between; align-items: baseline"><a href="#" style="font-size: 15px; font-weight: 600">Hannah Lindner</a><span style="font-size: 12px; color: #6E6C67">12 Mar</span></div>
+<p style="margin: 2px 0 0; font-size: 14px; color: #6E6C67; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Would love to do the Weill songs together</p>
+</div>
+</li>
+</ul>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#E2641B","options":["#1F1F1E","#E2641B"]},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const accent = this.props.accent ?? '#E2641B';
+    const mono = accent.toUpperCase() === '#1F1F1E';
+    return { accent, onAccent: mono ? '#EFEEEA' : '#1F1F1E', accentText: mono ? '#1F1F1E' : '#B84A0E' };
+  }
+}
+</script>
+</body>
+</html>

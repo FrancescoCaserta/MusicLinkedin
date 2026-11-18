@@ -215,7 +215,7 @@ function ApplyBox({ view }: { view: OpportunityView }) {
       ) : app.status === 'invited' ? (
         <div className="stack">
           <div>
-            <div className="label label--accent">{o.urgent ? t('Urgent call for you') : t('You are invited')}</div>
+            <div className={`label ${o.urgent ? 'label--urgent' : 'label--accent'}`}>{o.urgent ? t('Urgent call for you') : t('You are invited')}</div>
             {app.inviteMessage && <blockquote className="invite-note">“{app.inviteMessage}” <span className="muted">— {view.poster.name}</span></blockquote>}
           </div>
           {note}
@@ -281,6 +281,11 @@ function Detail({ view }: { view: OpportunityView }) {
               {view.organisation && <span className="muted"> · {view.poster.name}</span>}
             </span>
           </div>
+          {o.eventId && (
+            <p className="small">
+              <Link className="link" to={`/events/${o.eventId}`}>{t('Part of an event: see the programme and lineup')} ▸</Link>
+            </p>
+          )}
 
           <div className="oppd__fee">
             <div>

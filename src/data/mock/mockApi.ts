@@ -13,6 +13,7 @@ import type {
 } from '../../domain/types';
 import { toISODate } from '../../domain/dates';
 import { distanceKm } from '../../domain/geo';
+import { findCity } from '../../domain/cities';
 import { normalise } from '../../domain/taxonomy';
 import { searchMusicians, type MusicianMatch, type NetworkInfo } from '../../domain/search/engine';
 import { filterOpportunities, opportunityFit } from '../../domain/search/opportunities';
@@ -24,6 +25,9 @@ import {
   type ConcertView,
   type DataApi,
   type EndorsementView,
+  type EventInput,
+  type EventView,
+  type LineupEntry,
   type HomeView,
   type MusicianCard,
   type MyApplicationView,
@@ -217,9 +221,11 @@ export class MockApi implements DataApi {
   }
 
   private concertView(c: Concert): ConcertView {
+    const { invites: _invites, ...rest } = c;
     return {
-      ...c,
+      ...rest,
       orgSlug: this.org(c.orgId)?.slug,
+      verified: !!c.orgId || c.participants.length >= 2,
       participants: c.participants.map((p) => {
         const m = this.db.musicians.find((x) => x.id === p.musicianId);
         return { ...p, name: m?.name ?? 'Unknown', slug: m?.slug ?? '' };
@@ -287,6 +293,35 @@ export class MockApi implements DataApi {
       if (info.connected || info.sharedConcerts || info.mutuals) out.set(m.id, info);
     }
     return out;
+  }
+
+  /** Organiser of an event: whoever created it, or an admin of its organisation. */
+  private canManageEvent(accountId: ID, c: Concert): boolean {
+    return c.createdBy === accountId || !!this.org(c.orgId)?.admins.includes(accountId);
+  }
+
+  private canSeeEvent(accountId: ID | undefined, c: Concert): boolean {
+    if (c.visibility !== 'private') return true;
+    if (!accountId) return false;
+    return this.canManageEvent(accountId, c) || this.involved(accountId, c) || !!c.invites?.some((i) => i.musicianId === accountId);
+  }
+
+  private event(id: ID): Concert {
+    const c = this.db.concerts.find((x) => x.id === id);
+    if (!c) throw new ApiError('not-found', 'This event could not be found.');
+    return c;
+  }
+
+  /** Rule 2: a confirmed hire on a linked opportunity fills the seat with that musician. */
+  private fillSeat(app: Application, o: Opportunity): void {
+    if (!o.eventId) return;
+    const c = this.db.concerts.find((x) => x.id === o.eventId);
+    if (!c) return;
+    const seat = c.openSeats?.find((x) => x.id === o.seatId) ?? c.openSeats?.find((x) => x.opportunityId === o.id);
+    const role = seat?.role ?? o.roleLabel ?? o.title;
+    if (seat) c.openSeats = c.openSeats!.filter((x) => x !== seat);
+    c.invites = c.invites?.filter((i) => i.musicianId !== app.musicianId);
+    if (!c.participants.some((p) => p.musicianId === app.musicianId)) c.participants.push({ musicianId: app.musicianId, role });
   }
 
   private canManage(accountId: ID, o: Opportunity): boolean {
@@ -357,6 +392,7 @@ export class MockApi implements DataApi {
   /** Engagement confirmed: block the dates in the musician's calendar; an urgent call is thereby filled. */
   private confirm(app: Application, o: Opportunity): void {
     const m = this.musician(app.musicianId);
+    this.fillSeat(app, o);
     for (const d of o.dates) {
       if (d.kind === 'start') continue;
       m.availability[d.date] = { status: 'busy', note: o.title, opportunityId: o.id };
@@ -556,9 +592,14 @@ export class MockApi implements DataApi {
         orgId: input.orgId,
         ensembleName: input.orgId ? this.org(input.orgId)?.name : input.ensembleName?.trim() || undefined,
         programme: input.programme,
-        participants: input.participants,
+        // Rule 1: only the creator is on the lineup straight away; everyone else must confirm.
+        participants: input.participants.filter((p) => p.musicianId === creatorId),
+        invites: input.participants
+          .filter((p) => p.musicianId !== creatorId)
+          .map((p) => ({ musicianId: p.musicianId, role: p.role, status: 'invited' as const, invitedBy: creatorId, at: this.now().toISOString() })),
         createdBy: creatorId,
       };
+      for (const i of c.invites ?? []) this.notify({ accountId: i.musicianId, kind: 'lineup-invite', actorId: creatorId, concertId: c.id });
       this.db.concerts.push(c);
       this.db.concerts.sort((a, b) => b.date.localeCompare(a.date));
       return c;
@@ -572,6 +613,113 @@ export class MockApi implements DataApi {
       if (c.createdBy !== byId) throw new ApiError('forbidden', 'Only the person who added a concert can remove it.');
       this.db.concerts = this.db.concerts.filter((x) => x.id !== concertId);
       this.db.endorsements = this.db.endorsements.filter((e) => e.concertId !== concertId);
+    });
+  }
+
+  // ── Events ─────────────────────────────────────────────────────────────
+
+  getEvent(id: ID, viewerId?: ID): Promise<EventView> {
+    return this.call(() => {
+      const c = this.event(id);
+      if (!this.canSeeEvent(viewerId, c)) throw new ApiError('not-found', 'This event is private.');
+      const canManage = !!viewerId && this.canManageEvent(viewerId, c);
+      const lineup: LineupEntry[] = [
+        ...c.participants.map((p) => ({ role: p.role, status: 'confirmed' as const, person: this.summary(p.musicianId) })),
+        // Unconfirmed names are shown only to organisers and to the person invited.
+        ...(c.invites ?? [])
+          .filter((i) => canManage || i.musicianId === viewerId)
+          .map((i) => ({ role: i.role, status: i.status, person: this.summary(i.musicianId) })),
+        ...(c.openSeats ?? []).map((x) => ({ role: x.role, status: 'open' as const, seatId: x.id, opportunityId: x.opportunityId })),
+      ];
+      const mine = viewerId ? c.participants.find((p) => p.musicianId === viewerId) : undefined;
+      const inv = viewerId ? c.invites?.find((i) => i.musicianId === viewerId && i.status === 'invited') : undefined;
+      const org = this.org(c.orgId);
+      return {
+        event: this.concertView(c),
+        organiser: this.summary(c.createdBy),
+        organisation: org ? { id: org.id, slug: org.slug, name: org.name } : undefined,
+        lineup,
+        opportunities: this.db.opportunities
+          .filter((o) => o.eventId === c.id && (o.status === 'open' || canManage))
+          .map((o) => ({ id: o.id, title: o.title, status: o.status, seatId: o.seatId })),
+        viewer: { canManage, inLineup: !!mine, role: mine?.role, invite: inv ? { role: inv.role, invitedBy: this.summary(inv.invitedBy) } : undefined },
+      };
+    });
+  }
+
+  createEvent(input: EventInput, creatorId: ID) {
+    return this.mutate(() => {
+      this.account(creatorId);
+      const perfs = input.sessions.filter((x) => x.kind === 'performance').sort((a, b) => a.date.localeCompare(b.date));
+      if (!perfs.length) throw new ApiError('invalid', 'An event needs at least one performance date.');
+      if (!input.venue.trim() || !input.city.trim()) throw new ApiError('invalid', 'Say where the event takes place.');
+      if (input.orgId && !this.org(input.orgId)?.admins.includes(creatorId)) throw new ApiError('forbidden', 'You cannot create events for this organisation.');
+      const now = this.now().toISOString();
+      const c: Concert = {
+        id: this.id('c'),
+        date: perfs[0].date,
+        time: perfs[0].time,
+        title: input.title?.trim() || undefined,
+        venue: input.venue.trim(),
+        city: input.city.trim(),
+        country: input.country,
+        kind: input.format === 'opera' ? 'opera' : 'chamber',
+        format: input.format,
+        orgId: input.orgId,
+        ensembleName: input.orgId ? this.org(input.orgId)?.name : input.ensembleName?.trim() || undefined,
+        conductor: input.conductor?.trim() || undefined,
+        description: input.description?.trim() || undefined,
+        ticketUrl: input.ticketUrl?.trim() || undefined,
+        visibility: input.visibility,
+        sessions: [...input.sessions].sort((a, b) => a.date.localeCompare(b.date) || (a.time ?? '').localeCompare(b.time ?? '')),
+        programme: input.programme.filter((p) => p.composer.trim() || p.work.trim()),
+        participants: input.myRole?.trim() ? [{ musicianId: creatorId, role: input.myRole.trim() }] : [],
+        invites: input.invite
+          .filter((i) => i.musicianId !== creatorId)
+          .map((i) => ({ musicianId: i.musicianId, role: i.role.trim() || 'Musician', status: 'invited' as const, invitedBy: creatorId, at: now })),
+        openSeats: input.openSeats.filter((x) => x.role.trim()).map((x) => ({ id: this.id('seat'), role: x.role.trim(), instrumentId: x.instrumentId })),
+        createdBy: creatorId,
+      };
+      for (const i of c.invites ?? []) this.notify({ accountId: i.musicianId, kind: 'lineup-invite', actorId: creatorId, concertId: c.id });
+      this.db.concerts.push(c);
+      this.db.concerts.sort((a, b) => b.date.localeCompare(a.date));
+      return c;
+    });
+  }
+
+  listMyEvents(accountId: ID) {
+    return this.call(() =>
+      this.db.concerts
+        .filter((c) => c.date >= this.today() && (this.canManageEvent(accountId, c) || this.involved(accountId, c)))
+        .sort((a, b) => a.date.localeCompare(b.date))
+        .map((c) => this.concertView(c)),
+    );
+  }
+
+  listLineupInvites(musicianId: ID) {
+    return this.call(() =>
+      this.db.concerts
+        .flatMap((c) => (c.invites ?? []).filter((i) => i.musicianId === musicianId && i.status === 'invited').map((i) => ({ c, i })))
+        .sort((a, b) => a.c.date.localeCompare(b.c.date))
+        .map(({ c, i }) => ({ event: this.concertView(c), role: i.role, invitedBy: this.summary(i.invitedBy) })),
+    );
+  }
+
+  respondToLineup(eventId: ID, musicianId: ID, accept: boolean) {
+    return this.mutate(() => {
+      const c = this.event(eventId);
+      const inv = c.invites?.find((i) => i.musicianId === musicianId && i.status === 'invited');
+      if (!inv) throw new ApiError('invalid', 'There is no invitation to answer on this event.');
+      if (accept) {
+        c.invites = c.invites!.filter((i) => i !== inv);
+        if (!c.participants.some((p) => p.musicianId === musicianId)) c.participants.push({ musicianId, role: inv.role });
+        // Confirmed events mark the days booked.
+        const m = this.db.musicians.find((x) => x.id === musicianId);
+        if (m) for (const d of c.sessions?.length ? c.sessions : [{ date: c.date }]) m.availability[d.date] = { status: 'busy', note: c.title ?? c.venue };
+      } else {
+        inv.status = 'declined';
+      }
+      this.notify({ accountId: inv.invitedBy, kind: 'lineup-response', actorId: musicianId, concertId: c.id, accepted: accept });
     });
   }
 
@@ -602,6 +750,18 @@ export class MockApi implements DataApi {
     return this.mutate(() => {
       this.account(accountId);
       if (!input.title.trim()) throw new ApiError('invalid', 'Give the opportunity a title.');
+      const ev = input.eventId ? this.event(input.eventId) : undefined;
+      if (ev) {
+        if (!this.canManageEvent(accountId, ev)) throw new ApiError('forbidden', 'Only the organiser can post work for this event.');
+        // Schedule, place and programme come from the event and are not typed twice.
+        const city = findCity(ev.city);
+        input = {
+          ...input,
+          dates: (ev.sessions?.length ? ev.sessions : [{ date: ev.date, time: ev.time, kind: 'performance' as const }]).map((x) => ({ date: x.date, time: x.time, kind: x.kind, note: 'note' in x ? x.note : undefined })),
+          place: city ? { name: city.name, country: city.country, lat: city.lat, lng: city.lng, cityId: city.id, venue: ev.venue } : { ...input.place, venue: ev.venue },
+          repertoire: ev.programme,
+        };
+      }
       if (!(input.fee.amount > 0)) throw new ApiError('invalid', 'Every opportunity on Leggio states its fee.');
       if (input.fee.max != null && input.fee.max < input.fee.amount) throw new ApiError('invalid', 'The upper fee must be higher than the lower one.');
       if (!input.dates.length) throw new ApiError('invalid', 'Add at least one date.');
@@ -617,6 +777,16 @@ export class MockApi implements DataApi {
         createdAt: this.now().toISOString(),
       };
       this.db.opportunities.unshift(o);
+      if (ev) {
+        ev.openSeats ??= [];
+        let seat = ev.openSeats.find((x) => x.id === input.seatId);
+        if (!seat) {
+          seat = { id: this.id('seat'), role: input.roleLabel?.trim() || o.title, instrumentId: input.instruments[0] };
+          ev.openSeats.push(seat);
+        }
+        seat.opportunityId = o.id;
+        o.seatId = seat.id;
+      }
       return o;
     });
   }
@@ -1167,7 +1337,13 @@ export class MockApi implements DataApi {
         .slice(0, 30)
         .map((n) => {
           const o = n.opportunityId ? this.db.opportunities.find((x) => x.id === n.opportunityId) : undefined;
-          return { notification: n, actor: n.actorId ? this.summary(n.actorId) : undefined, opportunity: o ? { id: o.id, title: o.title, urgent: o.urgent } : undefined };
+          const c = n.concertId ? this.db.concerts.find((x) => x.id === n.concertId) : undefined;
+          return {
+            notification: n,
+            actor: n.actorId ? this.summary(n.actorId) : undefined,
+            opportunity: o ? { id: o.id, title: o.title, urgent: o.urgent } : undefined,
+            concert: c ? { id: c.id, title: c.title ?? `${c.venue}, ${c.city}`, date: c.date } : undefined,
+          };
         }),
     );
   }

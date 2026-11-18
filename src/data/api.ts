@@ -6,6 +6,8 @@ import type {
   AvailabilityEntry,
   Concert,
   ConcertParticipant,
+  EventFormat,
+  EventSession,
   Fee,
   ID,
   ISODate,
@@ -100,9 +102,59 @@ export interface DemoMeta {
   counts: { musicians: number; organisations: number; opportunities: number; concerts: number };
 }
 
-export interface ConcertView extends Omit<Concert, 'participants'> {
+export interface ConcertView extends Omit<Concert, 'participants' | 'invites'> {
   participants: (ConcertParticipant & { name: string; slug: string })[];
   orgSlug?: string;
+  /** Confirmed by someone else in the lineup, or presented by an organisation. Otherwise self-added. */
+  verified: boolean;
+}
+
+/** One line of a lineup as the event page shows it. */
+export interface LineupEntry {
+  role: string;
+  status: 'confirmed' | 'invited' | 'declined' | 'open';
+  person?: AccountSummary;
+  /** For an open seat. */
+  seatId?: ID;
+  opportunityId?: ID;
+}
+
+export interface EventView {
+  event: ConcertView;
+  organiser: AccountSummary;
+  organisation?: { id: ID; slug: string; name: string };
+  lineup: LineupEntry[];
+  /** Opportunities that point at this event (fees are on them, never on the event). */
+  opportunities: { id: ID; title: string; status: Opportunity['status']; seatId?: ID }[];
+  viewer: {
+    canManage: boolean;
+    /** The viewer's own pending invitation, if any. */
+    invite?: { role: string; invitedBy: AccountSummary };
+    inLineup: boolean;
+    role?: string;
+  };
+}
+
+export interface EventInput {
+  format: EventFormat;
+  title?: string;
+  orgId?: ID;
+  ensembleName?: string;
+  venue: string;
+  city: string;
+  country: string;
+  conductor?: string;
+  description?: string;
+  ticketUrl?: string;
+  visibility: 'public' | 'private';
+  /** At least one performance. */
+  sessions: EventSession[];
+  programme: ProgrammeItem[];
+  /** The creator's own role, if they play. */
+  myRole?: string;
+  /** People to invite: they appear only once they confirm. */
+  invite: { musicianId: ID; role: string }[];
+  openSeats: { role: string; instrumentId?: string }[];
 }
 
 export interface EndorsementView {
@@ -182,6 +234,9 @@ export interface OpportunityInput {
   description: string;
   deadline?: ISODate;
   urgent: boolean;
+  /** Link to an event: its schedule, place and programme are used, and the seat is filled on hire. */
+  eventId?: ID;
+  seatId?: ID;
 }
 
 export interface ConnectionView {
@@ -254,6 +309,7 @@ export interface NotificationView {
   notification: Notification;
   actor?: AccountSummary;
   opportunity?: { id: ID; title: string; urgent: boolean };
+  concert?: { id: ID; title: string; date: ISODate };
 }
 
 export interface Badges {
@@ -341,6 +397,16 @@ export interface DataApi {
   setAvailability(id: ID, dates: ISODate[], status: 'free' | 'busy' | 'tentative', note?: string): Promise<Record<ISODate, AvailabilityEntry>>;
   addConcert(input: ConcertInput, creatorId: ID): Promise<Concert>;
   deleteConcert(concertId: ID, byId: ID): Promise<void>;
+
+  // Events
+  getEvent(id: ID, viewerId?: ID): Promise<EventView>;
+  createEvent(input: EventInput, creatorId: ID): Promise<Concert>;
+  /** Events the account organises or plays in, upcoming first — for linking an opportunity. */
+  listMyEvents(accountId: ID): Promise<ConcertView[]>;
+  /** Pending lineup invitations for a musician. */
+  listLineupInvites(musicianId: ID): Promise<{ event: ConcertView; role: string; invitedBy: AccountSummary }[]>;
+  /** "Confirm" or "That's not me". */
+  respondToLineup(eventId: ID, musicianId: ID, accept: boolean): Promise<void>;
 
   // Opportunities
   listOpportunities(query: OpportunityQuery, viewerId?: ID): Promise<OpportunityView[]>;

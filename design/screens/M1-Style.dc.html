@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>01 · Style sheet</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; overflow: hidden; background: #EFEEEA; color: #1F1F1E; font-family: 'Inter Tight', system-ui, sans-serif; font-size: 13px; line-height: 1.5; padding: 48px 24px; display: flex; flex-direction: column; gap: 28px">
+<div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid #1F1F1E; padding-bottom: 16px">
+<p style="margin: 0; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; display: flex; align-items: center; gap: 8px"><span style="width: 8px; height: 8px; background: #1F1F1E"></span>Style sheet</p>
+<p style="margin: 0; font-size: 56px; font-weight: 400; letter-spacing: -0.05em; line-height: 0.8">/01</p>
+</div>
+
+<div>
+<p style="margin: 0; font-size: 52px; font-weight: 500; letter-spacing: -0.045em; line-height: 0.95">Inter Tight</p>
+<p style="margin: 6px 0 0; font-size: 11px; color: #6E6C67">Headings, names, numbers, interface</p>
+<p style="margin: 18px 0 0; font-family: Newsreader, serif; font-size: 22px; line-height: 1.35">Newsreader carries what people write: <em>posts, bios, programmes.</em></p>
+<p style="margin: 6px 0 0; font-size: 11px; color: #6E6C67">Reading text and work titles in italic</p>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px">
+<div><div style="height: 64px; background: #1F1F1E"></div><p style="margin: 6px 0 0; font-size: 11px">Ink<br><span style="color: #6E6C67">#1F1F1E</span></p></div>
+<div><div style="height: 64px; background: #EFEEEA; border: 1px solid #D6D3CC; box-sizing: border-box"></div><p style="margin: 6px 0 0; font-size: 11px">Ground<br><span style="color: #6E6C67">#EFEEEA</span></p></div>
+<div><div style="height: 64px; background: #F7F6F3"></div><p style="margin: 6px 0 0; font-size: 11px">Surface<br><span style="color: #6E6C67">#F7F6F3</span></p></div>
+<div><div style="height: 64px; background: #6E6C67"></div><p style="margin: 6px 0 0; font-size: 11px">Muted<br><span style="color: #6E6C67">#6E6C67</span></p></div>
+<div style="grid-column: 1 / -1; display: flex; gap: 8px; align-items: center"><div style="width: 64px; height: 28px; background: #E2641B"></div><p style="margin: 0; font-size: 11px">Orange #E2641B for fills · <span style="color: #B84A0E; font-weight: 600">#B84A0E for text</span></p></div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 10px">
+<span style="height: 48px; padding: 0 16px; background: #1F1F1E; color: #EFEEEA; display: flex; align-items: center; justify-content: space-between">Primary action<svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor" aria-hidden="true"><path d="M2 0l4 4-4 4z"></path></svg></span>
+<span style="height: 48px; padding: 0 16px; border: 1px solid #1F1F1E; display: flex; align-items: center; justify-content: space-between">Secondary<svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor" aria-hidden="true"><path d="M2 0l4 4-4 4z"></path></svg></span>
+</div>
+
+<ul style="margin: 0; padding: 0; list-style: none; border-top: 1px solid #D6D3CC">
+<li style="padding: 10px 0; border-bottom: 1px solid #D6D3CC; display: flex; justify-content: space-between"><span>Corners</span><span style="color: #6E6C67">0, everything square</span></li>
+<li style="padding: 10px 0; border-bottom: 1px solid #D6D3CC; display: flex; justify-content: space-between"><span>Dividers</span><span style="color: #6E6C67">1 px hairlines, no shadows</span></li>
+<li style="padding: 10px 0; border-bottom: 1px solid #D6D3CC; display: flex; justify-content: space-between"><span>Labels</span><span style="color: #6E6C67">■ small caps, 0.12em</span></li>
+<li style="padding: 10px 0; border-bottom: 1px solid #D6D3CC; display: flex; justify-content: space-between"><span style="display: flex; align-items: center; gap: 8px"><span style="width: 12px; height: 12px; background: #E2641B"></span>Accent, optional</span><span style="color: #6E6C67">#E2641B: actions, unread, urgent</span></li>
+</ul>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

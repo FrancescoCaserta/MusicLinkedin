@@ -1,3 +1,4 @@
+import { LineupInvites } from '../events/Events';
 import { Link } from 'react-router';
 import { ArrowRight, Briefcase, CalendarDays, FileText, MessageSquare, Search, UserPlus, Users, Zap } from 'lucide-react';
 import { PERSONA_GUIDE } from '../../app/personas';
@@ -120,6 +121,7 @@ export function HomePage() {
       ) : (
         <div className="cols">
           <div className="stack stack--lg">
+            <LineupInvites />
             <section>
               <div className="section__head">
                 <h2 className="h-section">{t('Waiting for you')}</h2>

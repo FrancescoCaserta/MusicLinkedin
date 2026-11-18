@@ -369,8 +369,13 @@ export function ConcertItem({ c, focusId, showPeople = false }: { c: ConcertView
       </div>
       <div className="concert__body">
         <div className="concert__where">
-          {c.title && <span className="serif-italic">{c.title} · </span>}
-          {c.venue}, {c.city}
+          <Link to={`/events/${c.id}`}>
+            {c.title && <span className="serif-italic">{c.title} · </span>}
+            {c.venue}, {c.city}
+          </Link>
+          <span className={`tag concert__verify${c.verified ? ' tag--ok' : ' tag--warn'}`} title={c.verified ? t('Confirmed by others in the lineup') : t('Added by the musician; not yet confirmed by anyone else')}>
+            {c.verified ? t('Verified') : t('Self-added')}
+          </span>
         </div>
         <div className="small soft" style={{ marginBottom: 6 }}>
           {c.orgSlug ? <Link className="link" to={`/ensembles/${c.orgSlug}`}>{c.ensembleName}</Link> : c.ensembleName}

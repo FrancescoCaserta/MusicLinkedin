@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Ensembles</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1F1F1E;text-decoration:none}a:hover{color:#000000}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: #EFEEEA; color: #1F1F1E; font-family: 'Inter Tight', system-ui, sans-serif; font-size: 14px; line-height: 1.5">
+
+<header style="padding: 56px 20px 14px; display: flex; align-items: center; gap: 8px">
+<a href="M1-Profile.dc.html" aria-label="My profile" style="width: 36px; height: 36px; flex: none; display: block"><svg width="36" height="36" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" fill="#A39B8E"></rect><circle cx="20" cy="16" r="7" fill="#6F685E"></circle><path d="M5 40c2-9 8-13 15-13s13 4 15 13z" fill="#6F685E"></path></svg></a>
+<a href="M1-Search.dc.html" style="flex: 1; height: 40px; background: #E3E1DC; display: flex; align-items: center; gap: 10px; padding: 0 12px; color: #6E6C67; font-size: 14px; margin-left: 4px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>Search ensembles</a>
+<a href="#" aria-label="New post" style="width: 44px; height: 44px; flex: none; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="4" y="4" width="16" height="16"></rect><path d="M12 8v8M8 12h8"></path></svg></a>
+<a href="M1-Messages.dc.html" aria-label="Messages, 2 unread" style="width: 44px; height: 44px; flex: none; position: relative; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"></path></svg><span style="position: absolute; top: 7px; right: 5px; min-width: 16px; height: 16px; padding: 0 4px; box-sizing: border-box; background: {{accent}}; color: {{onAccent}}; font-size: 10px; font-weight: 600; display: flex; align-items: center; justify-content: center">2</span></a>
+</header>
+
+<section style="padding: 6px 20px 0">
+<h1 style="margin: 0; font-size: 44px; font-weight: 500; letter-spacing: -0.045em; line-height: 0.95">Ensembles</h1>
+<p style="margin: 20px 0 10px; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; display: flex; align-items: center; gap: 8px"><span style="width: 8px; height: 8px; background: {{accent}}"></span>You play with</p>
+<div style="display: flex; gap: 10px">
+<a href="M1-Ensemble.dc.html" style="flex: 1; background: #1F1F1E; color: #EFEEEA; padding: 14px; display: flex; flex-direction: column; gap: 22px">
+<span style="font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #B5B2AB">String quartet</span>
+<span style="font-size: 17px; font-weight: 600; line-height: 1.15">Quartetto<br>Felsina</span>
+</a>
+<a href="#" style="flex: 1; background: #F7F6F3; padding: 14px; display: flex; flex-direction: column; gap: 22px">
+<span style="font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #6E6C67">Brass &amp; organ</span>
+<span style="font-size: 17px; font-weight: 600; line-height: 1.15">Ensemble<br>Rivoalto</span>
+</a>
+<a href="#" aria-label="Create an ensemble" style="width: 56px; border: 1px dashed #8F8C85; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></a>
+</div>
+</section>
+
+<section style="padding: 26px 20px 0">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px">
+<p style="margin: 0; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; display: flex; align-items: center; gap: 8px"><span style="width: 8px; height: 8px; background: #1F1F1E"></span>Near Modena</p>
+<div style="display: flex; gap: 6px; font-size: 12px"><span style="height: 28px; padding: 0 10px; background: #1F1F1E; color: #EFEEEA; display: flex; align-items: center">All</span><span style="height: 28px; padding: 0 10px; border: 1px solid #D6D3CC; display: flex; align-items: center">Orchestras</span><span style="height: 28px; padding: 0 10px; border: 1px solid #D6D3CC; display: flex; align-items: center">Festivals</span></div>
+</div>
+<ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 14px">
+<li style="display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 14px">
+<svg width="112" height="84" viewBox="0 0 112 84" role="img" aria-label="Photo: orchestra in a baroque church"><rect width="112" height="84" fill="#5A5650"></rect><path d="M20 84V40l36-24 36 24v44z" fill="#6E6A63"></path><path d="M44 84V56a12 12 0 0 1 24 0v28z" fill="#3E3B37"></path></svg>
+<div style="display: flex; flex-direction: column; gap: 2px; line-height: 1.3">
+<a href="#" style="font-size: 16px; font-weight: 600">Accademia degli Affetti</a>
+<span style="font-size: 12px; color: #6E6C67">Period-instrument orchestra · Ferrara</span>
+<span style="margin-top: 6px; font-size: 12px; font-weight: 600; color: {{accentText}}">3 open roles</span>
+</div>
+</li>
+<li style="display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 14px">
+<svg width="112" height="84" viewBox="0 0 112 84" role="img" aria-label="Photo: theatre auditorium"><rect width="112" height="84" fill="#6B5F55"></rect><path d="M0 84c20-30 92-30 112 0z" fill="#4A403A"></path><rect x="30" y="14" width="52" height="30" fill="#8A7D71"></rect></svg>
+<div style="display: flex; flex-direction: column; gap: 2px; line-height: 1.3">
+<a href="#" style="font-size: 16px; font-weight: 600">Teatro Verdi</a>
+<span style="font-size: 12px; color: #6E6C67">Opera house · Pisa</span>
+<span style="margin-top: 6px; font-size: 12px; color: #6E6C67">1 open role</span>
+</div>
+</li>
+<li style="display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 14px">
+<svg width="112" height="84" viewBox="0 0 112 84" role="img" aria-label="Photo: open-air festival stage"><rect width="112" height="84" fill="#7A776F"></rect><rect y="56" width="112" height="28" fill="#5A5750"></rect><path d="M24 56V30h64v26" fill="none" stroke="#3E3C37" stroke-width="4"></path></svg>
+<div style="display: flex; flex-direction: column; gap: 2px; line-height: 1.3">
+<a href="#" style="font-size: 16px; font-weight: 600">Festival Musica Estense</a>
+<span style="font-size: 12px; color: #6E6C67">Summer festival · Modena</span>
+<span style="margin-top: 6px; font-size: 12px; color: #6E6C67">Following</span>
+</div>
+</li>
+</ul>
+</section>
+
+<nav aria-label="Main" style="position: absolute; left: 0; right: 0; bottom: 0; height: 84px; background: #EFEEEA; border-top: 1px solid #D6D3CC; display: flex; justify-content: space-around; align-items: flex-start; padding-top: 8px; font-size: 10px">
+<a href="Main.dc.html" style="width: 66px; display: flex; flex-direction: column; align-items: center; gap: 4px; padding-top: 6px; color: #6E6C67"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"></path></svg>Home</a>
+<a href="M1-Network.dc.html" style="width: 66px; display: flex; flex-direction: column; align-items: center; gap: 4px; padding-top: 6px; color: #6E6C67"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"></path><circle cx="17" cy="9" r="2.5"></circle><path d="M16 14.6c2.8.2 4.8 2 5.5 5.4"></path></svg>Network</a>
+<a href="M1-Ensembles.dc.html" style="width: 66px; display: flex; flex-direction: column; align-items: center; gap: 4px; border-top: 2px solid {{accent}}; margin-top: -9px; padding-top: 13px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 9l9-5 9 5M5 10v8M10 10v8M14 10v8M19 10v8M3 20h18"></path></svg>Ensembles</a>
+<a href="M1-Alerts.dc.html" style="width: 66px; display: flex; flex-direction: column; align-items: center; gap: 4px; padding-top: 6px; color: #6E6C67"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"></path><path d="M10 20a2 2 0 0 0 4 0"></path></svg>Alerts</a>
+<a href="M1-Work.dc.html" style="width: 66px; display: flex; flex-direction: column; align-items: center; gap: 4px; padding-top: 6px; color: #6E6C67"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="7" width="18" height="13"></rect><path d="M8 7V4h8v3M3 13h18"></path></svg>Work</a>
+</nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#1F1F1E","options":["#1F1F1E","#E2641B"]},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const accent = this.props.accent ?? '#1F1F1E';
+    const mono = accent.toUpperCase() === '#1F1F1E';
+    return { accent, onAccent: mono ? '#EFEEEA' : '#1F1F1E', accentText: mono ? '#1F1F1E' : '#B84A0E' };
+  }
+}
+</script>
+</body>
+</html>

@@ -100,6 +100,7 @@ test('hirer: search in a sentence, refine, invite; the musician accepts; the hir
 
 test('hirer: post an opportunity (a fee is required), it appears on the board, a musician applies, the hirer sees it', async ({ page }) => {
   await enter(page, 'acc-beatrice', '/opportunities/new');
+  await page.getByRole('tab', { name: 'Write it yourself' }).click();
   await page.getByRole('button', { name: 'Publish opportunity' }).click();
   await expect(page.getByText('State the fee. No posting goes live on Leggio without one.')).toBeVisible();
 
@@ -204,8 +205,8 @@ test('messages are stored and reach the other person', async ({ page }) => {
   const item = page.locator('.inbox__item', { hasText: 'Beatrice Fontana' });
   await expect(item).toContainText('would you play continuo');
   await item.click();
-  await page.getByLabel('Message').fill('With pleasure — which dates?');
-  await page.getByLabel('Message').press('Enter');
+  await page.getByLabel('Message', { exact: true }).fill('With pleasure — which dates?');
+  await page.getByLabel('Message', { exact: true }).press('Enter');
   await expect(page.locator('.bubble--mine')).toContainText('which dates?');
   await page.reload();
   await expect(page.locator('.bubble').last()).toContainText('which dates?');
@@ -273,10 +274,10 @@ test('navigation works at this width, and no page scrolls sideways', async ({ pa
   await enter(page, 'm-hannah-lindner', '/home');
   const nav = page.getByRole('navigation', { name: 'Main' }).locator(phone(page) ? '.tabbar__link' : '.top__link');
   for (const [name, heading] of [
-    [/Search|Find musicians/, 'Who do you need?'],
-    [/Work|Opportunities/, 'Work, with the fee on the first line'],
-    ['Network', 'The people you have played with'],
-    ['Messages', 'Messages'],
+    [/^Work/, 'Work, with the fee on the first line'],
+    [/^Network/, 'The people you have played with'],
+    [/^Ensembles/, /./],
+    [/Alerts/, 'Alerts'],
   ] as const) {
     await nav.filter({ hasText: name }).click();
     await expect(page.getByRole('heading', { name: heading })).toBeVisible();

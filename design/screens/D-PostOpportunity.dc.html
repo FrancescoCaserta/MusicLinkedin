@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Desktop · Post an opportunity</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EFEEEA}
+a{color:#1F1F1E;text-decoration:none}a:hover{color:#000000}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+</helmet>
+<div style="position: relative; min-height: 1180px; background: #EFEEEA; color: #1F1F1E; font-family: 'Inter Tight', system-ui, sans-serif; font-size: 14px; line-height: 1.5">
+
+<header style="border-bottom: 1px solid #D6D3CC">
+<div style="max-width: 1200px; margin: 0 auto; padding: 0 32px; min-height: 72px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 32px">
+<a href="D-Home.dc.html" style="display: flex; align-items: center; gap: 10px; font-size: 22px; font-weight: 600; letter-spacing: -0.03em"><span style="width: 12px; height: 12px; background: #1F1F1E"></span>Leggio</a>
+<p style="margin: 0; font-size: 14px; color: #6E6C67">Post an opportunity · as Quartetto Felsina</p>
+<a href="D-Work.dc.html" style="margin-left: auto; height: 40px; padding: 0 14px; display: flex; align-items: center; color: #6E6C67">Cancel</a>
+</div>
+</header>
+
+<main style="max-width: 1200px; margin: 0 auto; padding: 48px 32px 120px; display: flex; flex-wrap: wrap; gap: 56px; align-items: flex-start">
+<form style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 28px">
+<h1 style="margin: 0; font-size: 56px; font-weight: 500; letter-spacing: -0.05em; line-height: 0.95">Post an opportunity</h1>
+
+<div role="tablist" aria-label="Details from" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border: 1px solid #1F1F1E; max-width: 520px">
+<button type="button" role="tab" aria-selected="true" style="height: 44px; border: 0; background: #1F1F1E; color: #EFEEEA; font: inherit; font-weight: 600">Link to an event</button>
+<button type="button" role="tab" aria-selected="false" style="height: 44px; border: 0; background: none; font: inherit">Write it yourself</button>
+</div>
+
+<div>
+<label for="ev" style="display: block; margin-bottom: 6px; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase">■ Event</label>
+<a href="D-Event.dc.html" id="ev" style="display: grid; grid-template-columns: 96px minmax(0, 1fr) auto; gap: 20px; align-items: center; padding: 18px 20px; background: #F7F6F3; border: 1px solid #1F1F1E">
+<span style="font-size: 40px; font-weight: 500; letter-spacing: -0.045em; line-height: 0.9">14.03</span>
+<span style="line-height: 1.35"><span style="display: block; font-size: 18px; font-weight: 600">Late quartets &amp; a tango</span><span style="font-size: 13px; color: #6E6C67">San Filippo Neri, Bologna · 4 confirmed, 1 seat open</span></span>
+<span style="font-size: 13px; font-weight: 500; border-bottom: 1px solid #1F1F1E">Change</span>
+</a>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="ps" style="font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase">■ Open seat</label><input id="ps" value="Accordion" style="height: 48px; border: 0; border-bottom: 1px solid #1F1F1E; background: transparent; padding: 0; font: inherit; font-size: 22px; font-weight: 500; color: #1F1F1E"></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="pr" style="font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase">■ Plays in</label><select id="pr" style="height: 48px; border: 0; border-bottom: 1px solid #1F1F1E; background: transparent; font: inherit; font-size: 16px; color: #1F1F1E"><option>Histoire du Tango only</option><option>Whole programme</option></select></div>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="pf" style="font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase">■ Fee, total</label><div style="display: flex; align-items: baseline; gap: 8px; border-bottom: 1px solid #1F1F1E"><span style="font-size: 32px; font-weight: 500">€</span><input id="pf" value="240" style="flex: 1; min-width: 0; height: 56px; border: 0; background: transparent; padding: 0; font: inherit; font-size: 32px; font-weight: 500; letter-spacing: -0.03em; color: #1F1F1E"></div><span style="font-size: 12px; color: #6E6C67">Shown to applicants only, never on the public event</span></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><label for="pd" style="font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase">■ Reply by</label><input id="pd" value="13.03.2026, 18:00" style="height: 56px; border: 0; border-bottom: 1px solid #D6D3CC; background: transparent; padding: 0; font: inherit; font-size: 18px; color: #1F1F1E"></div>
+</div>
+
+<label style="display: flex; gap: 14px; align-items: flex-start; padding: 16px; background: #F7F6F3; max-width: 640px">
+<input type="checkbox" checked style="width: 20px; height: 20px; margin: 1px 0 0; accent-color: #E2641B; flex: none">
+<span style="line-height: 1.4"><span style="display: block; font-weight: 600">Last-minute</span><span style="font-size: 13px; color: #6E6C67">Notify accordionists who are free on 14.03 within 50 km, right now.</span></span>
+</label>
+</form>
+
+<aside style="flex: 1 1 320px; max-width: 380px; display: flex; flex-direction: column; gap: 20px">
+<section style="border-top: 1px solid #1F1F1E">
+<p style="margin: 12px 0 6px; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #6E6C67; display: flex; align-items: center; gap: 6px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="10"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>Filled in from the event</p>
+<dl style="margin: 0">
+<div style="padding: 10px 0; border-bottom: 1px solid #D6D3CC"><dt style="font-size: 12px; color: #6E6C67">Schedule</dt><dd style="margin: 2px 0 0">13.03 rehearsal 15:00 · 14.03 dress 16:00 · concert 20:30</dd></div>
+<div style="padding: 10px 0; border-bottom: 1px solid #D6D3CC"><dt style="font-size: 12px; color: #6E6C67">Place</dt><dd style="margin: 2px 0 0">Oratorio di San Filippo Neri, Bologna</dd></div>
+<div style="padding: 10px 0; border-bottom: 1px solid #D6D3CC"><dt style="font-size: 12px; color: #6E6C67">Programme</dt><dd style="margin: 2px 0 0; font-family: Newsreader, serif; font-size: 16px">Haydn op. 76/4 · Piazzolla, Histoire du Tango · Beethoven op. 132</dd></div>
+</dl>
+</section>
+<p style="margin: 0; font-size: 13px; color: #6E6C67">Whoever you hire is added to the event’s lineup once they confirm.</p>
+<a href="#" style="height: 56px; padding: 0 20px; background: #E2641B; font-weight: 600; display: flex; align-items: center; justify-content: space-between">Review and post<svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor" aria-hidden="true"><path d="M2 0l4 4-4 4z"></path></svg></a>
+</aside>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1180}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

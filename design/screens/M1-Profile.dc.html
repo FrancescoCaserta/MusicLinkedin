@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Personal page</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&amp;family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#1F1F1E;text-decoration:none}a:hover{color:#000000}
+</style>
+</helmet>
+<div style="width: 390px; height: 3200px; position: relative; overflow: hidden; background: #EFEEEA; color: #1F1F1E; font-family: 'Inter Tight', system-ui, sans-serif; font-size: 14px; line-height: 1.5">
+
+<div style="position: relative">
+<svg width="390" height="200" viewBox="0 0 390 200" role="img" aria-label="Cover photo: accordion on a stage" style="display: block">
+<rect width="390" height="200" fill="#4E4B46"></rect>
+<ellipse cx="260" cy="60" rx="160" ry="80" fill="#625E58"></ellipse>
+<rect y="150" width="390" height="50" fill="#3A3835"></rect>
+<g fill="#2A2826"><rect x="214" y="78" width="26" height="64"></rect><rect x="290" y="78" width="26" height="64"></rect></g>
+<g stroke="#2A2826" stroke-width="3"><path d="M240 84h50M240 96h50M240 108h50M240 120h50M240 132h50"></path></g>
+</svg>
+<div style="position: absolute; top: 52px; left: 16px; right: 16px; display: flex; justify-content: space-between">
+<a href="Main.dc.html" aria-label="Back" style="width: 44px; height: 44px; background: #EFEEEA; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg></a>
+<a href="#" aria-label="Share profile" style="width: 44px; height: 44px; background: #EFEEEA; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 12l16-8-6 16-2-7z"></path></svg></a>
+</div>
+<svg width="112" height="112" viewBox="0 0 40 40" role="img" aria-label="Profile photo of Nicolò Baldini" style="position: absolute; left: 20px; bottom: -56px; border: 4px solid #EFEEEA"><rect width="40" height="40" fill="#A39B8E"></rect><circle cx="20" cy="16" r="7" fill="#6F685E"></circle><path d="M5 40c2-9 8-13 15-13s13 4 15 13z" fill="#6F685E"></path></svg>
+</div>
+
+<section style="padding: 72px 20px 0; display: flex; flex-direction: column; gap: 14px">
+<div>
+<h1 style="margin: 0; font-size: 38px; font-weight: 500; letter-spacing: -0.045em; line-height: 1">Nicolò Baldini</h1>
+<p style="margin: 6px 0 0; font-size: 15px; font-weight: 500">Accordion · Bandoneon</p>
+<p style="margin: 2px 0 0; font-size: 13px; color: #6E6C67">Modena, Italy · travels up to 200 km</p>
+</div>
+<p style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500"><span style="width: 8px; height: 8px; background: #1F1F1E"></span>Open to work in March and April<sc-if value="{{own}}" hint-placeholder-val="{{ false }}"><a href="#" style="margin-left: auto; font-size: 12px; font-weight: 500; letter-spacing: 0; text-transform: none; color: #1F1F1E; border-bottom: 1px solid #1F1F1E; line-height: 1.3">Edit</a></sc-if></p>
+<sc-if value="{{visitor}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; gap: 8px">
+<a href="#" style="flex: 1.3; height: 48px; padding: 0 14px; background: #E2641B; color: #1F1F1E; font-size: 14px; font-weight: 600; display: flex; align-items: center; justify-content: space-between">Invite to a job<svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor" aria-hidden="true"><path d="M2 0l4 4-4 4z"></path></svg></a>
+<a href="#" style="flex: 1; height: 48px; border: 1px solid #1F1F1E; font-size: 14px; display: flex; align-items: center; justify-content: center">Connect</a>
+<a href="M1-Messages.dc.html" aria-label="Message" style="width: 48px; height: 48px; border: 1px solid #1F1F1E; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"></path></svg></a>
+</div>
+<p style="margin: 8px 0 0; font-size: 12px; color: #6E6C67">Played with Giulia Santoro and 11 others in your network</p>
+</sc-if>
+<sc-if value="{{own}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; gap: 8px">
+<a href="#" style="flex: 1; height: 48px; border: 1px solid #1F1F1E; font-size: 14px; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"></path></svg>Edit profile</a>
+<a href="M1-Profile.dc.html" style="flex: 1; height: 48px; border: 1px solid #1F1F1E; font-size: 14px; display: flex; align-items: center; justify-content: center">View as others</a>
+</div>
+<p style="margin: 8px 0 0; font-size: 12px; color: #6E6C67">Profile 80% complete · add 2 recordings to reach 100%</p>
+</sc-if>
+</section>
+
+<dl style="margin: 24px 20px 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid #1F1F1E">
+<div style="padding: 14px 12px 14px 0; border-bottom: 1px solid #D6D3CC; border-right: 1px solid #D6D3CC"><dt style="font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #6E6C67">Fee</dt><dd style="margin: 4px 0 0; font-size: 20px; font-weight: 500; letter-spacing: -0.02em">€180–240</dd><dd style="margin: 0; font-size: 12px; color: #6E6C67">per service</dd></div>
+<div style="padding: 14px 0 14px 14px; border-bottom: 1px solid #D6D3CC"><dt style="font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #6E6C67">Invoicing</dt><dd style="margin: 4px 0 0; font-size: 20px; font-weight: 500; letter-spacing: -0.02em">Partita IVA</dd><dd style="margin: 0; font-size: 12px; color: #6E6C67">or ritenuta d’acconto</dd></div>
+<div style="padding: 14px 12px 14px 0; border-bottom: 1px solid #D6D3CC; border-right: 1px solid #D6D3CC"><dt style="font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #6E6C67">Concerts</dt><dd style="margin: 4px 0 0; font-size: 20px; font-weight: 500; letter-spacing: -0.02em">64</dd><dd style="margin: 0; font-size: 12px; color: #6E6C67">since 2018</dd></div>
+<div style="padding: 14px 0 14px 14px; border-bottom: 1px solid #D6D3CC"><dt style="font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #6E6C67">Languages</dt><dd style="margin: 4px 0 0; font-size: 20px; font-weight: 500; letter-spacing: -0.02em">IT · EN · ES</dd><dd style="margin: 0; font-size: 12px; color: #6E6C67">rehearsal-fluent</dd></div>
+</dl>
+
+<sc-if value="{{own}}" hint-placeholder-val="{{ false }}"><p style="margin: 8px 20px 0; display: flex"><a href="#" style="margin-left: auto; font-size: 12px; font-weight: 500; border-bottom: 1px solid #1F1F1E; line-height: 1.3">Edit fee, invoicing and languages</a></p></sc-if>
+<nav aria-label="Profile sections" style="margin: 24px 0 0; padding: 0 20px; display: flex; gap: 20px; font-size: 13px; border-bottom: 1px solid #D6D3CC; background: #EFEEEA">
+<a href="#about" style="padding-bottom: 10px; border-bottom: 2px solid {{accent}}; font-weight: 600">Overview</a>
+<a href="#rep" style="padding-bottom: 10px; color: #6E6C67">Repertoire</a>
+<a href="#cal" style="padding-bottom: 10px; color: #6E6C67">Calendar</a>
+<a href="#media" style="padding-bottom: 10px; color: #6E6C67">Media</a>
+<a href="#hist" style="padding-bottom: 10px; color: #6E6C67">Concerts</a>
+</nav>
+
+<section id="about" style="padding: 28px 20px 0">
+<p style="margin: 0 0 12px; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; display: flex; align-items: center; gap: 8px"><span style="width: 8px; height: 8px; background: #1F1F1E"></span>About<sc-if value="{{own}}" hint-placeholder-val="{{ false }}"><a href="#" style="margin-left: auto; font-size: 12px; font-weight: 500; letter-spacing: 0; text-transform: none; color: #1F1F1E; border-bottom: 1px solid #1F1F1E; line-height: 1.3">Edit</a></sc-if></p>
+<p style="margin: 0; font-family: Newsreader, serif; font-size: 19px; line-height: 1.45">Concert accordionist working between contemporary music, tango and Bach transcriptions. Reads fast, arrives prepared, and is happy in a pit or on a recital stage.</p>
+<p style="margin: 10px 0 0; font-size: 12px; color: #6E6C67">Diploma, Conservatorio di Bologna · Master, Musikhochschule Trossingen</p>
+</section>
+
+<section style="padding: 28px 20px 0">
+<p style="margin: 0 0 4px; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; display: flex; align-items: center; gap: 8px"><span style="width: 8px; height: 8px; background: #1F1F1E"></span>Instruments<sc-if value="{{own}}" hint-placeholder-val="{{ false }}"><a href="#" style="margin-left: auto; font-size: 12px; font-weight: 500; letter-spacing: 0; text-transform: none; color: #1F1F1E; border-bottom: 1px solid #1F1F1E; line-height: 1.3">Edit</a></sc-if></p>
+<ul style="margin: 0; padding: 0; list-style: none">
+<li style="display: flex; justify-content: space-between; align-items: baseline; padding: 12px 0; border-bottom: 1px solid #D6D3CC"><span style="font-size: 17px; font-weight: 600">Classical accordion</span><span style="font-size: 12px; color: {{accentText}}; font-weight: 600">Primary</span></li>
+<li style="display: flex; justify-content: space-between; align-items: baseline; padding: 12px 0; border-bottom: 1px solid #D6D3CC"><span style="font-size: 17px; font-weight: 600">Bandoneon</span><span style="font-size: 12px; color: #6E6C67">Doubling, professional</span></li>
+<li style="display: flex; justify-content: space-between; align-items: baseline; padding: 12px 0; border-bottom: 1px solid #D6D3CC"><span style="font-size: 17px; font-weight: 600">Piano</span><span style="font-size: 12px; color: #6E6C67">Rehearsal level</span></li>
+</ul>
+<div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px">
+<span style="height: 30px; padding: 0 10px; border: 1px solid #D6D3CC; font-size: 12px; display: flex; align-items: center">Soloist</span>
+<span style="height: 30px; padding: 0 10px; border: 1px solid #D6D3CC; font-size: 12px; display: flex; align-items: center">Chamber</span>
+<span style="height: 30px; padding: 0 10px; border: 1px solid #D6D3CC; font-size: 12px; display: flex; align-items: center">Orchestra / pit</span>
+<span style="height: 30px; padding: 0 10px; border: 1px solid #D6D3CC; font-size: 12px; display: flex; align-items: center">Recording</span>
+</div>
+</section>
+
+<section id="rep" style="padding: 32px 20px 0">
+<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 500; letter-spacing: -0.03em">Repertoire</h2>
+<span style="display: flex; gap: 14px; align-items: baseline"><span style="font-size: 26px; letter-spacing: -0.03em; color: #8F8C85">/42</span><sc-if value="{{own}}" hint-placeholder-val="{{ false }}"><a href="#" style="font-size: 12px; font-weight: 500; letter-spacing: 0; text-transform: none; color: #1F1F1E; border-bottom: 1px solid #1F1F1E; line-height: 1.3">Edit</a></sc-if></span>
+</div>
+<div style="position: relative; margin-bottom: 6px">
+<label for="rq" style="position: absolute; width: 1px; height: 1px; overflow: hidden">Search this repertoire</label>
+<span style="position: absolute; left: 12px; top: 12px; color: #6E6C67; display: flex"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg></span>
+<input id="rq" placeholder="Search composer or work" style="width: 100%; box-sizing: border-box; height: 40px; border: 0; background: #E3E1DC; padding: 0 12px 0 36px; font: inherit; font-size: 14px; color: #1F1F1E">
+</div>
+<ul style="margin: 0; padding: 0; list-style: none">
+<li style="padding: 12px 0; border-bottom: 1px solid #D6D3CC; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px"><span style="font-weight: 600">Piazzolla</span><span style="font-size: 12px; color: #6E6C67">played 4×</span><span style="font-family: Newsreader, serif; font-style: italic; font-size: 16px; grid-column: 1 / -1">Histoire du Tango</span></li>
+<li style="padding: 12px 0; border-bottom: 1px solid #D6D3CC; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px"><span style="font-weight: 600">J. S. Bach</span><span style="font-size: 12px; color: #6E6C67">played 3×</span><span style="font-family: Newsreader, serif; font-style: italic; font-size: 16px; grid-column: 1 / -1">Goldberg Variations, arr. accordion</span></li>
+<li style="padding: 12px 0; border-bottom: 1px solid #D6D3CC; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px"><span style="font-weight: 600">Gubaidulina</span><span style="font-size: 12px; color: #6E6C67">played 2×</span><span style="font-family: Newsreader, serif; font-style: italic; font-size: 16px; grid-column: 1 / -1">De profundis</span></li>
+<li style="padding: 12px 0; border-bottom: 1px solid #D6D3CC; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px"><span style="font-weight: 600">Weill</span><span style="font-size: 12px; color: #6E6C67">played 6×</span><span style="font-family: Newsreader, serif; font-style: italic; font-size: 16px; grid-column: 1 / -1">Die Dreigroschenoper (pit)</span></li>
+</ul>
+<a href="#" style="display: flex; justify-content: space-between; padding: 14px 0; font-size: 13px; font-weight: 500">All 42 works<svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor" aria-hidden="true" style="margin-top: 6px"><path d="M2 0l4 4-4 4z"></path></svg></a>
+</section>
+
+<section id="cal" style="padding: 20px 20px 0">
+<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 500; letter-spacing: -0.03em">March</h2>
+<span style="display: flex; gap: 14px; align-items: baseline"><span style="font-size: 12px; color: #6E6C67">‹ &nbsp; 2026 &nbsp; ›</span><sc-if value="{{own}}" hint-placeholder-val="{{ false }}"><a href="#" style="font-size: 12px; font-weight: 500; letter-spacing: 0; text-transform: none; color: #1F1F1E; border-bottom: 1px solid #1F1F1E; line-height: 1.3">Edit</a></sc-if></span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; font-size: 11px; color: #6E6C67; margin-bottom: 4px; text-align: center"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div>
+<div role="img" aria-label="March availability: busy on 6, 7, 13, 21 and 22; on hold 28 and 29; otherwise free" style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px">
+<sc-for list="{{days}}" as="d" hint-placeholder-count="35">
+<span style="{{d.style}}">{{d.n}}</span>
+</sc-for>
+</div>
+<div style="display: flex; gap: 16px; margin-top: 12px; font-size: 12px; color: #6E6C67">
+<span style="display: flex; align-items: center; gap: 6px"><span style="width: 10px; height: 10px; background: #F7F6F3; border: 1px solid #D6D3CC"></span>Free</span>
+<span style="display: flex; align-items: center; gap: 6px"><span style="width: 10px; height: 10px; background: #1F1F1E"></span>Booked</span>
+<span style="display: flex; align-items: center; gap: 6px"><span style="width: 10px; height: 10px; border: 2px solid {{accent}}; box-sizing: border-box"></span>On hold</span>
+</div>
+</section>
+
+<section id="media" style="padding: 32px 20px 0">
+<div style="display: flex; align-items: baseline; margin-bottom: 12px"><h2 style="margin: 0; font-size: 26px; font-weight: 500; letter-spacing: -0.03em">Media</h2><sc-if value="{{own}}" hint-placeholder-val="{{ false }}"><a href="#" style="margin-left: auto; font-size: 12px; font-weight: 500; letter-spacing: 0; text-transform: none; color: #1F1F1E; border-bottom: 1px solid #1F1F1E; line-height: 1.3">Edit</a></sc-if></div>
+<div style="position: relative; margin: 0 -20px">
+<svg width="390" height="220" viewBox="0 0 390 220" role="img" aria-label="Video still: solo recital" style="display: block"><rect width="390" height="220" fill="#45423E"></rect><ellipse cx="195" cy="80" rx="130" ry="80" fill="#5A5650"></ellipse><circle cx="195" cy="92" r="16" fill="#2A2826"></circle><path d="M160 190c0-50 14-70 35-74 21 4 35 24 35 74z" fill="#2A2826"></path><rect x="166" y="132" width="58" height="44" fill="#1F1D1B"></rect></svg>
+<span style="position: absolute; left: 20px; bottom: 16px; display: flex; align-items: center; gap: 12px; color: #EFEEEA"><span style="width: 48px; height: 48px; background: #EFEEEA; color: #1F1F1E; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"></path></svg></span><span style="font-size: 13px; line-height: 1.3"><span style="display: block; font-weight: 600">Piazzolla, Oblivion</span>Live, Teatro Comunale · 4:51</span></span>
+</div>
+<ul style="margin: 12px 0 0; padding: 0; list-style: none">
+<li style="display: flex; gap: 14px; align-items: center; padding: 12px 0; border-bottom: 1px solid #D6D3CC"><span style="width: 40px; height: 40px; flex: none; border: 1px solid #1F1F1E; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"></path></svg></span><span style="flex: 1; line-height: 1.3"><span style="display: block; font-weight: 600">Bach, Goldberg: Aria</span><span style="font-size: 12px; color: #6E6C67">Audio · studio, 2025</span></span><span style="font-size: 12px; color: #6E6C67">3:40</span></li>
+<li style="display: flex; gap: 14px; align-items: center; padding: 12px 0; border-bottom: 1px solid #D6D3CC"><span style="width: 40px; height: 40px; flex: none; border: 1px solid #1F1F1E; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"></path></svg></span><span style="flex: 1; line-height: 1.3"><span style="display: block; font-weight: 600">Gubaidulina, De profundis</span><span style="font-size: 12px; color: #6E6C67">Audio · live, 2026</span></span><span style="font-size: 12px; color: #6E6C67">10:12</span></li>
+</ul>
+</section>
+
+<section id="hist" style="padding: 32px 20px 0">
+<div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px">
+<h2 style="margin: 0; font-size: 26px; font-weight: 500; letter-spacing: -0.03em">Concerts</h2>
+<span style="display: flex; gap: 14px; align-items: baseline"><span style="font-size: 26px; letter-spacing: -0.03em; color: #8F8C85">/64</span><sc-if value="{{own}}" hint-placeholder-val="{{ false }}"><a href="#" style="font-size: 12px; font-weight: 500; letter-spacing: 0; text-transform: none; color: #1F1F1E; border-bottom: 1px solid #1F1F1E; line-height: 1.3">Edit</a></sc-if></span>
+</div>
+<ol style="margin: 0; padding: 0; list-style: none">
+<li style="display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; padding: 14px 0; border-bottom: 1px solid #D6D3CC"><span style="font-size: 13px; color: #6E6C67">10.2026</span><span style="line-height: 1.35"><span style="display: block; font-weight: 600">Teatro Comunale, Modena <span style="font-size: 11px; font-weight: 500; color: #6E6C67; white-space: nowrap">✓ verified</span></span><span style="font-size: 13px; color: #6E6C67">Soloist with Orchestra dell’Emilia · </span><span style="font-family: Newsreader, serif; font-style: italic; font-size: 14px">Oblivion, Libertango</span></span></li>
+<li style="display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; padding: 14px 0; border-bottom: 1px solid #D6D3CC"><span style="font-size: 13px; color: #6E6C67">07.2026</span><span style="line-height: 1.35"><span style="display: block; font-weight: 600">Festival Musica Estense <span style="font-size: 11px; font-weight: 500; color: #6E6C67; white-space: nowrap">✓ verified</span></span><span style="font-size: 13px; color: #6E6C67">Solo recital · </span><span style="font-family: Newsreader, serif; font-style: italic; font-size: 14px">Bach, Gubaidulina</span></span></li>
+<li style="display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; padding: 14px 0; border-bottom: 1px solid #D6D3CC"><span style="font-size: 13px; color: #6E6C67">05.2026</span><span style="line-height: 1.35"><span style="display: block; font-weight: 600">Sala Bossi, Bologna <span style="font-size: 11px; font-weight: 500; color: #6E6C67; white-space: nowrap">self-added</span></span><span style="font-size: 13px; color: #6E6C67">With Quartetto Felsina · </span><span style="font-family: Newsreader, serif; font-style: italic; font-size: 14px">Histoire du Tango</span></span></li>
+</ol>
+<a href="M1-Network.dc.html" style="margin-top: 14px; display: flex; align-items: center; gap: 10px; padding: 12px; background: #F7F6F3">
+<span style="display: flex"><svg width="28" height="28" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" fill="#C2B8A8"></rect><circle cx="20" cy="16" r="7" fill="#8B8172"></circle><path d="M5 40c2-9 8-13 15-13s13 4 15 13z" fill="#8B8172"></path></svg><svg width="28" height="28" viewBox="0 0 40 40" aria-hidden="true" style="margin-left: -6px; outline: 2px solid #F7F6F3"><rect width="40" height="40" fill="#B0ACA4"></rect><circle cx="20" cy="16" r="7" fill="#7C7870"></circle><path d="M5 40c2-9 8-13 15-13s13 4 15 13z" fill="#7C7870"></path></svg><svg width="28" height="28" viewBox="0 0 40 40" aria-hidden="true" style="margin-left: -6px; outline: 2px solid #F7F6F3"><rect width="40" height="40" fill="#BFAFA6"></rect><circle cx="20" cy="16" r="7" fill="#8C7B72"></circle><path d="M5 40c2-9 8-13 15-13s13 4 15 13z" fill="#8C7B72"></path></svg></span>
+<span style="flex: 1; font-size: 13px; line-height: 1.3"><span style="display: block; font-weight: 600">Played with 46 musicians</span><span style="color: #6E6C67">From shared lineups · Giulia, Marco, Irene…</span></span>
+<svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor" aria-hidden="true"><path d="M2 0l4 4-4 4z"></path></svg>
+</a>
+</section>
+
+<section style="padding: 32px 20px 0">
+<p style="margin: 0 0 12px; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; display: flex; align-items: center; gap: 8px"><span style="width: 8px; height: 8px; background: #1F1F1E"></span>Ensembles<sc-if value="{{own}}" hint-placeholder-val="{{ false }}"><a href="#" style="margin-left: auto; font-size: 12px; font-weight: 500; letter-spacing: 0; text-transform: none; color: #1F1F1E; border-bottom: 1px solid #1F1F1E; line-height: 1.3">Edit</a></sc-if></p>
+<div style="display: flex; gap: 10px">
+<a href="M1-Ensemble.dc.html" style="flex: 1; background: #1F1F1E; color: #EFEEEA; padding: 14px; font-size: 15px; font-weight: 600; line-height: 1.2">Quartetto Felsina<span style="display: block; margin-top: 14px; font-size: 11px; font-weight: 400; color: #B5B2AB">Guest, since 2024</span></a>
+<a href="#" style="flex: 1; background: #F7F6F3; padding: 14px; font-size: 15px; font-weight: 600; line-height: 1.2">Ensemble Rivoalto<span style="display: block; margin-top: 14px; font-size: 11px; font-weight: 400; color: #6E6C67">Member, since 2021</span></a>
+</div>
+</section>
+
+<section style="padding: 32px 20px 0">
+<p style="margin: 0 0 12px; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; display: flex; align-items: center; gap: 8px"><span style="width: 8px; height: 8px; background: #1F1F1E"></span>Endorsements · 9<sc-if value="{{own}}" hint-placeholder-val="{{ false }}"><a href="#" style="margin-left: auto; font-size: 12px; font-weight: 500; letter-spacing: 0; text-transform: none; color: #1F1F1E; border-bottom: 1px solid #1F1F1E; line-height: 1.3">Manage</a></sc-if></p>
+<figure style="margin: 0; padding: 18px; background: #F7F6F3">
+<blockquote style="margin: 0; font-family: Newsreader, serif; font-size: 18px; line-height: 1.45">“Learnt the whole Histoire in four days and shaped the second movement better than we had.”</blockquote>
+<figcaption style="margin-top: 14px; display: flex; gap: 10px; align-items: center"><svg width="32" height="32" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" fill="#C2B8A8"></rect><circle cx="20" cy="16" r="7" fill="#8B8172"></circle><path d="M5 40c2-9 8-13 15-13s13 4 15 13z" fill="#8B8172"></path></svg><span style="font-size: 12px; line-height: 1.3"><span style="display: block; font-weight: 600">Giulia Santoro</span><span style="color: #6E6C67">Shared concert · Sala Bossi, 05.2026</span></span></figcaption>
+</figure>
+</section>
+
+<nav aria-label="Main" style="position: absolute; left: 0; right: 0; bottom: 0; height: 84px; background: #EFEEEA; border-top: 1px solid #D6D3CC; display: flex; justify-content: space-around; align-items: flex-start; padding-top: 8px; font-size: 10px">
+<a href="Main.dc.html" style="width: 66px; display: flex; flex-direction: column; align-items: center; gap: 4px; padding-top: 6px; color: #6E6C67"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"></path></svg>Home</a>
+<a href="M1-Network.dc.html" style="width: 66px; display: flex; flex-direction: column; align-items: center; gap: 4px; padding-top: 6px; color: #6E6C67"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5"></path><circle cx="17" cy="9" r="2.5"></circle><path d="M16 14.6c2.8.2 4.8 2 5.5 5.4"></path></svg>Network</a>
+<a href="M1-Ensembles.dc.html" style="width: 66px; display: flex; flex-direction: column; align-items: center; gap: 4px; padding-top: 6px; color: #6E6C67"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 9l9-5 9 5M5 10v8M10 10v8M14 10v8M19 10v8M3 20h18"></path></svg>Ensembles</a>
+<a href="M1-Alerts.dc.html" style="width: 66px; display: flex; flex-direction: column; align-items: center; gap: 4px; padding-top: 6px; color: #6E6C67"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"></path><path d="M10 20a2 2 0 0 0 4 0"></path></svg>Alerts</a>
+<a href="M1-Work.dc.html" style="width: 66px; display: flex; flex-direction: column; align-items: center; gap: 4px; padding-top: 6px; color: #6E6C67"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="7" width="18" height="13"></rect><path d="M8 7V4h8v3M3 13h18"></path></svg>Work</a>
+</nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#E2641B","options":["#1F1F1E","#E2641B"]},"own":{"editor":"boolean","default":false},"$preview":{"width":390,"height":3200}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const accent = this.props.accent ?? '#E2641B';
+    const mono = accent.toUpperCase() === '#1F1F1E';
+    const booked = [6, 7, 13, 21, 22];
+    const hold = [28, 29];
+    const base = 'height: 38px; display: flex; align-items: center; justify-content: center; font-size: 13px; box-sizing: border-box;';
+    const days = [];
+    for (let i = 0; i < 6; i++) days.push({ n: '', style: base });
+    for (let d = 1; d <= 31; d++) {
+      let s = base + ' background: #F7F6F3; color: #1F1F1E;';
+      if (booked.includes(d)) s = base + ' background: #1F1F1E; color: #EFEEEA;';
+      else if (hold.includes(d)) s = base + ' background: #F7F6F3; color: #1F1F1E; border: 2px solid ' + accent + ';';
+      days.push({ n: String(d), style: s });
+    }
+    const own = this.props.own === true || this.props.own === 'true';
+    return { accent, onAccent: mono ? '#EFEEEA' : '#1F1F1E', accentText: mono ? '#1F1F1E' : '#B84A0E', days, own, visitor: !own };
+  }
+}
+</script>
+</body>
+</html>

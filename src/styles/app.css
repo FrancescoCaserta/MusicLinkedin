@@ -6,34 +6,39 @@
    ───────────────────────────────────────────────────────────────────────── */
 
 :root {
-  --paper: #f6f2ea;
-  --paper-deep: #ece5d8;
-  --card: #fffdf9;
-  --ink: #1b1a17;
-  --ink-2: #4b4841;
-  --ink-3: #7a756a;
-  --ink-4: #a8a294;
-  --rule: #d8d0c0;
-  --rule-soft: #e7e0d2;
-  --accent: #7a1f2b;
-  --accent-deep: #5c141e;
-  --accent-wash: #f4e4e2;
-  --urgent: #b5381c;
-  --urgent-wash: #fbe8df;
-  --ok: #2c6a4c;
-  --ok-wash: #e2efe6;
-  --warn: #8f6410;
-  --warn-wash: #f6ecd0;
+  /* 01 · Grotesk & Serif — see design/DESIGN-SYSTEM.md */
+  --paper: #efeeea;        /* ground */
+  --paper-deep: #e3e1dc;   /* field */
+  --card: #f7f6f3;         /* surface */
+  --ink: #1f1f1e;
+  --ink-2: #3a3936;
+  --ink-3: #6e6c67;        /* muted */
+  --ink-4: #8f8c85;        /* faint: 24px+ only */
+  --rule: #d6d3cc;
+  --rule-soft: #e3e1dc;
+  /* Decorative emphasis is ink; orange is reserved for actions and urgency. */
+  --accent: #1f1f1e;
+  --accent-deep: #000000;
+  --accent-wash: #e3e1dc;
+  --action: #e2641b;
+  --action-deep: #c95515;
+  --urgent: #b84a0e;       /* accent-text */
+  --urgent-wash: #f5e2d4;
+  --ok: #1f1f1e;
+  --ok-wash: #e3e1dc;
+  --warn: #6e6c67;
+  --warn-wash: #f7f6f3;
 
-  --display: 'Bodoni Moda Variable', 'Bodoni 72', Didot, 'Times New Roman', serif;
-  --sans: 'Hanken Grotesk Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --display: 'Inter Tight Variable', 'Inter Tight', ui-sans-serif, system-ui, sans-serif;
+  --serif: 'Newsreader Variable', Newsreader, Georgia, serif;
+  --sans: 'Inter Tight Variable', 'Inter Tight', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
 
-  --r: 3px;
-  --r-lg: 6px;
-  --shadow: 0 1px 0 rgba(27, 26, 23, 0.04), 0 12px 32px -18px rgba(27, 26, 23, 0.28);
-  --shadow-pop: 0 2px 4px rgba(27, 26, 23, 0.06), 0 18px 44px -14px rgba(27, 26, 23, 0.32);
-  --header-h: 60px;
-  --wrap: 1180px;
+  --r: 0;
+  --r-lg: 0;
+  --shadow: none;
+  --shadow-pop: 0 12px 40px -12px rgba(31, 31, 30, 0.35);
+  --header-h: 72px;
+  --wrap: 1200px;
 }
 
 *,
@@ -601,7 +606,7 @@ button.chip:hover {
 }
 
 .dot--warn {
-  background: #c4902a;
+  background: var(--ink-3);
 }
 
 .dot--busy {
@@ -1427,7 +1432,7 @@ button.chip:hover {
   width: 100%;
   height: 100%;
   min-height: 240px;
-  background: #ece8e0;
+  background: var(--paper-deep);
   border-radius: var(--r-lg);
   z-index: 0;
   font-family: var(--sans);
@@ -1474,7 +1479,7 @@ button.chip:hover {
 }
 
 .pin--warn span {
-  background: #b98420;
+  background: var(--ink-3);
 }
 
 .pin.is-active span,
