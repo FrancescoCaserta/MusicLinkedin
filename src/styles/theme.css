@@ -990,3 +990,189 @@ fieldset.plain {
 .concert__verify {
   margin-left: 8px;
 }
+
+/* ── Feed: composer, posts, Bravo ──────────────────────────────────────── */
+
+.feedx {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.feedx__label {
+  margin-bottom: -12px;
+}
+
+.composer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-end;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--ink);
+}
+
+.composer__text {
+  flex: 1 1 280px;
+  min-height: 48px;
+  border: 0;
+  border-bottom: 1px solid var(--rule);
+  background: transparent;
+  padding: 10px 0;
+  font-family: var(--serif);
+  font-size: 19px;
+  line-height: 1.4;
+  resize: vertical;
+}
+
+.composer__text:focus {
+  outline: none;
+  border-bottom-color: var(--ink);
+}
+
+.composer--full .composer__text {
+  flex-basis: 100%;
+  border: 1px solid var(--rule);
+  padding: 14px 16px;
+}
+
+.composer__bar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-left: auto;
+}
+
+.composer__event {
+  max-width: 240px;
+}
+
+.post {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.post__activity {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--rule);
+  font-size: 13px;
+  color: var(--ink-3);
+}
+
+.post__activity .avatar {
+  width: 20px;
+  height: 20px;
+  font-size: 8px;
+}
+
+.post__who {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.post__head {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  line-height: 1.3;
+}
+
+.post__body,
+.comment__body {
+  font-family: var(--serif);
+  font-size: 19px;
+  line-height: 1.5;
+  white-space: pre-line;
+}
+
+.comment__body {
+  font-size: 16px;
+}
+
+.post__actions {
+  display: flex;
+  gap: 24px;
+  font-size: 13px;
+}
+
+.post__act {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+}
+
+.post__act.is-on {
+  font-weight: 600;
+}
+
+.attach {
+  background: var(--card);
+}
+
+.attach__main {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 16px;
+}
+
+.attach__date {
+  font-size: 30px;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.attach__title {
+  display: block;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.attach__seat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-top: 1px solid var(--rule);
+  font-size: 13px;
+}
+
+.attach__seat .seat__mark {
+  width: 24px;
+  height: 24px;
+}
+
+.comments {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-left: 16px;
+  border-left: 1px solid var(--rule);
+}
+
+.comment {
+  display: flex;
+  gap: 10px;
+}
+
+.compose__more {
+  border-top: 1px solid var(--ink);
+  padding-top: 14px;
+}
+
+.compose__link {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--rule);
+  font-weight: 600;
+}

@@ -1,3 +1,4 @@
+import { Feed } from './Feed';
 import { LineupInvites } from '../events/Events';
 import { Link } from 'react-router';
 import { ArrowRight, Briefcase, CalendarDays, FileText, MessageSquare, Search, UserPlus, Users, Zap } from 'lucide-react';
@@ -161,6 +162,8 @@ export function HomePage() {
               )}
             </section>
 
+            <Feed />
+
             {viewer.isMusician && (
               <section>
                 <div className="section__head">
@@ -176,7 +179,7 @@ export function HomePage() {
             )}
 
             <section>
-              <div className="section__head"><h2 className="h-section">{t('In your network')}</h2></div>
+              <div className="section__head"><h2 className="h-section">{t('Also in your network')}</h2></div>
               <Activity items={h.activity} />
             </section>
           </div>

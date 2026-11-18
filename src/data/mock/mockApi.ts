@@ -10,6 +10,7 @@ import type {
   Notification,
   Opportunity,
   Organisation,
+  Post,
 } from '../../domain/types';
 import { toISODate } from '../../domain/dates';
 import { distanceKm } from '../../domain/geo';
@@ -34,6 +35,7 @@ import {
   type OpportunityView,
   type OrganisationCard,
   type PostingView,
+  type PostView,
   type SearchHit,
   type SearchResponse,
   type SuggestionView,
@@ -101,7 +103,10 @@ export class MockApi implements DataApi {
     if (raw) {
       try {
         const parsed = JSON.parse(raw) as Database;
-        if (parsed.meta?.version === DB_VERSION) return (this.data = parsed);
+        if (parsed.meta?.version === DB_VERSION) {
+          parsed.posts ??= []; // saved before posts existed
+          return (this.data = parsed);
+        }
       } catch {
         // fall through to a fresh seed
       }
@@ -720,6 +725,82 @@ export class MockApi implements DataApi {
         inv.status = 'declined';
       }
       this.notify({ accountId: inv.invitedBy, kind: 'lineup-response', actorId: musicianId, concertId: c.id, accepted: accept });
+    });
+  }
+
+  // ── Posts ──────────────────────────────────────────────────────────────
+
+  private post(id: ID): Post {
+    const p = this.db.posts.find((x) => x.id === id);
+    if (!p) throw new ApiError('not-found', 'This post could not be found.');
+    return p;
+  }
+
+  private postView(p: Post, viewerId: ID, mine: Set<ID>): PostView {
+    const c = p.concertId ? this.db.concerts.find((x) => x.id === p.concertId) : undefined;
+    const visible = c && this.canSeeEvent(viewerId, c) ? c : undefined;
+    const by = p.bravos.find((id) => id !== viewerId && id !== p.authorId && mine.has(id));
+    return {
+      id: p.id,
+      body: p.body,
+      createdAt: p.createdAt,
+      author: this.summary(p.authorId),
+      concert: visible ? this.concertView(visible) : undefined,
+      playing: visible?.participants.find((x) => x.musicianId === p.authorId)?.role,
+      bravos: p.bravos.length,
+      bravoed: p.bravos.includes(viewerId),
+      // Only explains posts from outside your connections: the Bravo is why it is in your feed.
+      bravoBy: by && !mine.has(p.authorId) && p.authorId !== viewerId ? this.summary(by) : undefined,
+      comments: p.comments.map((x) => ({ id: x.id, author: this.summary(x.authorId), body: x.body, createdAt: x.createdAt })),
+    };
+  }
+
+  listFeed(accountId: ID) {
+    return this.call(() => {
+      const mine = this.adjacency().get(accountId) ?? new Set<ID>();
+      return this.db.posts
+        // Your own posts, your connections' posts, and posts a connection gave a Bravo to.
+        .filter((p) => p.authorId === accountId || mine.has(p.authorId) || p.bravos.some((b) => mine.has(b)))
+        .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+        .slice(0, 40)
+        .map((p) => this.postView(p, accountId, mine));
+    });
+  }
+
+  createPost(input: { authorId: ID; body: string; concertId?: ID }) {
+    return this.mutate(() => {
+      this.account(input.authorId);
+      const body = input.body.trim();
+      if (!body) throw new ApiError('invalid', 'Write something first.');
+      if (body.length > 3000) throw new ApiError('invalid', 'Posts are limited to 3,000 characters.');
+      if (input.concertId && !this.canSeeEvent(input.authorId, this.event(input.concertId))) throw new ApiError('forbidden', 'You cannot share this event.');
+      const p: Post = { id: this.id('post'), authorId: input.authorId, body, concertId: input.concertId, bravos: [], comments: [], createdAt: this.now().toISOString() };
+      this.db.posts.push(p);
+      return this.postView(p, input.authorId, this.adjacency().get(input.authorId) ?? new Set());
+    });
+  }
+
+  toggleBravo(postId: ID, accountId: ID) {
+    return this.mutate(() => {
+      const p = this.post(postId);
+      this.account(accountId);
+      if (p.bravos.includes(accountId)) {
+        p.bravos = p.bravos.filter((x) => x !== accountId);
+        return false;
+      }
+      p.bravos.push(accountId);
+      if (p.authorId !== accountId) this.notify({ accountId: p.authorId, kind: 'bravo', actorId: accountId, postId });
+      return true;
+    });
+  }
+
+  addComment(postId: ID, accountId: ID, body: string) {
+    return this.mutate(() => {
+      const p = this.post(postId);
+      this.account(accountId);
+      if (!body.trim()) throw new ApiError('invalid', 'Write a comment first.');
+      p.comments.push({ id: this.id('pc'), authorId: accountId, body: body.trim(), createdAt: this.now().toISOString() });
+      if (p.authorId !== accountId) this.notify({ accountId: p.authorId, kind: 'comment', actorId: accountId, postId });
     });
   }
 

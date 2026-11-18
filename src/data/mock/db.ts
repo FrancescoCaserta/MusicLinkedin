@@ -12,6 +12,7 @@ import type {
   Notification,
   Opportunity,
   Organisation,
+  Post,
   Thread,
 } from '../../domain/types';
 
@@ -49,6 +50,7 @@ export interface Database {
   threads: Thread[];
   messages: Message[];
   notifications: Notification[];
+  posts: Post[];
   /** accountId → saved musician ids */
   shortlists: Record<ID, ID[]>;
   scheduled: ScheduledEvent[];

@@ -380,6 +380,27 @@ export interface Application {
 
 // ── Network ──────────────────────────────────────────────────────────────
 
+// ── Posts ────────────────────────────────────────────────────────────────
+
+export interface PostComment {
+  id: ID;
+  authorId: ID;
+  body: string;
+  createdAt: ISODateTime;
+}
+
+/** A short post in the feed; it may attach an event. */
+export interface Post {
+  id: ID;
+  authorId: ID;
+  body: string;
+  concertId?: ID;
+  /** Accounts that gave a Bravo. */
+  bravos: ID[];
+  comments: PostComment[];
+  createdAt: ISODateTime;
+}
+
 export interface Connection {
   id: ID;
   /** Requester. */
@@ -428,7 +449,9 @@ export type NotificationKind =
   | 'connection-accepted'
   | 'endorsement'
   | 'lineup-invite'
-  | 'lineup-response';
+  | 'lineup-response'
+  | 'bravo'
+  | 'comment';
 
 export interface Notification {
   id: ID;
@@ -437,6 +460,7 @@ export interface Notification {
   actorId?: ID;
   opportunityId?: ID;
   concertId?: ID;
+  postId?: ID;
   /** For lineup responses: did they confirm? */
   accepted?: boolean;
   /** Application status at the time, for status notifications. */

@@ -239,6 +239,22 @@ export interface OpportunityInput {
   seatId?: ID;
 }
 
+export interface PostView {
+  id: ID;
+  body: string;
+  createdAt: ISODateTime;
+  author: AccountSummary;
+  /** The attached event, with its open seats. */
+  concert?: ConcertView;
+  /** "I'm playing · Role" when the author is on the attached event's lineup. */
+  playing?: string;
+  bravos: number;
+  bravoed: boolean;
+  /** A connection of the viewer who gave a Bravo: the activity line above the post. */
+  bravoBy?: AccountSummary;
+  comments: { id: ID; author: AccountSummary; body: string; createdAt: ISODateTime }[];
+}
+
 export interface ConnectionView {
   connectionId: ID;
   account: AccountSummary;
@@ -447,6 +463,13 @@ export interface DataApi {
   findThread(accountId: ID, otherId: ID): Promise<ID | undefined>;
   sendMessage(input: { fromId: ID; toId: ID; body: string; opportunityId?: ID }): Promise<{ threadId: ID }>;
   markThreadRead(threadId: ID, accountId: ID): Promise<void>;
+
+  // Posts
+  listFeed(accountId: ID): Promise<PostView[]>;
+  createPost(input: { authorId: ID; body: string; concertId?: ID }): Promise<PostView>;
+  /** Gives or takes back a Bravo; returns whether it is now given. */
+  toggleBravo(postId: ID, accountId: ID): Promise<boolean>;
+  addComment(postId: ID, accountId: ID, body: string): Promise<void>;
 
   // Home and notifications
   getHome(accountId: ID): Promise<HomeView>;

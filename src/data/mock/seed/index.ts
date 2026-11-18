@@ -839,6 +839,7 @@ export function buildSeed(anchor: ISODate, now: Date = new Date()): Database {
     threads: [],
     messages: [],
     notifications: [],
+    posts: [],
     shortlists: {},
     scheduled: [],
   };
@@ -857,6 +858,7 @@ export function buildSeed(anchor: ISODate, now: Date = new Date()): Database {
   buildOpportunities(w, db, tools, now);
   buildMessages(db, now);
   buildNotifications(db, now);
+  buildPosts(db, now, anchor);
 
   // Accounts carry the final headline.
   for (const a of db.accounts) {
@@ -867,4 +869,57 @@ export function buildSeed(anchor: ISODate, now: Date = new Date()): Database {
   db.shortlists[PERSONA_IDS.lorenzo] = [musicianId('Caterina Rovatti'), musicianId('Viola Parodi')];
   db.shortlists[PERSONA_IDS.giulia] = [musicianId('Viola Casadei'), musicianId('Enrico Malavasi'), musicianId('Sofia Maccaferri')];
   return db;
+}
+
+// ── Posts ────────────────────────────────────────────────────────────────
+
+const POST_UPCOMING = [
+  'First read-through of {work} this morning. The hall is cold, the room is warm.',
+  'Marking bowings for {work} on the train. Three more stops and I will have found the phrasing in bar 40.',
+  'Rehearsals for {work} start next week. If you are in town, come and hear it.',
+];
+const POST_PAST = [
+  'Thank you to everyone who came. {work} felt like a conversation, not a performance.',
+  'Back home after the concerts. Grateful for colleagues who make {work} sound easy when it is not.',
+];
+const POST_PLAIN = [
+  'Looking for a quiet practice room in the city centre on weekday mornings. Recommendations welcome.',
+  'A reminder that a stated fee in the first line saves everyone three emails. Thank you to the organisers who already do it.',
+  'New strings, new week. Somehow it always sounds better on a Monday.',
+];
+
+/**
+ * A few posts per persona, attached to concerts the authors really play in.
+ * The first is by someone outside the persona's connections, given a Bravo by
+ * one of them, so the feed shows why it is there.
+ */
+function buildPosts(db: Database, now: Date, anchor: ISODate): void {
+  const accepted = db.connections.filter((c) => c.status === 'accepted');
+  const friendsOf = (id: ID) => accepted.flatMap((c) => (c.from === id ? [c.to] : c.to === id ? [c.from] : []));
+  const isMusician = (id: ID) => db.musicians.some((m) => m.id === id);
+  let k = 0;
+  const hours = (h: number) => new Date(now.getTime() - h * 3_600_000).toISOString();
+  for (const persona of db.meta.personas) {
+    const friends = friendsOf(persona).filter(isMusician);
+    const bridge = friends.find((f) => friendsOf(f).some((x) => x !== persona && isMusician(x) && !friends.includes(x)));
+    const stranger = bridge ? friendsOf(bridge).find((x) => x !== persona && isMusician(x) && !friends.includes(x)) : undefined;
+    const authors = [...(stranger ? [stranger] : []), ...friends.slice(0, 3)];
+    for (const [j, author] of authors.entries()) {
+      const concert = db.concerts.find((c) => c.participants.some((p) => p.musicianId === author) && c.date >= addDays(anchor, -10) && c.visibility !== 'private');
+      const work = concert?.programme[0]?.work;
+      const pool = concert && concert.date < anchor ? POST_PAST : POST_UPCOMING;
+      const body = concert && work ? pool[k % pool.length].replace('{work}', work) : POST_PLAIN[k % POST_PLAIN.length];
+      const fans = friendsOf(author).filter((x) => x !== persona).slice(0, 3 + (k % 9));
+      if (author === stranger && bridge && !fans.includes(bridge)) fans.unshift(bridge);
+      db.posts.push({
+        id: `post-${++k}`,
+        authorId: author,
+        body,
+        concertId: concert?.id,
+        bravos: fans,
+        comments: j === 1 && fans[0] ? [{ id: `pc-${k}`, authorId: fans[0], body: 'Wish I could be there. In bocca al lupo!', createdAt: hours(1 + j) }] : [],
+        createdAt: hours(2 + j * 7 + (k % 5)),
+      });
+    }
+  }
 }

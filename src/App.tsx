@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
 import { AlertsPage, Shell } from './app/Shell';
 import { CreateEventPage, EventPage } from './features/events/Events';
+import { ComposePage } from './features/home/Feed';
 import { api } from './data/client';
 import { HiringPage, ManagePage } from './features/hiring/Hiring';
 import { HomePage } from './features/home/Home';
@@ -41,6 +42,7 @@ export function App() {
         <Route path="/network" element={<NetworkPage />} />
         <Route path="/ensembles" element={<OrganisationsPage />} />
         <Route path="/ensembles/:slug" element={<OrganisationPage />} />
+        <Route path="/compose" element={<ComposePage />} />
         <Route path="/events/new" element={<CreateEventPage />} />
         <Route path="/events/:id" element={<EventPage />} />
         <Route path="/alerts" element={<AlertsPage />} />

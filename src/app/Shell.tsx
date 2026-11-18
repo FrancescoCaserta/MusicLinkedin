@@ -64,6 +64,10 @@ export function notificationText(n: NotificationView): { text: string; to: strin
       return { text: t('{who} accepted your connection request', { who }), to: n.actor?.slug ? `/musicians/${n.actor.slug}` : '/network' };
     case 'endorsement':
       return { text: t('{who} endorsed you', { who }), to: '/network?tab=endorsements' };
+    case 'bravo':
+      return { text: t('{who} gave a Bravo to your post', { who }), to: '/home' };
+    case 'comment':
+      return { text: t('{who} commented on your post', { who }), to: '/home' };
     case 'lineup-invite':
       return { text: t('{who} added you to a lineup: “{title}”', { who, title: n.concert?.title ?? t('an event') }), to: n.concert ? `/events/${n.concert.id}` : '/calendar' };
     case 'lineup-response':
@@ -348,7 +352,7 @@ export function Shell() {
               <MessageSquare size={20} strokeWidth={1.5} aria-hidden />
               {unread > 0 && <span className="count top__count">{unread}</span>}
             </Link>
-            <Link to="/opportunities/new" className="btn btn--primary top__post">
+            <Link to="/compose" className="btn btn--primary top__post">
               <Plus size={16} aria-hidden />
               <span>{t('Post')}</span>
             </Link>
