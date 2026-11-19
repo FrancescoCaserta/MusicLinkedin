@@ -304,7 +304,7 @@ function TopSearch() {
     >
       <label htmlFor="top-q" className="sr-only">{t('Search musicians, ensembles, repertoire')}</label>
       <Search size={16} strokeWidth={1.6} aria-hidden />
-      <input id="top-q" type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder={t('Search musicians, ensembles, repertoire')} />
+      <input id="top-q" type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder={t('Search')} />
     </form>
   );
 }

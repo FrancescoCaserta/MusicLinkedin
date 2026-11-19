@@ -797,18 +797,18 @@ button.chip:hover {
 
 @media (max-width: 820px) {
   .top__in {
-    flex-wrap: wrap;
-    row-gap: 10px;
-    padding-block: 10px;
+    flex-wrap: nowrap;
+    gap: 10px;
   }
 
   .top__actions {
-    margin-left: auto;
+    margin-left: 0;
+    gap: 4px;
   }
 
   .top__search {
-    order: 3;
-    flex: 1 1 100%;
+    flex: 1 1 auto;
+    min-width: 0;
   }
 }
 
